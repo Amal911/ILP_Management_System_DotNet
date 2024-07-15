@@ -1,0 +1,6 @@
+@ILPManagementSystem_HostAddress = http://localhost:5037
+
+GET {{ILPManagementSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
