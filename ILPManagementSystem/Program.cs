@@ -1,4 +1,7 @@
+using ILPManagementSystem;
 using ILPManagementSystem.Data;
+using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +23,13 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+builder.Services.AddScoped<BatchRepository>();
+builder.Services.AddScoped<IBatchRepository, BatchRepository>();
+builder.Services.AddScoped<LocationRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+
 
 var app = builder.Build();
 app.UseCors("AllowAll");
