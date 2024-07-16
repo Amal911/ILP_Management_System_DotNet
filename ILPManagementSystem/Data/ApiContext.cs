@@ -1,5 +1,7 @@
 ﻿using ILPManagementSystem.Models;
+using ILPManagementSystem.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace ILPManagementSystem.Data
 {
@@ -11,5 +13,22 @@ namespace ILPManagementSystem.Data
         }
         public DbSet<User>  Users { get; set; }
         public DbSet<Scorecard> Scorecards { get; set; }
+        public DbSet<Batch> Batchs { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<BatchType> BatchTypes { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+/*
+            modelBuilder.Entity<Batch>()
+                .HasOne(r => r.batchType)
+                .WithMany(b=>b.batchList)
+                .HasForeignKey(r => r.batchId);*/
+
+        }
+
     }
 }
