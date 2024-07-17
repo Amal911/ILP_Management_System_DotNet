@@ -17,6 +17,10 @@ namespace ILPManagementSystem.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<BatchType> BatchTypes { get; set; }
 
+        public DbSet<Phase> Phases { get; set; }
+
+        public DbSet<BatchPhase> BatchPhase {  get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
