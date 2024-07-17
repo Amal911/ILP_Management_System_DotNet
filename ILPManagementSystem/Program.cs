@@ -1,8 +1,14 @@
 using ILPManagementSystem;
 using ILPManagementSystem.Data;
+using ILPManagementSystem.Models.Validators;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using ILPManagementSystem.Services;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +18,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = admin@123;"));
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Workcase@1;"));
 
 builder.Services.AddCors(options =>
 {
@@ -25,11 +31,23 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
+
+
+
 builder.Services.AddScoped<BatchRepository>();
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<LocationRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<PhaseRepository>();
+builder.Services.AddScoped<IPhaseRepository, PhaseRepository>();
+builder.Services.AddScoped<BatchPhaseRepository>();
+builder.Services.AddScoped<IBatchPhaseRepository, BatchPhaseRepository>();
 
+
+builder.Services.AddScoped<PhaseService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<PhaseDTOValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 app.UseCors("AllowAll");

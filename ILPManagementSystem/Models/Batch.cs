@@ -17,7 +17,5 @@ namespace ILPManagementSystem.Models
         public int ProgramId { get; set; }
         public int LocationId { get; set; }
 
-/*        public BatchType BatchType { get; set; }
-        public Location Location { get; set; }*/
     }
 }
