@@ -9,7 +9,7 @@ namespace ILPManagementSystem
         public MappingConfig()
         {
             CreateMap<Batch,BatchDTO>().ReverseMap();
-            CreateMap<Batch, CreateBatchDTO>().ReverseMap();
+            CreateMap<Batch,CreateBatchDTO>().ReverseMap();
             CreateMap<Phase,PhaseDTO>().ReverseMap();
             CreateMap<BatchPhase,BatchPhaseDTO>().ReverseMap();
 
