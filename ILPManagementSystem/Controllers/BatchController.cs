@@ -45,10 +45,21 @@ namespace ILPManagementSystem.Controllers
             return Ok(await _batchRepository.GetDetailedBatchData());
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateBatch(Batch batch)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BatchDTO>> GetBatchDetailById(int id)
         {
-            await _batchRepository.AddNewBatch(batch);
+            var batch = await _batchRepository.GetBatchDetailById(id);
+            if (batch.Count()==0) {
+                return BadRequest("Id not found");
+            }
+            return Ok(batch);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateBatch(CreateBatchDTO batch)
+        {
+            Batch newBatch = _mapper.Map<Batch>(batch);
+            await _batchRepository.AddNewBatch(newBatch);
             return Ok();
         }
     }
