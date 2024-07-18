@@ -29,6 +29,8 @@ builder.Services.AddScoped<BatchRepository>();
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<LocationRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<AssessmentRepository>();
+builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
 
 
 var app = builder.Build();
