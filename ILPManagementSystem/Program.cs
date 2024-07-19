@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Workcase@1;"));
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = admin@123;"));
 
 builder.Services.AddCors(options =>
 {
@@ -31,9 +31,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
-
-
-
 builder.Services.AddScoped<BatchRepository>();
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<LocationRepository>();
@@ -47,8 +44,10 @@ builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>(
 
 
 builder.Services.AddScoped<PhaseService>();
-builder.Services.AddValidatorsFromAssemblyContaining<PhaseDTOValidator>();
-
+builder.Services.AddScoped<AssessmentRepository>();
+builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+builder.Services.AddScoped<BatchTypeRepository>();
+builder.Services.AddScoped<IBatchTypeRepository, BatchTypeRepository>();
 
 builder.Services.AddScoped<AssessmentTypeService>();
 builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();

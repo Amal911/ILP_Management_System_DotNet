@@ -57,6 +57,11 @@ namespace ILPManagementSystem.Controllers
             }
 
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Deletephase(int id)
+        {
+            return Ok(_phaseRepository.DeletePhase(id));
+        }
 
     }
 }

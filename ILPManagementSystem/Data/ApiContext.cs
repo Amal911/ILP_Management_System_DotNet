@@ -17,6 +17,7 @@ namespace ILPManagementSystem.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<BatchType> BatchTypes { get; set; }
         public DbSet<Session> Sessions { get; set; }
+        public DbSet<Assessment> Assessments { get; set; }
 
         public DbSet<Phase> Phases { get; set; }
 
@@ -27,13 +28,12 @@ namespace ILPManagementSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
-/*
+
             modelBuilder.Entity<Batch>()
-                .HasOne(r => r.batchType)
-                .WithMany(b=>b.batchList)
-                .HasForeignKey(r => r.batchId);*/
+                .HasOne(r => r.Location)
+                .WithMany(b => b.Batches)
+                .HasForeignKey(r => r.LocationId);
 
         }
 
