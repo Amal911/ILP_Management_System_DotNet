@@ -18,6 +18,12 @@ namespace ILPManagementSystem.Data
         public DbSet<BatchType> BatchTypes { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
+        public DbSet<Phase> Phases { get; set; }
+
+        public DbSet<BatchPhase> BatchPhase {  get; set; }
+
+        public DbSet<AssessmentType> AssessmentTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
