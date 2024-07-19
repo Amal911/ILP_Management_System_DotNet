@@ -20,6 +20,7 @@ namespace ILPManagementSystem.Data
         public DbSet<Phase> Phases { get; set; }
 
         public DbSet<BatchPhase> BatchPhase {  get; set; }
+        public DbSet<CompletedAssessment> CompletedAssessment { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
