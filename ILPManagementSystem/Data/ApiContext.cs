@@ -25,13 +25,12 @@ namespace ILPManagementSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
-/*
+
             modelBuilder.Entity<Batch>()
-                .HasOne(r => r.batchType)
-                .WithMany(b=>b.batchList)
-                .HasForeignKey(r => r.batchId);*/
+                .HasOne(r => r.Location)
+                .WithMany(b => b.Batches)
+                .HasForeignKey(r => r.LocationId);
 
         }
 

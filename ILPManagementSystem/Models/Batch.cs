@@ -15,7 +15,12 @@ namespace ILPManagementSystem.Models
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
         public int ProgramId { get; set; }
+
+        [ForeignKey("Location")]
         public int LocationId { get; set; }
+        [NotMapped]
+        public Location Location { get; set; }
+
 
     }
 }

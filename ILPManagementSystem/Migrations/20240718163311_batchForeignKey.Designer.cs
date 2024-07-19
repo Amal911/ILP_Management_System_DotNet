@@ -3,6 +3,7 @@ using System;
 using ILPManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240718163311_batchForeignKey")]
+    partial class batchForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace ILPManagementSystem.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("LocationId")
+                    b.Property<int>("LocationId1")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProgramId")
@@ -100,7 +103,7 @@ namespace ILPManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("LocationId1");
 
                     b.ToTable("Batchs");
                 });
@@ -244,7 +247,7 @@ namespace ILPManagementSystem.Migrations
                 {
                     b.HasOne("ILPManagementSystem.Models.Location", "Location")
                         .WithMany("Batches")
-                        .HasForeignKey("LocationId")
+                        .HasForeignKey("LocationId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
