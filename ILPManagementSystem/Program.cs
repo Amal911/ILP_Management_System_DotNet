@@ -53,6 +53,8 @@ builder.Services.AddScoped<AssessmentTypeService>();
 builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
 
 builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<SessionRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 
 
 var app = builder.Build();
