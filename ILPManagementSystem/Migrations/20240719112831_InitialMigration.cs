@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class batchTypeTable : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -78,6 +78,24 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sessions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SessionName = table.Column<string>(type: "text", nullable: false),
+                    SessionDescription = table.Column<string>(type: "text", nullable: false),
+                    startTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    endTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    trainerId = table.Column<int>(type: "integer", nullable: false),
+                    topicid = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -106,6 +124,9 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Scorecards");
+
+            migrationBuilder.DropTable(
+                name: "Sessions");
 
             migrationBuilder.DropTable(
                 name: "Users");

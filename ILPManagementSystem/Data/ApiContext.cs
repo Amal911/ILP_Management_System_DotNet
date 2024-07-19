@@ -16,6 +16,7 @@ namespace ILPManagementSystem.Data
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<BatchType> BatchTypes { get; set; }
+        public DbSet<Session> Sessions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
