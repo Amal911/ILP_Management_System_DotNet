@@ -22,6 +22,8 @@ namespace ILPManagementSystem.Data
 
         public DbSet<BatchPhase> BatchPhase {  get; set; }
 
+        public DbSet<AssessmentType> AssessmentTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
