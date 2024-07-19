@@ -42,12 +42,19 @@ builder.Services.AddScoped<PhaseRepository>();
 builder.Services.AddScoped<IPhaseRepository, PhaseRepository>();
 builder.Services.AddScoped<BatchPhaseRepository>();
 builder.Services.AddScoped<IBatchPhaseRepository, BatchPhaseRepository>();
+builder.Services.AddScoped<AssessmentTypeRepository>();
+builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
 
 
 builder.Services.AddScoped<PhaseService>();
-
 builder.Services.AddValidatorsFromAssemblyContaining<PhaseDTOValidator>();
+
+
+builder.Services.AddScoped<AssessmentTypeService>();
+builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
+
 builder.Services.AddFluentValidationAutoValidation();
+
 
 var app = builder.Build();
 app.UseCors("AllowAll");
