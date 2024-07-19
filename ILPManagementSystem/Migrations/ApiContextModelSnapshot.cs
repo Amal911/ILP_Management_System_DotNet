@@ -195,6 +195,39 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("Scorecards");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.Session", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("SessionDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SessionName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("endTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("startTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("topicid")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("trainerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sessions");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
                 {
                     b.Property<int>("Id")
