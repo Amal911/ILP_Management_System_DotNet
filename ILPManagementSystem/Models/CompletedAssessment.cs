@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ILPManagementSystem.Models
+﻿namespace ILPManagementSystem.Models
 {
     public class CompletedAssessment
     {
-        [Key]
         public int Id { get; set; }
         public int AssessmentId { get; set; }
         public int TraineeId { get; set; }
