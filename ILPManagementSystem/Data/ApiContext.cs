@@ -16,6 +16,8 @@ namespace ILPManagementSystem.Data
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<BatchType> BatchTypes { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
+        public DbSet<LeaveApproval> LeaveApprovals { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
