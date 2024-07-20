@@ -1,8 +1,14 @@
 using ILPManagementSystem;
 using ILPManagementSystem.Data;
+using ILPManagementSystem.Models.Validators;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using ILPManagementSystem.Services;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +35,26 @@ builder.Services.AddScoped<BatchRepository>();
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<LocationRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<PhaseRepository>();
+builder.Services.AddScoped<IPhaseRepository, PhaseRepository>();
+builder.Services.AddScoped<BatchPhaseRepository>();
+builder.Services.AddScoped<IBatchPhaseRepository, BatchPhaseRepository>();
+builder.Services.AddScoped<AssessmentTypeRepository>();
+builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
+
+
+builder.Services.AddScoped<PhaseService>();
+builder.Services.AddScoped<AssessmentRepository>();
+builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+builder.Services.AddScoped<BatchTypeRepository>();
+builder.Services.AddScoped<IBatchTypeRepository, BatchTypeRepository>();
+
+builder.Services.AddScoped<AssessmentTypeService>();
+builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<SessionRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
 builder.Services.AddScoped<ILeaveApprovalRepository, LeaveApprovalRepository>();
 
