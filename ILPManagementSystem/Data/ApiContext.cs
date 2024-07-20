@@ -16,22 +16,25 @@ namespace ILPManagementSystem.Data
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<BatchType> BatchTypes { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Assessment> Assessments { get; set; }
 
         public DbSet<Phase> Phases { get; set; }
 
         public DbSet<BatchPhase> BatchPhase {  get; set; }
         public DbSet<CompletedAssessmentDTO> CompletedAssessment { get; set; }
 
+        public DbSet<AssessmentType> AssessmentTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
-/*
+
             modelBuilder.Entity<Batch>()
-                .HasOne(r => r.batchType)
-                .WithMany(b=>b.batchList)
-                .HasForeignKey(r => r.batchId);*/
+                .HasOne(r => r.Location)
+                .WithMany(b => b.Batches)
+                .HasForeignKey(r => r.LocationId);
 
         }
 

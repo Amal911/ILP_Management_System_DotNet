@@ -19,7 +19,7 @@ namespace ILPManagementSystem.Repository
         }
         public async Task<IEnumerable<Batch>> GetBatchData()
         {
-            return _context.Batchs;
+            return _context.Batchs.Include(e=>e.Location);
 
         }
         public async Task<IEnumerable<BatchDTO>> GetDetailedBatchData()

@@ -4,6 +4,7 @@ using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
@@ -62,5 +63,7 @@ namespace ILPManagementSystem.Controllers
             await _batchRepository.AddNewBatch(newBatch);
             return Ok();
         }
+
+
     }
 }
