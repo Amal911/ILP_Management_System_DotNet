@@ -211,14 +211,17 @@ namespace ILPManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("batchId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("endTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("programId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("startTime")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("topicid")
-                        .HasColumnType("integer");
 
                     b.Property<int>("trainerId")
                         .HasColumnType("integer");

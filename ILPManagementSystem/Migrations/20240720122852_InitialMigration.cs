@@ -13,6 +13,37 @@ namespace ILPManagementSystem.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AssessmentTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AssessmentTypeName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssessmentTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BatchPhase",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BatchId = table.Column<int>(type: "integer", nullable: false),
+                    PhaseId = table.Column<int>(type: "integer", nullable: false),
+                    NumberOfDays = table.Column<int>(type: "integer", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BatchPhase", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Batchs",
                 columns: table => new
                 {
@@ -60,6 +91,19 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Phases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PhaseName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Phases", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Scorecards",
                 columns: table => new
                 {
@@ -88,7 +132,8 @@ namespace ILPManagementSystem.Migrations
                     startTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     endTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     trainerId = table.Column<int>(type: "integer", nullable: false),
-                    topicid = table.Column<int>(type: "integer", nullable: false)
+                    batchId = table.Column<int>(type: "integer", nullable: false),
+                    programId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,6 +159,12 @@ namespace ILPManagementSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AssessmentTypes");
+
+            migrationBuilder.DropTable(
+                name: "BatchPhase");
+
+            migrationBuilder.DropTable(
                 name: "Batchs");
 
             migrationBuilder.DropTable(
@@ -121,6 +172,9 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "Phases");
 
             migrationBuilder.DropTable(
                 name: "Scorecards");
