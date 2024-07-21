@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Workcase@1;"));
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Santhi@2001;"));
 
 builder.Services.AddCors(options =>
 {
@@ -42,6 +42,8 @@ builder.Services.AddScoped<PhaseRepository>();
 builder.Services.AddScoped<IPhaseRepository, PhaseRepository>();
 builder.Services.AddScoped<BatchPhaseRepository>();
 builder.Services.AddScoped<IBatchPhaseRepository, BatchPhaseRepository>();
+builder.Services.AddScoped<SessionAttendanceRepository>();  
+builder.Services.AddScoped<ISessionAttendanceRepository, SessionAttendanceRepository>();
 
 
 builder.Services.AddScoped<PhaseService>();
