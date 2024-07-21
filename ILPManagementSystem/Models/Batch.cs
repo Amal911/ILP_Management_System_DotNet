@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ILPManagementSystem.Models
 {
@@ -9,7 +10,6 @@ namespace ILPManagementSystem.Models
         public int Id { get; set; }
         public string BatchName { get; set; }
         public string BatchCode { get; set; }
-        public int batchId { get; set; }
         public int BatchDuration  { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -20,6 +20,15 @@ namespace ILPManagementSystem.Models
         public int LocationId { get; set; }
         [NotMapped]
         public Location Location { get; set; }
+        [ForeignKey("BatchType")]
+        public int BatchTypeId { get; set; }
+        [NotMapped]
+        public BatchType BatchType { get; set; }
+
+        [NotMapped]
+        public List<BatchPhase> BatchPhases{ get; set; }
+
+
 
 
     }
