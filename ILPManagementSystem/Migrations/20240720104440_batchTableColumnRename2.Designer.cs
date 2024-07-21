@@ -3,6 +3,7 @@ using System;
 using ILPManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240720104440_batchTableColumnRename2")]
+    partial class batchTableColumnRename2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,10 +172,6 @@ namespace ILPManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BatchId");
-
-                    b.HasIndex("PhaseId");
-
                     b.ToTable("BatchPhase");
                 });
 
@@ -279,17 +278,13 @@ namespace ILPManagementSystem.Migrations
                     b.Property<int>("AssessmentTypeId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("BatchPhaseId")
+                    b.Property<int>("PhaseId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Weightage")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssessmentTypeId");
-
-                    b.HasIndex("BatchPhaseId");
 
                     b.ToTable("PhaseAssessmentTypeMappings");
                 });
@@ -399,59 +394,6 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.Batch", "Batch")
-                        .WithMany("BatchPhases")
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.Phase", "Phase")
-                        .WithMany("BatchPhases")
-                        .HasForeignKey("PhaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Batch");
-
-                    b.Navigation("Phase");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.PhaseAssessmentTypeMapping", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.AssessmentType", "AssessmentType")
-                        .WithMany("PhaseAssessmentTypeMappings")
-                        .HasForeignKey("AssessmentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.BatchPhase", "BatchPhase")
-                        .WithMany("PhaseAssessmentTypeMappings")
-                        .HasForeignKey("BatchPhaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssessmentType");
-
-                    b.Navigation("BatchPhase");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.AssessmentType", b =>
-                {
-                    b.Navigation("PhaseAssessmentTypeMappings");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
-                {
-                    b.Navigation("BatchPhases");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
-                {
-                    b.Navigation("PhaseAssessmentTypeMappings");
-                });
-
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>
                 {
                     b.Navigation("Batches");
@@ -460,11 +402,6 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.Location", b =>
                 {
                     b.Navigation("Batches");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Phase", b =>
-                {
-                    b.Navigation("BatchPhases");
                 });
 #pragma warning restore 612, 618
         }

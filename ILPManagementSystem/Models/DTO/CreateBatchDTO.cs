@@ -4,7 +4,7 @@
     {
         public string BatchName { get; set; }
         public string BatchCode { get; set; }
-        public int batchId { get; set; }
+        public int BatchTypeId { get; set; }
         public int BatchDuration { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
