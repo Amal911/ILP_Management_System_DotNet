@@ -30,6 +30,7 @@ namespace ILPManagementSystem.Controllers
 
             var response = new APIResponse
             {
+                IsSuccess = true,
                 Result = mappedSessions,
                 StatusCode = HttpStatusCode.OK
             };
@@ -51,6 +52,7 @@ namespace ILPManagementSystem.Controllers
 
             var response = new APIResponse
             {
+                IsSuccess= true,
                 Result = mappedSession,
                 StatusCode = HttpStatusCode.OK
             };
@@ -58,7 +60,7 @@ namespace ILPManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<APIResponse>> CreateBatch([FromBody] CreateSessionDTO createSessionDTO)
+        public async Task<ActionResult<APIResponse>> CreateSession([FromBody] CreateSessionDTO createSessionDTO)
         {
             var newSession = _mapper.Map<Session>(createSessionDTO);
             await _sessionRepo.CreateAsync(newSession);
@@ -72,6 +74,28 @@ namespace ILPManagementSystem.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IResult> UpdateSessionbyId(int id, [FromBody] CreateSessionDTO sessionDTO)
+        {
+            var existingSession = await _sessionRepo.GetAsync(id);
+            if (existingSession == null)
+            {
+                return Results.NotFound(new APIResponse { StatusCode = HttpStatusCode.NotFound });
+            }
+            var sessionToUpdate = _mapper.Map(sessionDTO, existingSession);
+            sessionToUpdate.Id = id;
+            await _sessionRepo.UpdateAsync(sessionToUpdate);
+            await _sessionRepo.SaveAsync();
+
+            APIResponse response = new APIResponse
+            {
+                IsSuccess = true,
+                Result = sessionToUpdate,
+                StatusCode = HttpStatusCode.OK
+            };
+            return Results.Ok(response);
         }
     }
 }

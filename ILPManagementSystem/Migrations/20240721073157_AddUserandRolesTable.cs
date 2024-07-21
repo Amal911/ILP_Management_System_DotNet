@@ -4,51 +4,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class BatchTableColumnRename : Migration
+    public partial class AddUserandRolesTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240720101007_BatchTableColumnRename.cs
                 name: "Assessments",
-========
-                name: "AssessmentTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AssessmentTypeName = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AssessmentTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BatchPhase",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BatchId = table.Column<int>(type: "integer", nullable: false),
-                    PhaseId = table.Column<int>(type: "integer", nullable: false),
-                    NumberOfDays = table.Column<int>(type: "integer", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BatchPhase", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Batchs",
->>>>>>>> b95a47e73991820340f2994119fcb6ac4d19f347:ILPManagementSystem/Migrations/20240720122852_InitialMigration.cs
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -99,6 +66,27 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Batchs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BatchName = table.Column<string>(type: "text", nullable: false),
+                    BatchCode = table.Column<string>(type: "text", nullable: false),
+                    batchId = table.Column<int>(type: "integer", nullable: false),
+                    BatchDuration = table.Column<int>(type: "integer", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    ProgramId = table.Column<int>(type: "integer", nullable: false),
+                    LocationId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Batchs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BatchTypes",
                 columns: table => new
                 {
@@ -109,6 +97,41 @@ namespace ILPManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BatchTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaveApprovals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LeavesId = table.Column<int>(type: "integer", nullable: false),
+                    userId = table.Column<int>(type: "integer", nullable: false),
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaveApprovals", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Leaves",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TraineeId = table.Column<int>(type: "integer", nullable: false),
+                    NumofDays = table.Column<int>(type: "integer", nullable: false),
+                    LeaveDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateFrom = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Reason = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Leaves", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,24 +148,6 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240720101007_BatchTableColumnRename.cs
-                name: "PhaseAssessmentTypeMappings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PhaseId = table.Column<int>(type: "integer", nullable: false),
-                    AssessmentTypeId = table.Column<int>(type: "integer", nullable: false),
-                    Weightage = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhaseAssessmentTypeMappings", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-========
->>>>>>>> b95a47e73991820340f2994119fcb6ac4d19f347:ILPManagementSystem/Migrations/20240720122852_InitialMigration.cs
                 name: "Phases",
                 columns: table => new
                 {
@@ -153,6 +158,19 @@ namespace ILPManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Phases", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -184,8 +202,7 @@ namespace ILPManagementSystem.Migrations
                     startTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     endTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     trainerId = table.Column<int>(type: "integer", nullable: false),
-                    batchId = table.Column<int>(type: "integer", nullable: false),
-                    programId = table.Column<int>(type: "integer", nullable: false)
+                    topicid = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,68 +215,49 @@ namespace ILPManagementSystem.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false)
+                    EmailId = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    MobileNumber = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Gender = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Batchs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BatchName = table.Column<string>(type: "text", nullable: false),
-                    BatchCode = table.Column<string>(type: "text", nullable: false),
-                    BatchDuration = table.Column<int>(type: "integer", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    ProgramId = table.Column<int>(type: "integer", nullable: false),
-                    LocationId = table.Column<int>(type: "integer", nullable: false),
-                    batchTypeId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Batchs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Batchs_BatchTypes_batchTypeId",
-                        column: x => x.batchTypeId,
-                        principalTable: "BatchTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Batchs_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Batchs_batchTypeId",
-                table: "Batchs",
-                column: "batchTypeId");
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "RoleName" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Trainer" },
+                    { 3, "Trainee" }
+                });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Batchs_LocationId",
-                table: "Batchs",
-                column: "LocationId");
+                name: "IX_Users_RoleId",
+                table: "Users",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240720101007_BatchTableColumnRename.cs
                 name: "Assessments");
 
             migrationBuilder.DropTable(
-========
->>>>>>>> b95a47e73991820340f2994119fcb6ac4d19f347:ILPManagementSystem/Migrations/20240720122852_InitialMigration.cs
                 name: "AssessmentTypes");
 
             migrationBuilder.DropTable(
@@ -269,10 +267,16 @@ namespace ILPManagementSystem.Migrations
                 name: "Batchs");
 
             migrationBuilder.DropTable(
-                name: "PhaseAssessmentTypeMappings");
+                name: "BatchTypes");
 
             migrationBuilder.DropTable(
-                name: "Phases");
+                name: "LeaveApprovals");
+
+            migrationBuilder.DropTable(
+                name: "Leaves");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "Phases");
@@ -287,10 +291,7 @@ namespace ILPManagementSystem.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "BatchTypes");
-
-            migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Roles");
         }
     }
 }

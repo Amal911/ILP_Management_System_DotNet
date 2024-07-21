@@ -8,7 +8,9 @@
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
         public int trainerId { get; set; }
-        public int topicid { get; set; }
+        public int batchId { get; set; }
+        public int programId { get; set; }
+
 
     }
 }
