@@ -24,8 +24,10 @@ namespace ILPManagementSystem.Data
 
         public DbSet<Phase> Phases { get; set; }
         public DbSet<BatchPhase> BatchPhase {  get; set; }
+        public DbSet<CompletedAssessmentDTO> CompletedAssessment { get; set; }
 
         public DbSet<AssessmentType> AssessmentTypes { get; set; }
+        public DbSet<DocumentLinks> DocumentLinks { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,6 +49,12 @@ namespace ILPManagementSystem.Data
                             .HasOne(r => r.batchType)
                             .WithMany(b=>b.batchList)
                             .HasForeignKey(r => r.batchId);*/
+
+            //Storing Document type enum as string in the DB
+            modelBuilder.Entity<DocumentLinks>()
+                .Property(u => u.documentType)
+                .HasConversion<string>();
+
 
         }
 

@@ -3,6 +3,7 @@ using System;
 using ILPManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240721084903_AddingDocumentLinksTable")]
+    partial class AddingDocumentLinksTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,6 +120,8 @@ namespace ILPManagementSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.ToTable("Batchs");
                 });
 
@@ -166,67 +171,6 @@ namespace ILPManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BatchTypes");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LeaveDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("LeaveDateFrom")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("LeaveDateTo")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("NumofDays")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TraineeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Leaves");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.LeaveApproval", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("LeavesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LeaveApprovals");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
@@ -316,40 +260,6 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("Phases");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RoleName = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            RoleName = "Trainer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            RoleName = "Trainee"
-                        });
-                });
-
             modelBuilder.Entity("ILPManagementSystem.Models.Scorecard", b =>
                 {
                     b.Property<int>("Id")
@@ -423,56 +333,33 @@ namespace ILPManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EmailId")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MobileNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
+            modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
                 {
-                    b.HasOne("ILPManagementSystem.Models.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("ILPManagementSystem.Models.Location", "Location")
+                        .WithMany("Batches")
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.Role", b =>
+            modelBuilder.Entity("ILPManagementSystem.Models.Location", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("Batches");
                 });
 #pragma warning restore 612, 618
         }
