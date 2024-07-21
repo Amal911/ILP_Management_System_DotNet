@@ -30,6 +30,8 @@ namespace ILPManagementSystem.Data
         public DbSet<DocumentLinks> DocumentLinks { get; set; }
         public DbSet<PhaseAssessmentTypeMapping> PhaseAssessmentTypeMappings { get; set; }
 
+        public DbSet<SessionAttendance> SessionAttendances { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
