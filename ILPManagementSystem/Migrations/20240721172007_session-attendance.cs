@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddingDocumentLinksTable : Migration
+    public partial class sessionattendance : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +66,27 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Batchs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BatchName = table.Column<string>(type: "text", nullable: false),
+                    BatchCode = table.Column<string>(type: "text", nullable: false),
+                    batchId = table.Column<int>(type: "integer", nullable: false),
+                    BatchDuration = table.Column<int>(type: "integer", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    ProgramId = table.Column<int>(type: "integer", nullable: false),
+                    LocationId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Batchs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BatchTypes",
                 columns: table => new
                 {
@@ -109,6 +132,41 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LeaveApprovals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LeavesId = table.Column<int>(type: "integer", nullable: false),
+                    userId = table.Column<int>(type: "integer", nullable: false),
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaveApprovals", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Leaves",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TraineeId = table.Column<int>(type: "integer", nullable: false),
+                    NumofDays = table.Column<int>(type: "integer", nullable: false),
+                    LeaveDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateFrom = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Reason = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Leaves", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -135,6 +193,19 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Scorecards",
                 columns: table => new
                 {
@@ -153,6 +224,22 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SessionAttendances",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SessionId = table.Column<int>(type: "integer", nullable: false),
+                    TraineeId = table.Column<int>(type: "integer", nullable: false),
+                    Attendance = table.Column<bool>(type: "boolean", nullable: false),
+                    Remarks = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionAttendances", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sessions",
                 columns: table => new
                 {
@@ -163,7 +250,8 @@ namespace ILPManagementSystem.Migrations
                     startTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     endTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     trainerId = table.Column<int>(type: "integer", nullable: false),
-                    topicid = table.Column<int>(type: "integer", nullable: false)
+                    batchId = table.Column<int>(type: "integer", nullable: false),
+                    programId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,45 +264,40 @@ namespace ILPManagementSystem.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false)
+                    EmailId = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    MobileNumber = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Gender = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Batchs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BatchName = table.Column<string>(type: "text", nullable: false),
-                    BatchCode = table.Column<string>(type: "text", nullable: false),
-                    batchId = table.Column<int>(type: "integer", nullable: false),
-                    BatchDuration = table.Column<int>(type: "integer", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    ProgramId = table.Column<int>(type: "integer", nullable: false),
-                    LocationId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Batchs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Batchs_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "RoleName" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Trainer" },
+                    { 3, "Trainee" }
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Batchs_LocationId",
-                table: "Batchs",
-                column: "LocationId");
+                name: "IX_Users_RoleId",
+                table: "Users",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
@@ -242,10 +325,22 @@ namespace ILPManagementSystem.Migrations
                 name: "DocumentLinks");
 
             migrationBuilder.DropTable(
+                name: "LeaveApprovals");
+
+            migrationBuilder.DropTable(
+                name: "Leaves");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
+
+            migrationBuilder.DropTable(
                 name: "Phases");
 
             migrationBuilder.DropTable(
                 name: "Scorecards");
+
+            migrationBuilder.DropTable(
+                name: "SessionAttendances");
 
             migrationBuilder.DropTable(
                 name: "Sessions");
@@ -254,7 +349,7 @@ namespace ILPManagementSystem.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Roles");
         }
     }
 }
