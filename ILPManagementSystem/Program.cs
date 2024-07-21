@@ -42,12 +42,26 @@ builder.Services.AddScoped<BatchPhaseRepository>();
 builder.Services.AddScoped<IBatchPhaseRepository, BatchPhaseRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<AssessmentTypeRepository>();
+builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
 
 
 builder.Services.AddScoped<PhaseService>();
+builder.Services.AddScoped<AssessmentRepository>();
+builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+builder.Services.AddScoped<BatchTypeRepository>();
+builder.Services.AddScoped<IBatchTypeRepository, BatchTypeRepository>();
 
-builder.Services.AddValidatorsFromAssemblyContaining<PhaseDTOValidator>();
+builder.Services.AddScoped<AssessmentTypeService>();
+builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
+
 builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<SessionRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
+builder.Services.AddScoped<ILeaveApprovalRepository, LeaveApprovalRepository>();
+
+
 
 var app = builder.Build();
 app.UseCors("AllowAll");

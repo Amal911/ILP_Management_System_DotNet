@@ -17,12 +17,20 @@ namespace ILPManagementSystem.Data
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<BatchType> BatchTypes { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
+        public DbSet<LeaveApproval> LeaveApprovals { get; set; }
+
         public DbSet<Phase> Phases { get; set; }
         public DbSet<BatchPhase> BatchPhase {  get; set; }
 
+        public DbSet<AssessmentType> AssessmentTypes { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+
 
             modelBuilder.Entity<Role>().HasData(
              new Role { Id = 1, RoleName = "Admin" },
