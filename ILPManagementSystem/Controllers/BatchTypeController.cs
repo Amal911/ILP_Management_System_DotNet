@@ -1,31 +1,42 @@
-﻿using ILPManagementSystem.Data;
+﻿using AutoMapper;
+using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
+using ILPManagementSystem.Models.DTO;
+using ILPManagementSystem.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class BatchTypeController:ControllerBase
+    public class BatchTypeController : ControllerBase
     {
-        private ApiContext _context;
-        public BatchTypeController(ApiContext _context)
+        private BatchTypeRepository _batchTypeRepository;
+        private IMapper _mapper;
+
+        public BatchTypeController(BatchTypeRepository _batchTypeRepository, IMapper _mapper)
         {
-            this._context = _context;
+            this._batchTypeRepository = _batchTypeRepository;
+            this._mapper = _mapper;
         }
 
         [HttpGet]
-        public IEnumerable<BatchType> Get()
+        public async Task<ActionResult<IEnumerable<BatchType>>> GetBatchTypes()
         {
-            return _context.BatchTypes;
+            return Ok(await _batchTypeRepository.GetBatchTypeData());
         }
 
         [HttpPost]
-        public IActionResult AddBatchType([FromBody] BatchType batchType)
+        public async Task<ActionResult> AddNewBatchType([FromBody] BatchTypeDTO newbatchtype)
         {
-            _context.BatchTypes.Add(batchType); 
-            _context.SaveChanges(); 
-            return Ok();
+            BatchType batchType = _mapper.Map<BatchType>(newbatchtype);
+            return Ok(_batchTypeRepository.AddBatchType(batchType));
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteBatchType(int id)
+        {
+            return Ok(_batchTypeRepository.DeleteBatchType(id));
         }
     }
 }

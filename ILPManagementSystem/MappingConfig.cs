@@ -12,7 +12,15 @@ namespace ILPManagementSystem
             CreateMap<Batch,CreateBatchDTO>().ReverseMap();
             CreateMap<Phase,PhaseDTO>().ReverseMap();
             CreateMap<BatchPhase,BatchPhaseDTO>().ReverseMap();
+            CreateMap<CompletedAssessment,CompletedAssessmentDTO>().ReverseMap();
+            CreateMap<AssessmentType,AssessmentTypeDTO>().ReverseMap();
+            CreateMap<DocumentLinks,DocumentLinksDTO>().ReverseMap();
 
+            CreateMap<Session,CreateSessionDTO>().ReverseMap();
+            CreateMap<Assessment,CreateAssessmentDTO>().ReverseMap();
+            CreateMap<BatchType,BatchTypeDTO>().ReverseMap();       
+            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<Role, RoleDTO>().ReverseMap();
         }
     }
 }

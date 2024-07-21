@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240715175306_batchTypeTable")]
-    partial class batchTypeTable
+    [Migration("20240720122852_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace ILPManagementSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ILPManagementSystem.Models.AssessmentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AssessmentTypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AssessmentTypes");
+                });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
                 {
@@ -67,6 +84,37 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("Batchs");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("NumberOfDays")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PhaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BatchPhase");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>
                 {
                     b.Property<int>("Id")
@@ -101,6 +149,23 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.Phase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PhaseName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Phases");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.Scorecard", b =>
                 {
                     b.Property<int>("Id")
@@ -131,6 +196,42 @@ namespace ILPManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Scorecards");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.Session", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("SessionDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SessionName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("batchId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("endTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("programId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("startTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("trainerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sessions");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
