@@ -22,23 +22,6 @@ namespace ILPManagementSystem.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ILPManagementSystem.Models.AssessmentType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AssessmentTypeName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AssessmentTypes");
-                });
-
             modelBuilder.Entity("ILPManagementSystem.Models.Assessment", b =>
                 {
                     b.Property<int>("Id")
@@ -76,6 +59,23 @@ namespace ILPManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Assessments");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.AssessmentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AssessmentTypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AssessmentTypes");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
@@ -170,7 +170,7 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("BatchTypes");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.CompletedAssessment", b =>
+            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,6 +197,30 @@ namespace ILPManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CompletedAssessment");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.DocumentLinks", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssessmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DocumentUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("documentType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentLinks");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Location", b =>

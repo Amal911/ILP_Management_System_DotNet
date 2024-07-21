@@ -26,10 +26,10 @@ namespace ILPManagementSystem.Controllers
         {
             return Ok(await _completedAssessmentRepository.GetCompletedAssessment());
         }
-        [HttpGet("{Id}")]
-        public async Task<ActionResult<CompletedAssessmentDTO>> GetCompletedAssessmentById(int Id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CompletedAssessmentDTO>> GetCompletedAssessmentById(int id)
         {
-            var completedAssessments = await _completedAssessmentRepository.GetCompletedAssessmentById(Id);
+            var completedAssessments = await _completedAssessmentRepository.GetCompletedAssessmentById(id);
             if(completedAssessments == null) 
             {
                 return BadRequest("Id Not Found");
