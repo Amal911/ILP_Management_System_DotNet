@@ -170,6 +170,67 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("BatchTypes");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LeaveDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("LeaveDateFrom")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("LeaveDateTo")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("NumofDays")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TraineeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Leaves");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.LeaveApproval", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LeavesId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeaveApprovals");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
                 {
                     b.Property<int>("Id")

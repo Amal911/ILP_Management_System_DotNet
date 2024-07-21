@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = experion@123;"));
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Experion23;"));
 
 builder.Services.AddCors(options =>
 {
@@ -55,6 +55,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<SessionRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
+builder.Services.AddScoped<ILeaveApprovalRepository, LeaveApprovalRepository>();
+
 
 
 var app = builder.Build();

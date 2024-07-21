@@ -18,6 +18,8 @@ namespace ILPManagementSystem.Data
         public DbSet<BatchType> BatchTypes { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
+        public DbSet<LeaveApproval> LeaveApprovals { get; set; }
 
         public DbSet<Phase> Phases { get; set; }
 
