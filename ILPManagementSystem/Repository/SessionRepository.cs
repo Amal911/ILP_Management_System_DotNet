@@ -40,9 +40,10 @@ namespace ILPManagementSystem.Repository
         }
 
 
-        public Task UpdateAsync(Session session)
+        public async Task UpdateAsync(Session session)
         {
-            throw new NotImplementedException();
+            _context.Update(session);
+            await _context.SaveChangesAsync();
         }
     }
 }
