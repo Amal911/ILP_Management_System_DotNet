@@ -4,11 +4,13 @@ using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices.ObjectiveC;
 
 namespace ILPManagementSystem.Controllers
 {
@@ -19,12 +21,14 @@ namespace ILPManagementSystem.Controllers
         private ApiContext _context;
         private IMapper _mapper;
         private BatchRepository _batchRepository;
+        private CreateBatchService _batchService;
 
-        public BatchController(ApiContext _context, IMapper mapper, BatchRepository _batchRepository)
+        public BatchController(ApiContext _context, IMapper mapper, BatchRepository _batchRepository, CreateBatchService _batchService)
         {
             this._batchRepository = _batchRepository;
             this._context = _context;
             this._mapper = mapper;
+            this._batchService = _batchService;
         }
 /*        [HttpGet]
           public IEnumerable<Batch> GetAllBatch2() { return _context.Batchs; }
@@ -37,7 +41,7 @@ namespace ILPManagementSystem.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Batch>>> GetAllBatch() {
-            return Ok(await _batchRepository.GetBatchData());
+            return Ok(await _batchRepository.GetBatches());
         }
 
         [HttpGet]
@@ -56,14 +60,20 @@ namespace ILPManagementSystem.Controllers
             return Ok(batch);
         }
 
-        [HttpPost]
+/*        [HttpPost]
         public async Task<ActionResult> CreateBatch(CreateBatchDTO batch)
         {
             Batch newBatch = _mapper.Map<Batch>(batch);
             await _batchRepository.AddNewBatch(newBatch);
             return Ok();
-        }
+        }*/
 
+        [HttpPost]
+        public async Task<ActionResult> CreateNewBatch(CreateNewBatchDTO batch)
+        {
+            await _batchService.CreateNewBatch(batch.BatchDetails, batch.PhaseDetails);
+            return Ok();
+        }
 
     }
 }

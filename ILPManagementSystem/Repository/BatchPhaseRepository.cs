@@ -2,6 +2,7 @@
 using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace ILPManagementSystem.Repository
 {
@@ -15,13 +16,13 @@ namespace ILPManagementSystem.Repository
         }
         public async Task<IEnumerable<BatchPhase>> GetAllBatchPhasesAsync()
         {
-            return this._context.BatchPhase;
+            return this._context.BatchPhase.Include(u=>u.Phase);
         }
-        public async Task AddNewBatchPhase(BatchPhase batchPhase)
+        public async Task<int> AddNewBatchPhase(BatchPhase batchPhase)
         {
             _context.BatchPhase.Add(batchPhase);
             await _context.SaveChangesAsync();
-
+            return batchPhase.Id;
         }
 
     }
