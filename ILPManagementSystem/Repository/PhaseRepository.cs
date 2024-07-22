@@ -25,6 +25,12 @@ namespace ILPManagementSystem.Repository
             _context.Phases.Remove(_context.Phases.Find(id));
             _context.SaveChanges();
         }
+        public async Task<Phase> UpdatePhase(Phase phase)
+        {
+            _context.Phases.Update(phase);
+            await this._context.SaveChangesAsync();
+            return phase;
+        }
 
     }
 }

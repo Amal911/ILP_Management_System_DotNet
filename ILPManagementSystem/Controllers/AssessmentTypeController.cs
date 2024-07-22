@@ -5,6 +5,7 @@ using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Repository.IRepository;
 using ILPManagementSystem.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ILPManagementSystem.Controllers
@@ -64,6 +65,19 @@ namespace ILPManagementSystem.Controllers
             catch (Exception ex) {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+        [HttpPut ("{id}")]
+        public async Task<ActionResult> UpdateAssessmentType(int id, AssessmentTypeDTO assessmentType)
+        {
+            if (assessmentType is null)
+            {
+                throw new ArgumentNullException(nameof(assessmentType));
+            }
+            AssessmentType updateAssessmentType = _mapper.Map<AssessmentType> (assessmentType);
+            updateAssessmentType.Id = id;
+            await _assessmentTypeRepository.UpdateAssessmentType(updateAssessmentType);
+            return Ok();
         }
     }
 }

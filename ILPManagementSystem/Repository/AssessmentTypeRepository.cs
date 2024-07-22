@@ -30,6 +30,13 @@ namespace ILPManagementSystem.Repository
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<AssessmentType> UpdateAssessmentType(AssessmentType assessmentType)
+        {
+            _context.AssessmentTypes.Update(assessmentType);
+            await _context.SaveChangesAsync();
+            return assessmentType;
+
+        }
 
     }
 }
