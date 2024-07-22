@@ -26,9 +26,9 @@ namespace ILPManagementSystem.EndPoints
 
                         // UPN From Jwt token (Unique Principle Name) = Mail id
                         var upn = claims.FirstOrDefault(c => c.Type == "upn")?.Value;
-                        var appName = claims.FirstOrDefault(c => c.Type == "app_displayname")?.Value;
+                        /*var appName = claims.FirstOrDefault(c => c.Type == "app_displayname")?.Value;*/
 
-                        if (upn != null && appName != null)
+                        if (upn != null)
                         {
                             // Fetch email id from employee database.
                             using (var scope = app.Services.CreateScope())
@@ -42,8 +42,8 @@ namespace ILPManagementSystem.EndPoints
                                     // Return the employee details such as email, name, role, department
                                     var roles = dbContext.Roles.FirstOrDefault(r => r.Id == user.RoleId);
 
-                                    Console.WriteLine($"Application Name :: {appName}");
-                                    results.Add("appName", appName);
+                                    /*Console.WriteLine($"Application Name :: {appName}");
+                                    results.Add("appName", appName);*/
                                     Console.WriteLine($"User Name :: {user.FirstName}");
                                     results.Add("User Id", user.Id);
                                     results.Add("User Name", user.FirstName);
