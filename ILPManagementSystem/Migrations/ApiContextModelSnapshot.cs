@@ -168,6 +168,59 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("BatchTypes");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssessmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Score")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("SubmissionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TraineeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CompletedAssessment");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.DocumentLinks", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssessmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DocumentUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("documentType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentLinks");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
                 {
                     b.Property<int>("Id")
@@ -227,59 +280,6 @@ namespace ILPManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LeaveApprovals");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Score")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("SubmissionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("TraineeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompletedAssessment");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.DocumentLinks", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("DocumentUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("documentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentLinks");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Location", b =>
@@ -457,6 +457,92 @@ namespace ILPManagementSystem.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EmailId = "amal_admin@sreegcloudgmail.onmicrosoft.com",
+                            FirstName = "Amal",
+                            Gender = 0,
+                            IsActive = true,
+                            LastName = "Admin",
+                            MobileNumber = "1234567890",
+                            Password = "Gowo690819",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EmailId = "devipriya_admin@sreegcloudgmail.onmicrosoft.com",
+                            FirstName = "Devipriya",
+                            Gender = 1,
+                            IsActive = true,
+                            LastName = "Admin",
+                            MobileNumber = "1234567891",
+                            Password = "Vajo021247",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EmailId = "suneesh.thampi@sreegcloudgmail.onmicrosoft.com",
+                            FirstName = "Suneesh",
+                            Gender = 0,
+                            IsActive = true,
+                            LastName = "Thampi",
+                            MobileNumber = "1234567892",
+                            Password = "Huna544047",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EmailId = "lekshmi.a@sreegcloudgmail.onmicrosoft.com",
+                            FirstName = "Lekshmi",
+                            Gender = 1,
+                            IsActive = true,
+                            LastName = "A",
+                            MobileNumber = "1234567893",
+                            Password = "Quwu856933",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            EmailId = "jisna.george@sreegcloudgmail.onmicrosoft.com",
+                            FirstName = "Jisna",
+                            Gender = 1,
+                            IsActive = true,
+                            LastName = "George",
+                            MobileNumber = "1234567894",
+                            Password = "Koso191442",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            EmailId = "thulasi.k@sreegcloudgmail.onmicrosoft.com",
+                            FirstName = "Thulasi",
+                            Gender = 1,
+                            IsActive = true,
+                            LastName = "K",
+                            MobileNumber = "1234567895",
+                            Password = "Toqo391712",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            EmailId = "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com",
+                            FirstName = "Dharsan",
+                            Gender = 0,
+                            IsActive = true,
+                            LastName = "Sajeev",
+                            MobileNumber = "1234567896",
+                            Password = "Zuja977409",
+                            RoleId = 3
+                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
