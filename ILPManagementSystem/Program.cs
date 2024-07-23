@@ -19,7 +19,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = admin@123;"));
+var ConnectionString = builder.Configuration.GetConnectionString("DefaultString");
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql(ConnectionString));
 
 builder.Services.AddCors(options =>
 {

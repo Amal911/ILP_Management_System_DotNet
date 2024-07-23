@@ -28,6 +28,7 @@ public class CreateBatchService:ICreateBatchService
     public async Task CreateNewBatch(CreateBatchDTO batchDetails, IEnumerable<CreateBatchPhaseDTO> batchPhaseDetails)
     {
         Batch newBatch = _mapper.Map<Batch>(batchDetails);
+        newBatch.IsActive = true;
 
         int batchId = await _batchRepository.AddNewBatch(newBatch);
 

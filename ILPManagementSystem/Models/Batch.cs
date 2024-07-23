@@ -28,6 +28,9 @@ namespace ILPManagementSystem.Models
         [NotMapped]
         public List<BatchPhase> BatchPhases{ get; set; }
 
+        [NotMapped]
+        public List<Trainee> TraineeList { get; set; }
+
 
 
 

@@ -2,14 +2,16 @@
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace ILPManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
         public UserController(IUserRepository userRepository)
         {
@@ -29,7 +31,6 @@ namespace ILPManagementSystem.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Gender = user.Gender,
-                IsActive = user.IsActive
             }).ToList();
 
             return Ok(userDtos);
@@ -53,7 +54,6 @@ namespace ILPManagementSystem.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Gender = user.Gender,
-                IsActive = user.IsActive
             };
             return Ok(userDTO);
         }
@@ -61,21 +61,11 @@ namespace ILPManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDTO>> CreateUser(UserDTO userDTO)
         {
-            var user = new User
-            {
-                EmailId = userDTO.EmailId,
-                Password = "defaultPassword",
-                RoleId = userDTO.RoleId,
-                MobileNumber = userDTO.MobileNumber,
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                Gender = userDTO.Gender,
-                IsActive = userDTO.IsActive
-            };
+            User user = _mapper.Map<User>(userDTO);
 
             await _userRepository.AddUserAsync(user);
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, userDTO);
+            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -98,7 +88,7 @@ namespace ILPManagementSystem.Controllers
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.Gender = userDTO.Gender;
-            user.IsActive = userDTO.IsActive;
+            
 
             await _userRepository.UpdateUserAsync(user);
 

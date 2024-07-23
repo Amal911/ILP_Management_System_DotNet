@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace ILPManagementSystem.Models
 {
@@ -14,6 +16,24 @@ namespace ILPManagementSystem.Models
         public Gender Gender { get; set; }
         public bool IsActive { get; set; }
         public Role Role { get; set; }
+
+        [ForeignKey("Trainee")]
+        [NotMapped]
+        [JsonIgnore]
+        public int TraineeId;
+        [NotMapped]
+        [JsonIgnore]
+
+        public Trainee Trainee { get; set; }
+
+        [ForeignKey("Trainer")]
+        [NotMapped]
+        [JsonIgnore]
+
+        public int TrainerId;
+        [NotMapped]
+        [JsonIgnore]
+        public Trainer Trainer { get; set; }
 
 
     }

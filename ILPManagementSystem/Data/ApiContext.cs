@@ -31,6 +31,8 @@ namespace ILPManagementSystem.Data
         public DbSet<PhaseAssessmentTypeMapping> PhaseAssessmentTypeMappings { get; set; }
 
         public DbSet<SessionAttendance> SessionAttendances { get; set; }
+        public DbSet<Trainee> Trainees { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -137,6 +139,14 @@ namespace ILPManagementSystem.Data
 
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.AssessmentType).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.AssessmentTypeId);
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u=>u.BatchPhase).WithMany(b=>b.PhaseAssessmentTypeMappings).HasForeignKey(u=>u.BatchPhaseId);
+           
+            modelBuilder.Entity<Trainee>().HasOne(u => u.User).WithOne(b => b.Trainee);
+            modelBuilder.Entity<Trainee>().HasOne(u => u.Batch).WithMany(b => b.TraineeList).HasForeignKey(u => u.BatchId);
+
+            modelBuilder.Entity<Trainer>().HasOne(u=>u.User).WithOne(b=>b.Trainer);
+
+            modelBuilder.Entity<Assessment>().HasOne(u => u.Trainer);
+            modelBuilder.Entity<Assessment>().HasOne(u => u.AssessmentType);
         }
 
     }
