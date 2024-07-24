@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240721073157_AddUserandRolesTable")]
+    [Migration("20240721113737_AddUserandRolesTable")]
     partial class AddUserandRolesTable
     {
         /// <inheritdoc />
@@ -169,6 +169,59 @@ namespace ILPManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BatchTypes");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssessmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Score")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("SubmissionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TraineeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CompletedAssessment");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.DocumentLinks", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssessmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DocumentUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("documentType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentLinks");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
@@ -348,14 +401,17 @@ namespace ILPManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("batchId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("endTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("programId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("startTime")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("topicid")
-                        .HasColumnType("integer");
 
                     b.Property<int>("trainerId")
                         .HasColumnType("integer");
