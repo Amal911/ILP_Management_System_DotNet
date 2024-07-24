@@ -25,14 +25,18 @@ namespace ILPManagementSystem.Controllers
                 /*Id = user.Id,*/
                 EmailId = user.EmailId,
                 RoleId = user.RoleId,
+                RoleName = user.Role.RoleName,
                 MobileNumber = user.MobileNumber,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Gender = user.Gender,
                 IsActive = user.IsActive
             }).ToList();
+         /*   var admins = userDtos.Where(u => u.RoleName == "Admin").ToList();
+            var trainers = userDtos.Where(u => u.RoleName == "Trainer").ToList();*/
+         return Ok(userDtos);
 
-            return Ok(userDtos);
+            /*return Ok(new { userDtos, admins, trainers });*/
         }
 
         [HttpGet("{id}")]

@@ -13,6 +13,7 @@ namespace ILPManagementSystem.Data
         }
         public DbSet<User>  Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Trainee> Trainees { get; set; }
         public DbSet<Scorecard> Scorecards { get; set; }
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Location> Locations { get; set; }
