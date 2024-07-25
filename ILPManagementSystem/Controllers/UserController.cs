@@ -32,11 +32,11 @@ namespace ILPManagementSystem.Controllers
                 Gender = user.Gender,
                 IsActive = user.IsActive
             }).ToList();
-         /*   var admins = userDtos.Where(u => u.RoleName == "Admin").ToList();
-            var trainers = userDtos.Where(u => u.RoleName == "Trainer").ToList();*/
-         return Ok(userDtos);
+            var admins = userDtos.Where(u => u.RoleName == "Admin").ToList();
+            var trainers = userDtos.Where(u => u.RoleName == "Trainer").ToList();
+            /*return Ok(userDtos);*/
 
-            /*return Ok(new { userDtos, admins, trainers });*/
+            return Ok(new { userDtos, admins, trainers });
         }
 
         [HttpGet("{id}")]

@@ -16,7 +16,8 @@ namespace ILPManagementSystem.Repository
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(u => u.Role).ToListAsync();
+            /*return await _context.Users.ToListAsync();*/
         }
 
         public async Task<User> GetUserByIdAsync(int id)
