@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using ILPManagementSystem.Services;
+using ILPManagementSystem.Services.ValidationServices;
 
 
 
@@ -47,7 +48,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<AssessmentTypeRepository>();
 builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
-
+builder.Services.AddScoped<AttendanceRepository>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<AttendanceService>();
 
 builder.Services.AddScoped<PhaseService>();
 builder.Services.AddScoped<AssessmentRepository>();

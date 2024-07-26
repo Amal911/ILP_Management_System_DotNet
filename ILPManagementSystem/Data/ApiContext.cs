@@ -32,6 +32,8 @@ namespace ILPManagementSystem.Data
 
         public DbSet<SessionAttendance> SessionAttendances { get; set; }
 
+        public DbSet<Attendance>Attendances { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

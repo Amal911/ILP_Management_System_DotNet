@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
-using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
-using ILPManagementSystem.Repository.IRepository;
-using ILPManagementSystem.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
+using ILPManagementSystem.Services.ValidationServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("/api/[controller]/")]
+
     public class AssessmentTypeController : ControllerBase
     {
         private readonly AssessmentTypeService _assessmentTypeService;
@@ -44,7 +42,7 @@ namespace ILPManagementSystem.Controllers
         {
             try
             {
-                _assessmentTypeService.AddNewAssessmentType(newAssessmentType);
+                _assessmentTypeService.ValidationAddNewAssessmentType(newAssessmentType);
                 var assessmentType = _mapper.Map<AssessmentType>(newAssessmentType);
                 await _assessmentTypeRepository.AddNewAssessmentType(assessmentType);
                 return CreatedAtAction(nameof(GetAllAssessmentTypes), new { }, assessmentType);

@@ -22,6 +22,12 @@ namespace ILPManagementSystem
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<Role, RoleDTO>().ReverseMap();
             CreateMap<SessionAttendance,SessionAttendanceDTO>().ReverseMap();
+
+            CreateMap<Attendance,AttendanceDTO>().ReverseMap();
+            CreateMap<Attendance, AttendanceSecondaryDTO>().ReverseMap();
+            CreateMap<Attendance, PostAttendanceDTO>().ReverseMap();
+
+
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using FluentValidation;
 
 using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
-using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 
 
