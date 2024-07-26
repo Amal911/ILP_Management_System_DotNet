@@ -14,6 +14,7 @@ namespace ILPManagementSystem.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
+        [ForeignKey("Program")]
         public int ProgramId { get; set; }
 
         [ForeignKey("Location")]
@@ -31,7 +32,10 @@ namespace ILPManagementSystem.Models
         [NotMapped]
         public List<Trainee> TraineeList { get; set; }
 
-
+        [NotMapped]
+        [JsonIgnore]
+        
+        public BatchProgram Program { get; set; }
 
 
     }

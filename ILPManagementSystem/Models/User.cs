@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -8,7 +9,8 @@ namespace ILPManagementSystem.Models
     {
         public int Id { get; set; }
         public string EmailId { get; set; }
-        public string Password { get; set; }
+        [AllowNull]
+        public string? Password { get; set; }
         public int RoleId { get; set; }
         public string MobileNumber { get; set; }
         public string FirstName { get; set; }

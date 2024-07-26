@@ -33,7 +33,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
-
 builder.Services.AddScoped<BatchRepository>();
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<LocationRepository>();
@@ -44,31 +43,28 @@ builder.Services.AddScoped<BatchPhaseRepository>();
 builder.Services.AddScoped<IBatchPhaseRepository, BatchPhaseRepository>();
 builder.Services.AddScoped<SessionAttendanceRepository>();  
 builder.Services.AddScoped<ISessionAttendanceRepository, SessionAttendanceRepository>();
+builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<AssessmentTypeRepository>();
 builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
-
-
 builder.Services.AddScoped<PhaseService>();
 builder.Services.AddScoped<AssessmentRepository>();
 builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
 builder.Services.AddScoped<BatchTypeRepository>();
 builder.Services.AddScoped<IBatchTypeRepository, BatchTypeRepository>();
-
 builder.Services.AddScoped<AssessmentTypeService>();
 builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
-
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<SessionRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
 builder.Services.AddScoped<ILeaveApprovalRepository, LeaveApprovalRepository>();
-
 builder.Services.AddScoped<PhaseAssessmentTypeMappingRepository>();
-
 builder.Services.AddScoped<CreateBatchService>();
 builder.Services.AddScoped<ICreateBatchService,CreateBatchService>();
+builder.Services.AddScoped<BatchProgramRepository>();
+builder.Services.AddScoped<IBatchProgramRepository, BatchProgramRepository>();
 
 
 var app = builder.Build();
