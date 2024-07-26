@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using ILPManagementSystem.Services;
+
+using ILPManagementSystem.Services.ValidationServices;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using ILPManagementSystem.EndPoints;
@@ -14,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols;
+
 
 
 
@@ -55,6 +59,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<AssessmentTypeRepository>();
 builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
+
+builder.Services.AddScoped<AttendanceRepository>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<AttendanceService>();
+
 builder.Services.AddScoped<PhaseService>();
 builder.Services.AddScoped<AssessmentRepository>();
 builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
