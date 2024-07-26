@@ -9,7 +9,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
+<<<<<<< HEAD:ILPManagementSystem/Migrations/20240721172007_session-attendance.cs
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240721111259_UpdatingNewTables.cs
+    public partial class UpdatingNewTables : Migration
+========
+    public partial class sessionattendance : Migration
+>>>>>>>> ceafce2bfb438e266d3e824be52f0c63ef37567b:ILPManagementSystem/Migrations/20240721172007_session-attendance.cs
+=======
     public partial class userTableUpdate : Migration
+>>>>>>> caedf9e6876c482ac7d20f2915e0da733404b71c:ILPManagementSystem/Migrations/20240724050803_userTableUpdate.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
