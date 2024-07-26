@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240721190550_createBatch")]
-    partial class createBatch
+    [Migration("20240724050803_userTableUpdate")]
+    partial class userTableUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,10 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssessmentTypeID");
+
+                    b.HasIndex("TrainerId");
 
                     b.ToTable("Assessments");
                 });
@@ -513,6 +517,75 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("Sessions");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.SessionAttendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Attendance")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SessionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TraineeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SessionAttendances");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.Trainee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Trainees");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.Trainer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("userId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("userId")
+                        .IsUnique();
+
+                    b.ToTable("Trainers");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -555,6 +628,25 @@ namespace ILPManagementSystem.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.Assessment", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.AssessmentType", "AssessmentType")
+                        .WithMany()
+                        .HasForeignKey("AssessmentTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ILPManagementSystem.Models.Trainer", "Trainer")
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssessmentType");
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
@@ -614,6 +706,36 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("BatchPhase");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.Trainee", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.Batch", "Batch")
+                        .WithMany("TraineeList")
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ILPManagementSystem.Models.User", "User")
+                        .WithOne("Trainee")
+                        .HasForeignKey("ILPManagementSystem.Models.Trainee", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.Trainer", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.User", "User")
+                        .WithOne("Trainer")
+                        .HasForeignKey("ILPManagementSystem.Models.Trainer", "userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.Role", "Role")
@@ -633,6 +755,8 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
                 {
                     b.Navigation("BatchPhases");
+
+                    b.Navigation("TraineeList");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
@@ -658,6 +782,15 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
+                {
+                    b.Navigation("Trainee")
+                        .IsRequired();
+
+                    b.Navigation("Trainer")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

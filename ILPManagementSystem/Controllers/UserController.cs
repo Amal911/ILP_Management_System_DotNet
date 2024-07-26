@@ -2,35 +2,41 @@
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using System.Diagnostics;
 
 namespace ILPManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository,IMapper mapper)
         {
             _userRepository = userRepository;
+            this._mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             var users = await _userRepository.GetAllUsersAsync();
-            var userDtos = users.Select(user => new UserDTO
+            
+            var userDtos = users.Select(user => new 
             {
-                /*Id = user.Id,*/
-                EmailId = user.EmailId,
+/*                Id = user.Id,
+*/              EmailId = user.EmailId,
                 RoleId = user.RoleId,
                 MobileNumber = user.MobileNumber,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Gender = user.Gender,
-                IsActive = user.IsActive
+                Gender = (Gender)user.Gender,
+                RoleName = user.Role.RoleName,
             }).ToList();
+
 
             return Ok(userDtos);
         }
@@ -44,38 +50,30 @@ namespace ILPManagementSystem.Controllers
                 return NotFound();
             }
 
-            var userDTO = new UserDTO
+            var userDTO = new 
             {
-               /* Id = user.Id,*/
+                /* Id = user.Id,*/
                 EmailId = user.EmailId,
                 RoleId = user.RoleId,
                 MobileNumber = user.MobileNumber,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Gender = user.Gender,
-                IsActive = user.IsActive
+                RoleName = user.Role.RoleName
             };
             return Ok(userDTO);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> CreateUser(UserDTO userDTO)
+        public async Task<ActionResult<UserDTO>> CreateUser([FromBody]UserDTO userDTO)
         {
-            var user = new User
-            {
-                EmailId = userDTO.EmailId,
-                Password = "defaultPassword",
-                RoleId = userDTO.RoleId,
-                MobileNumber = userDTO.MobileNumber,
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                Gender = userDTO.Gender,
-                IsActive = userDTO.IsActive
-            };
-
+            Console.WriteLine(userDTO);
+            User user = this._mapper.Map<User>(userDTO);
+            user.Gender= (Gender)userDTO.Gender;
+            user.IsActive = true;
             await _userRepository.AddUserAsync(user);
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, userDTO);
+            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -98,7 +96,7 @@ namespace ILPManagementSystem.Controllers
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.Gender = userDTO.Gender;
-            user.IsActive = userDTO.IsActive;
+            
 
             await _userRepository.UpdateUserAsync(user);
 

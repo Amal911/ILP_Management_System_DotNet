@@ -3,6 +3,7 @@ using System;
 using ILPManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240724052813_userTableUpdateProperty")]
+    partial class userTableUpdateProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,24 +24,6 @@ namespace ILPManagementSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Admin");
-                });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Assessment", b =>
                 {
@@ -160,8 +145,6 @@ namespace ILPManagementSystem.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("ProgramId");
-
                     b.ToTable("Batchs");
                 });
 
@@ -198,35 +181,6 @@ namespace ILPManagementSystem.Migrations
                     b.HasIndex("PhaseId");
 
                     b.ToTable("BatchPhase");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.BatchProgram", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ProgramName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Programs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProgramName = "2023-2024"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProgramName = "2024-2025"
-                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>
@@ -675,17 +629,6 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.Admin", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ILPManagementSystem.Models.Assessment", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.AssessmentType", "AssessmentType")
@@ -719,17 +662,9 @@ namespace ILPManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ILPManagementSystem.Models.BatchProgram", "Program")
-                        .WithMany("BatchList")
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("BatchType");
 
                     b.Navigation("Location");
-
-                    b.Navigation("Program");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
@@ -826,11 +761,6 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
                 {
                     b.Navigation("PhaseAssessmentTypeMappings");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.BatchProgram", b =>
-                {
-                    b.Navigation("BatchList");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>

@@ -21,7 +21,7 @@ public class BatchRepository:IBatchRepository
     }
     public async Task<IEnumerable<Batch>> GetBatchData()
     {
-        return _context.Batchs.Include(e => e.Location).Include(u => u.BatchType).Include(u => u.BatchPhases);
+        return _context.Batchs.Include(e => e.Location).Include(u => u.BatchType).Include(u => u.BatchPhases).Include(b=>b.Program);
 
     }
 
@@ -29,6 +29,7 @@ public class BatchRepository:IBatchRepository
     public async Task<IEnumerable<object>> GetBatches()
     {
         var batchData = await _context.Batchs
+            .Include(b=>b.Program)
             .Include(b => b.Location)
             .Include(b => b.BatchType)
             .Include(b => b.BatchPhases)
@@ -44,6 +45,7 @@ public class BatchRepository:IBatchRepository
                 endDate = b.EndDate,
                 isActive = b.IsActive,
                 programId = b.ProgramId,
+                proogram = b.Program.ProgramName,
                 locationId = b.LocationId,
                 location = new
                 {
@@ -195,5 +197,10 @@ public class BatchRepository:IBatchRepository
         _context.Batchs.Add( batch );
         _context.SaveChanges();
         return batch.Id;
+    }
+    public async Task<IEnumerable<Batch>> GetBatchByProgram(int programId)
+    {
+        List<Batch> batchList =await  _context.Batchs.Where(u=>u.ProgramId== programId).ToListAsync();
+        return batchList;
     }
 }

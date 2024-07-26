@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[controller]/")]
     public class AssessmentController:ControllerBase
     {
         private ApiContext _context;
