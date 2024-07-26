@@ -3,6 +3,7 @@ using System;
 using ILPManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240724094627_Attendances")]
+    partial class Attendances
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,24 +24,6 @@ namespace ILPManagementSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Admin");
-                });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Assessment", b =>
                 {
@@ -75,10 +60,6 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssessmentTypeID");
-
-                    b.HasIndex("TrainerId");
 
                     b.ToTable("Assessments");
                 });
@@ -192,8 +173,6 @@ namespace ILPManagementSystem.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("ProgramId");
-
                     b.ToTable("Batchs");
                 });
 
@@ -230,35 +209,6 @@ namespace ILPManagementSystem.Migrations
                     b.HasIndex("PhaseId");
 
                     b.ToTable("BatchPhase");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.BatchProgram", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ProgramName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Programs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProgramName = "2023-2024"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProgramName = "2024-2025"
-                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>
@@ -342,114 +292,6 @@ namespace ILPManagementSystem.Migrations
 
                     b.ToTable("DocumentLinks");
                 });
-
-
-            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Score")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("SubmissionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("TraineeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompletedAssessment");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.DocumentLinks", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("DocumentUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("documentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentLinks");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Score")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("SubmissionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("TraineeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompletedAssessment");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.DocumentLinks", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("DocumentUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("documentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentLinks");
-                });
-
 
             modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
                 {
@@ -729,49 +571,6 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("SessionAttendances");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.Trainee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BatchId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BatchId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Trainees");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Trainer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("userId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("userId")
-                        .IsUnique();
-
-                    b.ToTable("Trainers");
-                });
-
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -803,6 +602,7 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("RoleId")
@@ -813,122 +613,6 @@ namespace ILPManagementSystem.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EmailId = "amal_admin@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Amal",
-                            Gender = 0,
-                            IsActive = true,
-                            LastName = "Admin",
-                            MobileNumber = "1234567890",
-                            Password = "Gowo690819",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EmailId = "devipriya_admin@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Devipriya",
-                            Gender = 1,
-                            IsActive = true,
-                            LastName = "Admin",
-                            MobileNumber = "1234567891",
-                            Password = "Vajo021247",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EmailId = "suneesh.thampi@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Suneesh",
-                            Gender = 0,
-                            IsActive = true,
-                            LastName = "Thampi",
-                            MobileNumber = "1234567892",
-                            Password = "Huna544047",
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            EmailId = "lekshmi.a@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Lekshmi",
-                            Gender = 1,
-                            IsActive = true,
-                            LastName = "A",
-                            MobileNumber = "1234567893",
-                            Password = "Quwu856933",
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            EmailId = "jisna.george@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Jisna",
-                            Gender = 1,
-                            IsActive = true,
-                            LastName = "George",
-                            MobileNumber = "1234567894",
-                            Password = "Koso191442",
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            EmailId = "thulasi.k@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Thulasi",
-                            Gender = 1,
-                            IsActive = true,
-                            LastName = "K",
-                            MobileNumber = "1234567895",
-                            Password = "Toqo391712",
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            EmailId = "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Dharsan",
-                            Gender = 0,
-                            IsActive = true,
-                            LastName = "Sajeev",
-                            MobileNumber = "1234567896",
-                            Password = "Zuja977409",
-                            RoleId = 3
-                        });
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Admin", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Assessment", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.AssessmentType", "AssessmentType")
-                        .WithMany()
-                        .HasForeignKey("AssessmentTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssessmentType");
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
@@ -945,17 +629,9 @@ namespace ILPManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ILPManagementSystem.Models.BatchProgram", "Program")
-                        .WithMany("BatchList")
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("BatchType");
 
                     b.Navigation("Location");
-
-                    b.Navigation("Program");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
@@ -996,36 +672,6 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("BatchPhase");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.Trainee", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.Batch", "Batch")
-                        .WithMany("TraineeList")
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.User", "User")
-                        .WithOne("Trainee")
-                        .HasForeignKey("ILPManagementSystem.Models.Trainee", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Batch");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Trainer", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.User", "User")
-                        .WithOne("Trainer")
-                        .HasForeignKey("ILPManagementSystem.Models.Trainer", "userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.Role", "Role")
@@ -1045,18 +691,11 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
                 {
                     b.Navigation("BatchPhases");
-
-                    b.Navigation("TraineeList");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
                 {
                     b.Navigation("PhaseAssessmentTypeMappings");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.BatchProgram", b =>
-                {
-                    b.Navigation("BatchList");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>
@@ -1077,15 +716,6 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.Role", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
-                {
-                    b.Navigation("Trainee")
-                        .IsRequired();
-
-                    b.Navigation("Trainer")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("[controller]/")]
+
+    [Route("/api/[controller]/")]
+
     public class AssessmentController:ControllerBase
     {
         private ApiContext _context;
@@ -23,7 +25,7 @@ namespace ILPManagementSystem.Controllers
             
         }
 
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<ActionResult<IEnumerable<Assessment>>> GetAllAssessment()
         {
             return Ok(await _assessmentRepository.GetAssessments());

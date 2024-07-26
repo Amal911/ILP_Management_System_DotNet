@@ -12,8 +12,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
+<<<<<<< HEAD:ILPManagementSystem/Migrations/20240721172007_session-attendance.Designer.cs
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240721111259_UpdatingNewTables.Designer.cs
+    [Migration("20240721111259_UpdatingNewTables")]
+    partial class UpdatingNewTables
+========
+    [Migration("20240721172007_session-attendance")]
+    partial class sessionattendance
+>>>>>>>> ceafce2bfb438e266d3e824be52f0c63ef37567b:ILPManagementSystem/Migrations/20240721172007_session-attendance.Designer.cs
+=======
     [Migration("20240724050803_userTableUpdate")]
     partial class userTableUpdate
+>>>>>>> caedf9e6876c482ac7d20f2915e0da733404b71c:ILPManagementSystem/Migrations/20240724050803_userTableUpdate.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
