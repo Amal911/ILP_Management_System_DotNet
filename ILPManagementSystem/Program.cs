@@ -19,7 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Workcase@1;"));
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Hiroshima@1945;"));
 
 builder.Services.AddCors(options =>
 {
@@ -68,6 +68,17 @@ builder.Services.AddScoped<PhaseAssessmentTypeMappingRepository>();
 
 builder.Services.AddScoped<CreateBatchService>();
 builder.Services.AddScoped<ICreateBatchService,CreateBatchService>();
+
+builder.Services.AddScoped<BatchKnowlixRepository>();
+builder.Services.AddScoped<IBatchKnowlixRepository,BatchKnowlixRepository>();
+
+//to delete
+builder.Services.AddScoped<OnlineAssessmentRepository>();
+builder.Services.AddScoped<IOnlineAssessmentRepository, OnlineAssessmentRepository>();
+
+builder.Services.AddScoped<OnlineAssessmentScoreRepository>();
+builder.Services.AddScoped<IOnlineAssessmentScoreRepository, OnlineAssessmentScoreRepository>();
+//
 
 
 var app = builder.Build();

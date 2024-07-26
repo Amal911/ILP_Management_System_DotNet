@@ -258,59 +258,6 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("DocumentLinks");
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Score")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("SubmissionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("TraineeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompletedAssessment");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.DocumentLinks", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("DocumentUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("documentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentLinks");
-                });
-
             modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
                 {
                     b.Property<int>("Id")
@@ -399,6 +346,56 @@ namespace ILPManagementSystem.Migrations
                             Id = 2,
                             LocationName = "Kochi"
                         });
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.OnlineAssessment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("TestDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OnlineAssessments");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.OnlineAssessmentScore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("assessmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("score")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("totalScore")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("traineeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OnlineAssessmentScores");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Phase", b =>

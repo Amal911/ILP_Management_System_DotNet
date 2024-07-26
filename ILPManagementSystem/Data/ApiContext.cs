@@ -32,6 +32,13 @@ namespace ILPManagementSystem.Data
 
         public DbSet<SessionAttendance> SessionAttendances { get; set; }
 
+        //to be deleted
+        public DbSet<OnlineAssessment> OnlineAssessments { get; set; }
+        public DbSet<OnlineAssessmentScore> OnlineAssessmentScores { get; set; }
+
+        //
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
