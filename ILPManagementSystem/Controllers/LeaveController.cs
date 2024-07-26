@@ -12,10 +12,12 @@ namespace ILPManagementSystem.Controllers
     public class LeaveController : ControllerBase
     {
         private readonly ILeaveRepository _leaveRepository;
+        private readonly ILeaveApprovalRepository _leaveApprovalRepository;
 
-        public LeaveController(ILeaveRepository leavesRepository)
+        public LeaveController(ILeaveRepository leavesRepository , ILeaveApprovalRepository leaveApprovalRepository)
         {
             _leaveRepository = leavesRepository;
+            _leaveApprovalRepository = leaveApprovalRepository;
         }
 
         [HttpGet]
@@ -32,53 +34,6 @@ namespace ILPManagementSystem.Controllers
             if (leave == null) return NotFound();
             return Ok(leave);
         }
-
-        /*[HttpPost]
-        public async Task<ActionResult<Leave>> PostLeave(Leave leave)
-        {
-            var createdLeave = await _leaveRepository.AddLeaveAsync(leave);
-            return CreatedAtAction(nameof(GetLeave), new { id = createdLeave.Id }, createdLeave);
-        }*//*
-
-        [HttpPost]
-        *//*public async Task<IActionResult> PostLeaveRequest(LeaveDTO leaveDto)
-        {
-            var nameParts = leaveDto.Name.Split(' ');
-            if (nameParts.Length < 2)
-            {
-                return BadRequest(new { message = "Invalid name format" });
-            }
-
-            var firstName = nameParts[0];
-            var lastName = nameParts[1];
-
-            var user = await _leaveRepository.GetUserByNameAsync(firstName, lastName);
-            if (user == null)
-            {
-                return NotFound(new { message = "User not found" });
-            }
-
-            var trainee = await _leaveRepository.GetTraineeByUserIdAsync(user.Id);
-            if (trainee == null)
-            {
-                return NotFound(new { message = "Trainee not found" });
-            }
-
-            var leave = new Leave
-            {
-                TraineeId = trainee.Id,
-                NumofDays = leaveDto.NumofDays,
-                LeaveDate = leaveDto.LeaveDate.ToUniversalTime(), // Convert to UTC
-                LeaveDateFrom = leaveDto.LeaveDateFrom.ToUniversalTime(), // Convert to UTC
-                LeaveDateTo = leaveDto.LeaveDateTo.ToUniversalTime(),
-                Reason = leaveDto.Reason,
-                Description = leaveDto.Description
-            };
-
-            await _leaveRepository.AddLeaveAsync(leave);
-
-            return Ok(new { message = "Leave request created successfully" });
-        }*/
 
         [HttpPost]
         public async Task<IActionResult> PostLeaveRequest([FromBody] LeaveDTO leaveDto)
@@ -97,9 +52,6 @@ namespace ILPManagementSystem.Controllers
                 Reason = leaveDto.Reason,
                 Description = leaveDto.Description,
                 CreatedDate = DateTime.UtcNow,
-                /*LeaveDate = (DateTime)leaveDto.LeaveDate,
-                LeaveDateFrom= (DateTime)leaveDto.LeaveDateFrom,
-                LeaveDateTo= (DateTime)leaveDto.LeaveDateTo,*/
             };
 
             if (leaveDto.NumofDays == 1)
@@ -107,8 +59,7 @@ namespace ILPManagementSystem.Controllers
                 if (leaveDto.LeaveDate.HasValue)
                 {
                     leave.LeaveDate = (DateTime)leaveDto.LeaveDate;
-                    /*leaveDto.LeaveDateFrom = null;
-                    leaveDto.LeaveDateTo = null;*/
+
                 }
                 else
                 {
@@ -121,7 +72,6 @@ namespace ILPManagementSystem.Controllers
                 {
                     leave.LeaveDateFrom = (DateTime)leaveDto.LeaveDateFrom;
                     leave.LeaveDateTo = (DateTime)leaveDto.LeaveDateTo;
-                    /*leaveDto.LeaveDate = null;*/
                 }
                 else
                 {
@@ -157,6 +107,80 @@ namespace ILPManagementSystem.Controllers
             }
         }
 
+
+        [HttpGet("leaveRequests")]
+        public async Task<ActionResult<IEnumerable<Leave>>> GetLeaveRequests()
+        {
+            var leaves = await _leaveRepository.GetAllLeavesAsync();
+            var leaveRequests = new List<LeaveDTO>();
+
+            foreach (var leave in leaves)
+            {
+                var approvals = await _leaveApprovalRepository.GetApprovalsByLeaveIdAsync(leave.Id);
+                if (approvals.Any(a => a.IsApproved == null))
+                {
+                    leaveRequests.Add(new LeaveDTO
+                    {
+                        // Populate properties
+                        Id = leave.Id,
+                        TraineeId = leave.TraineeId,
+                        NumofDays = leave.NumofDays,
+                        LeaveDate = leave.LeaveDate,
+                        LeaveDateFrom = leave.LeaveDateFrom,
+                        LeaveDateTo = leave.LeaveDateTo,
+                        CreatedDate = leave.CreatedDate,
+                        Reason = leave.Reason,
+                        Description = leave.Description,
+                        Trainee = leave.Trainee,
+                        IsPending = true // Add a new property to track if the leave is pending
+                    });
+                }
+                else
+                {
+                    leaveRequests.Add(new LeaveDTO
+                    {
+                        // Populate properties
+                        Id = leave.Id,
+                        TraineeId = leave.TraineeId,
+                        NumofDays = leave.NumofDays,
+                        LeaveDate = leave.LeaveDate,
+                        LeaveDateFrom = leave.LeaveDateFrom,
+                        LeaveDateTo = leave.LeaveDateTo,
+                        CreatedDate = leave.CreatedDate,
+                        Reason = leave.Reason,
+                        Description = leave.Description,
+                        Trainee = leave.Trainee,
+                        IsPending = false // Add a new property to track if the leave is not pending
+                    });
+                }
+            }
+
+            return Ok(leaveRequests);
+        }
+
+        [HttpPut("updateApprovalStatus/{id}")]
+        public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApproval leaveApproval)
+        {
+            var leave = await _leaveRepository.GetLeaveByIdAsync(id);
+            if (leave == null)
+            {
+                return NotFound();
+            }
+
+            var existingApproval = await _leaveApprovalRepository.GetLeaveApprovalAsync(id, leaveApproval.userId);
+
+            if (existingApproval == null)
+            {
+                await _leaveApprovalRepository.AddApprovalAsync(leaveApproval);
+            }
+            else
+            {
+                existingApproval.IsApproved = leaveApproval.IsApproved;
+                await _leaveApprovalRepository.UpdateApprovalAsync(existingApproval);
+            }
+
+            return NoContent();
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLeave(int id, Leave leave)
