@@ -54,14 +54,37 @@ namespace ILPManagementSystem.Repository
             return batchList;
         }
 
-        public async Task<BatchProgram> GetBatchProgramsAsync(int Id)
+        public async Task<object> GetBatchProgramsAsync(int Id)
         {
-            return (await this._context.Programs.FindAsync(Id));
+            var batchList = await this._context.Programs
+                  .Include(u => u.BatchList).Where(u=>u.Id==Id)
+                  .Select(b =>
+                      new
+                      {
+                          Id = b.Id,
+                          ProgramName = b.ProgramName,
+                          BatchList = b.BatchList.Select(x =>
+                          new
+                          {
+                              BatchId = x.Id,
+                              BatchName = x.BatchName,
+                          }
+                          ).ToList()
+                      }).ToListAsync();
+            return batchList;
         }
 
         public async Task UpdateBatchProgramAsync(int Id ,BatchProgram batchProgram)
         {
             _context.Programs.Update(batchProgram);
+        }
+        public async Task<object> GetBatchCount(int Id)
+        {
+            var count = _context.Programs.Include(u => u.BatchList) .Where(u=>u.Id==Id).Select(u => new
+            {
+                BatchCount = u.BatchList.Count()
+            });
+            return count;
         }
     }
 }
