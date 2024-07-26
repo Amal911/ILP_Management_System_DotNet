@@ -31,6 +31,10 @@ namespace ILPManagementSystem.Data
         public DbSet<PhaseAssessmentTypeMapping> PhaseAssessmentTypeMappings { get; set; }
 
         public DbSet<SessionAttendance> SessionAttendances { get; set; }
+        public DbSet<Trainee> Trainees { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<Admin> Admin { get; set; }
+        public DbSet<BatchProgram> Programs { get; set; }   
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -115,10 +119,13 @@ namespace ILPManagementSystem.Data
              new Role { Id = 3, RoleName = "Trainee" }
           );
 
+
             modelBuilder.Entity<User>()
            .HasOne(u => u.Role)
            .WithMany(r => r.Users)
            .HasForeignKey(u => u.RoleId);
+
+            modelBuilder.Entity<User>().Property(u => u.Gender).HasConversion<int>();
             /*
                         modelBuilder.Entity<Batch>()
                             .HasOne(r => r.batchType)
@@ -224,6 +231,22 @@ namespace ILPManagementSystem.Data
 
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.AssessmentType).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.AssessmentTypeId);
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u=>u.BatchPhase).WithMany(b=>b.PhaseAssessmentTypeMappings).HasForeignKey(u=>u.BatchPhaseId);
+           
+            modelBuilder.Entity<Trainee>().HasOne(u => u.User).WithOne(b => b.Trainee);
+            modelBuilder.Entity<Trainee>().HasOne(u => u.Batch).WithMany(b => b.TraineeList).HasForeignKey(u => u.BatchId);
+
+            modelBuilder.Entity<Trainer>().HasOne(u=>u.User).WithOne(b=>b.Trainer);
+            modelBuilder.Entity<Admin>().HasOne(u => u.User);
+
+            modelBuilder.Entity<Assessment>().HasOne(u => u.Trainer);
+            modelBuilder.Entity<Assessment>().HasOne(u => u.AssessmentType);
+            modelBuilder.Entity<Batch>().HasOne(u => u.Program).WithMany(b => b.BatchList);
+
+            modelBuilder.Entity<BatchProgram>().HasData(
+                new BatchProgram { Id = 1, ProgramName = "2023-2024" },
+                new BatchProgram { Id = 2, ProgramName = "2024-2025" }
+                );
+           
         }
 
     }

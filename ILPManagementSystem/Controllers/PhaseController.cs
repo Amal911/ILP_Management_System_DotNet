@@ -63,5 +63,20 @@ namespace ILPManagementSystem.Controllers
             return Ok(_phaseRepository.DeletePhase(id));
         }
 
+        [HttpPut ("{id}")]
+
+        public async Task<ActionResult> UpdatePhase(int id,PhaseDTO phase)
+        {
+            if (phase == null) 
+            {
+                throw new ArgumentNullException(nameof(phase));
+
+            }
+            Phase updatePhase = _mapper.Map<Phase>(phase);
+            updatePhase.Id = id;
+            await _phaseRepository.UpdatePhase(updatePhase);
+            return Ok();
+        }
+
     }
 }

@@ -5,12 +5,7 @@ using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Any;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices.ObjectiveC;
 
 namespace ILPManagementSystem.Controllers
 {
@@ -71,9 +66,15 @@ namespace ILPManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateNewBatch(CreateNewBatchDTO batch)
         {
-            await _batchService.CreateNewBatch(batch.BatchDetails, batch.PhaseDetails);
+            await _batchService.CreateNewBatch(batch.BatchDetails, batch.PhaseDetails, batch.TraineeList);
             return Ok();
         }
 
+        [HttpGet("{programId}")]
+        public async Task<ActionResult<IEnumerable<Batch>>> GetBatchByProgram(int programId)
+        {
+            IEnumerable<Batch> batchList = await _batchRepository.GetBatchByProgram(programId);
+           return Ok(batchList);
+        }
     }
 }
