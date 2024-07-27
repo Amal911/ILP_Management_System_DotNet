@@ -34,7 +34,7 @@ namespace ILPManagementSystem.Data
         public DbSet<Trainee> Trainees { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Admin> Admin { get; set; }
-        public DbSet<BatchProgram> Programs { get; set; }   
+        public DbSet<BatchProgram> Programs { get; set; }
 
         public DbSet<Attendance>Attendances { get; set; }
 
@@ -45,7 +45,7 @@ namespace ILPManagementSystem.Data
                 new Location
                 {
                     Id = 1,
-                    LocationName="Trivandrum" 
+                    LocationName="Trivandrum"
                 },
                 new Location
                 {
@@ -75,17 +75,20 @@ namespace ILPManagementSystem.Data
                 new Phase
                 {
                     Id = 1,
-                    PhaseName = "E-Learning"
+                    PhaseName = "E-Learning",
+                    PhaseDuration= 20
                 },
                 new Phase
                 {
                     Id = 2,
-                    PhaseName = "Tech Fundamentals"
+                    PhaseName = "Tech Fundamentals",
+                    PhaseDuration= 40
                 },
                 new Phase
                 {
                     Id = 3,
-                    PhaseName = "Business Orientation"
+                    PhaseName = "Business Orientation",
+                    PhaseDuration= 30
                 },
             };
             modelBuilder.Entity<Phase>().HasData(PhaseList);
@@ -232,12 +235,12 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<BatchPhase>().HasMany(u => u.PhaseAssessmentTypeMappings).WithOne(b => b.BatchPhase);
 
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.AssessmentType).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.AssessmentTypeId);
-            modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u=>u.BatchPhase).WithMany(b=>b.PhaseAssessmentTypeMappings).HasForeignKey(u=>u.BatchPhaseId);
-           
+            modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.BatchPhase).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.BatchPhaseId);
+
             modelBuilder.Entity<Trainee>().HasOne(u => u.User).WithOne(b => b.Trainee);
             modelBuilder.Entity<Trainee>().HasOne(u => u.Batch).WithMany(b => b.TraineeList).HasForeignKey(u => u.BatchId);
 
-            modelBuilder.Entity<Trainer>().HasOne(u=>u.User).WithOne(b=>b.Trainer);
+            modelBuilder.Entity<Trainer>().HasOne(u => u.User).WithOne(b => b.Trainer);
             modelBuilder.Entity<Admin>().HasOne(u => u.User);
 
             modelBuilder.Entity<Assessment>().HasOne(u => u.Trainer);
@@ -248,8 +251,8 @@ namespace ILPManagementSystem.Data
                 new BatchProgram { Id = 1, ProgramName = "2023-2024" },
                 new BatchProgram { Id = 2, ProgramName = "2024-2025" }
                 );
-           
-        }
+            
+        }           
 
     }
 }
