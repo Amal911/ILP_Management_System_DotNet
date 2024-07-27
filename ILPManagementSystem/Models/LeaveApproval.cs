@@ -12,7 +12,7 @@ namespace ILPManagementSystem.Models
 
         [ForeignKey("User")]
         public int userId { get; set; }
-        public bool IsApproved { get; set; }
+        public bool? IsApproved { get; set; }
 
         public Leave Leaves { get; set; }
         public User User { get; set; }

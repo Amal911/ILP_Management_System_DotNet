@@ -48,6 +48,7 @@ namespace ILPManagementSystem.Controllers
             var leave = new Leave
             {
                 TraineeId = trainee.Id,
+                /*TraineeId = leaveDto.TraineeId,*/
                 NumofDays = leaveDto.NumofDays,
                 Reason = leaveDto.Reason,
                 Description = leaveDto.Description,
@@ -93,7 +94,7 @@ namespace ILPManagementSystem.Controllers
                     {
                         LeavesId = leave.Id,
                         userId = pocId,
-                        IsApproved = false
+                        IsApproved = null
                     };
 
                     await _leaveRepository.AddLeaveApprovalAsync(leaveApproval);
@@ -123,7 +124,7 @@ namespace ILPManagementSystem.Controllers
                     {
                         // Populate properties
                         Id = leave.Id,
-                        TraineeId = leave.TraineeId,
+                        /*TraineeId = Trainee.Id,*/
                         NumofDays = leave.NumofDays,
                         LeaveDate = leave.LeaveDate,
                         LeaveDateFrom = leave.LeaveDateFrom,
@@ -131,7 +132,7 @@ namespace ILPManagementSystem.Controllers
                         CreatedDate = leave.CreatedDate,
                         Reason = leave.Reason,
                         Description = leave.Description,
-                        Trainee = leave.Trainee,
+                        /*Trainee = leave.Trainee,*/
                         IsPending = true // Add a new property to track if the leave is pending
                     });
                 }
@@ -141,7 +142,7 @@ namespace ILPManagementSystem.Controllers
                     {
                         // Populate properties
                         Id = leave.Id,
-                        TraineeId = leave.TraineeId,
+                        /*TraineeId = leave.TraineeId,*/
                         NumofDays = leave.NumofDays,
                         LeaveDate = leave.LeaveDate,
                         LeaveDateFrom = leave.LeaveDateFrom,
@@ -149,7 +150,7 @@ namespace ILPManagementSystem.Controllers
                         CreatedDate = leave.CreatedDate,
                         Reason = leave.Reason,
                         Description = leave.Description,
-                        Trainee = leave.Trainee,
+                        /*Trainee = leave.Trainee,*/
                         IsPending = false // Add a new property to track if the leave is not pending
                     });
                 }

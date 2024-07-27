@@ -10,6 +10,7 @@ namespace ILPManagementSystem.Repository.IRepository
         Task<LeaveApproval> GetApprovalByIdAsync(int id);
         Task<LeaveApproval> AddApprovalAsync(LeaveApproval leaveApproval);
         Task<LeaveApproval> UpdateApprovalAsync(LeaveApproval leaveApproval);
+        /*Task UpdateApprovalStatusAsync(int leaveId, int userId, bool? isApproved);*/
         Task<bool> DeleteApprovalAsync(int id);
     }
 }
