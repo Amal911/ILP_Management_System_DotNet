@@ -66,7 +66,13 @@ public class CreateBatchService:ICreateBatchService
             newTrainee.IsActive = true;
             newTrainee.RoleId = 3;
 
-            await _userRepository.AddUserAsync(newTrainee);
+           var user =  await _userRepository.AddUserAsync(newTrainee);
+            _context.Trainees.Add(new Trainee
+            {
+                UserId = user.Id,
+                BatchId = batchId,
+            });
+            _context.SaveChanges();
         }
     }
 /*
