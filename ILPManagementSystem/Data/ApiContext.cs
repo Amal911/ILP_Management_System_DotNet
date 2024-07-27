@@ -137,7 +137,7 @@ namespace ILPManagementSystem.Data
                             .WithMany(b=>b.batchList)
                             .HasForeignKey(r => r.batchId);*/
 
-            //Storing Document type enum as string in the DB
+            //Storing Document type enum as string in the DB        
 
             modelBuilder.Entity<User>().HasData(
        new User
