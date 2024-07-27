@@ -20,18 +20,20 @@ using Microsoft.IdentityModel.Protocols;
 
 
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+DotNetEnv.Env.Load();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var ConnectionString = builder.Configuration.GetConnectionString("DefaultString");
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql(ConnectionString));
+/*var ConnectionString = builder.Configuration.GetConnectionString("DefaultString");
+*/
+var connectionString = Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION_STRING");
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddCors(options =>
 {
