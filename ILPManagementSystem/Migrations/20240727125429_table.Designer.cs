@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240726192250_programTable")]
-    partial class programTable
+    [Migration("20240727125429_table")]
+    partial class table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -444,6 +444,9 @@ namespace ILPManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("PhaseDuration")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PhaseName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -456,16 +459,19 @@ namespace ILPManagementSystem.Migrations
                         new
                         {
                             Id = 1,
+                            PhaseDuration = 20,
                             PhaseName = "E-Learning"
                         },
                         new
                         {
                             Id = 2,
+                            PhaseDuration = 40,
                             PhaseName = "Tech Fundamentals"
                         },
                         new
                         {
                             Id = 3,
+                            PhaseDuration = 30,
                             PhaseName = "Business Orientation"
                         });
                 });

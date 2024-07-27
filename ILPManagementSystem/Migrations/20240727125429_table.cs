@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddingFieldPhaseDurationInPhaseTable : Migration
+    public partial class table : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,24 @@ namespace ILPManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AssessmentTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Attendances",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SessionId = table.Column<int>(type: "integer", nullable: false),
+                    TraineeId = table.Column<int>(type: "integer", nullable: false),
+                    IsPresent = table.Column<bool>(type: "boolean", nullable: false),
+                    Remarks = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendances", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -126,7 +144,8 @@ namespace ILPManagementSystem.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PhaseName = table.Column<string>(type: "text", nullable: false)
+                    PhaseName = table.Column<string>(type: "text", nullable: false),
+                    PhaseDuration = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -460,12 +479,12 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.InsertData(
                 table: "Phases",
-                columns: new[] { "Id", "PhaseName" },
+                columns: new[] { "Id", "PhaseDuration", "PhaseName" },
                 values: new object[,]
                 {
-                    { 1, "E-Learning" },
-                    { 2, "Tech Fundamentals" },
-                    { 3, "Business Orientation" }
+                    { 1, 20, "E-Learning" },
+                    { 2, 40, "Tech Fundamentals" },
+                    { 3, 30, "Business Orientation" }
                 });
 
             migrationBuilder.InsertData(
@@ -485,6 +504,20 @@ namespace ILPManagementSystem.Migrations
                     { 1, "Admin" },
                     { 2, "Trainer" },
                     { 3, "Trainee" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "EmailId", "FirstName", "Gender", "IsActive", "LastName", "MobileNumber", "Password", "RoleId" },
+                values: new object[,]
+                {
+                    { 1, "amal_admin@sreegcloudgmail.onmicrosoft.com", "Amal", 1, true, "Admin", "1234567890", "Gowo690819", 1 },
+                    { 2, "devipriya_admin@sreegcloudgmail.onmicrosoft.com", "Devipriya", 2, true, "Admin", "1234567891", "Vajo021247", 1 },
+                    { 3, "suneesh.thampi@sreegcloudgmail.onmicrosoft.com", "Suneesh", 1, true, "Thampi", "1234567892", "Huna544047", 2 },
+                    { 4, "lekshmi.a@sreegcloudgmail.onmicrosoft.com", "Lekshmi", 2, true, "A", "1234567893", "Quwu856933", 2 },
+                    { 5, "jisna.george@sreegcloudgmail.onmicrosoft.com", "Jisna", 2, true, "George", "1234567894", "Koso191442", 3 },
+                    { 6, "thulasi.k@sreegcloudgmail.onmicrosoft.com", "Thulasi", 2, true, "K", "1234567895", "Toqo391712", 3 },
+                    { 7, "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com", "Dharsan", 1, true, "Sajeev", "1234567896", "Zuja977409", 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -568,6 +601,9 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Assessments");
+
+            migrationBuilder.DropTable(
+                name: "Attendances");
 
             migrationBuilder.DropTable(
                 name: "CompletedAssessment");
