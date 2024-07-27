@@ -9,15 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-<<<<<<< HEAD:ILPManagementSystem/Migrations/20240721172007_session-attendance.cs
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240721111259_UpdatingNewTables.cs
-    public partial class UpdatingNewTables : Migration
-========
-    public partial class sessionattendance : Migration
->>>>>>>> ceafce2bfb438e266d3e824be52f0c63ef37567b:ILPManagementSystem/Migrations/20240721172007_session-attendance.cs
-=======
-    public partial class userTableUpdate : Migration
->>>>>>> caedf9e6876c482ac7d20f2915e0da733404b71c:ILPManagementSystem/Migrations/20240724050803_userTableUpdate.cs
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -142,6 +134,19 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Programs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProgramName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Programs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -238,6 +243,12 @@ namespace ILPManagementSystem.Migrations
                         principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Batchs_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,7 +258,7 @@ namespace ILPManagementSystem.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EmailId = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: true),
                     RoleId = table.Column<int>(type: "integer", nullable: false),
                     MobileNumber = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
@@ -292,6 +303,25 @@ namespace ILPManagementSystem.Migrations
                         name: "FK_BatchPhase_Phases_PhaseId",
                         column: x => x.PhaseId,
                         principalTable: "Phases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Admin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admin", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Admin_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -439,6 +469,15 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Programs",
+                columns: new[] { "Id", "ProgramName" },
+                values: new object[,]
+                {
+                    { 1, "2023-2024" },
+                    { 2, "2024-2025" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "RoleName" },
                 values: new object[,]
@@ -447,6 +486,25 @@ namespace ILPManagementSystem.Migrations
                     { 2, "Trainer" },
                     { 3, "Trainee" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "EmailId", "FirstName", "Gender", "IsActive", "LastName", "MobileNumber", "Password", "RoleId" },
+                values: new object[,]
+                {
+                    { 1, "amal_admin@sreegcloudgmail.onmicrosoft.com", "Amal", 1, true, "Admin", "1234567890", "Gowo690819", 1 },
+                    { 2, "devipriya_admin@sreegcloudgmail.onmicrosoft.com", "Devipriya", 2, true, "Admin", "1234567891", "Vajo021247", 1 },
+                    { 3, "suneesh.thampi@sreegcloudgmail.onmicrosoft.com", "Suneesh", 1, true, "Thampi", "1234567892", "Huna544047", 2 },
+                    { 4, "lekshmi.a@sreegcloudgmail.onmicrosoft.com", "Lekshmi", 2, true, "A", "1234567893", "Quwu856933", 2 },
+                    { 5, "jisna.george@sreegcloudgmail.onmicrosoft.com", "Jisna", 2, true, "George", "1234567894", "Koso191442", 3 },
+                    { 6, "thulasi.k@sreegcloudgmail.onmicrosoft.com", "Thulasi", 2, true, "K", "1234567895", "Toqo391712", 3 },
+                    { 7, "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com", "Dharsan", 1, true, "Sajeev", "1234567896", "Zuja977409", 3 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Admin_UserId",
+                table: "Admin",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assessments_AssessmentTypeID",
@@ -477,6 +535,11 @@ namespace ILPManagementSystem.Migrations
                 name: "IX_Batchs_LocationId",
                 table: "Batchs",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Batchs_ProgramId",
+                table: "Batchs",
+                column: "ProgramId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhaseAssessmentTypeMappings_AssessmentTypeId",
@@ -514,6 +577,9 @@ namespace ILPManagementSystem.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Admin");
+
             migrationBuilder.DropTable(
                 name: "Assessments");
 
@@ -570,6 +636,9 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "Programs");
         }
     }
 }
