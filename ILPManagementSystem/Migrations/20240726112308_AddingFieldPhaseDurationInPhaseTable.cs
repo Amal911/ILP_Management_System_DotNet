@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class userTableUpdate : Migration
+    public partial class AddingFieldPhaseDurationInPhaseTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -134,6 +134,19 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Programs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProgramName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Programs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -230,6 +243,12 @@ namespace ILPManagementSystem.Migrations
                         principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Batchs_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,7 +258,7 @@ namespace ILPManagementSystem.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EmailId = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: true),
                     RoleId = table.Column<int>(type: "integer", nullable: false),
                     MobileNumber = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
@@ -284,6 +303,25 @@ namespace ILPManagementSystem.Migrations
                         name: "FK_BatchPhase_Phases_PhaseId",
                         column: x => x.PhaseId,
                         principalTable: "Phases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Admin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admin", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Admin_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -431,6 +469,15 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Programs",
+                columns: new[] { "Id", "ProgramName" },
+                values: new object[,]
+                {
+                    { 1, "2023-2024" },
+                    { 2, "2024-2025" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "RoleName" },
                 values: new object[,]
@@ -439,6 +486,11 @@ namespace ILPManagementSystem.Migrations
                     { 2, "Trainer" },
                     { 3, "Trainee" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Admin_UserId",
+                table: "Admin",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assessments_AssessmentTypeID",
@@ -469,6 +521,11 @@ namespace ILPManagementSystem.Migrations
                 name: "IX_Batchs_LocationId",
                 table: "Batchs",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Batchs_ProgramId",
+                table: "Batchs",
+                column: "ProgramId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhaseAssessmentTypeMappings_AssessmentTypeId",
@@ -506,6 +563,9 @@ namespace ILPManagementSystem.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Admin");
+
             migrationBuilder.DropTable(
                 name: "Assessments");
 
@@ -562,6 +622,9 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "Programs");
         }
     }
 }

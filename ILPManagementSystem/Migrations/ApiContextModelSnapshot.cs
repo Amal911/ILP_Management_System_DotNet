@@ -409,6 +409,9 @@ namespace ILPManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("PhaseDuration")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PhaseName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -421,16 +424,19 @@ namespace ILPManagementSystem.Migrations
                         new
                         {
                             Id = 1,
+                            PhaseDuration = 20,
                             PhaseName = "E-Learning"
                         },
                         new
                         {
                             Id = 2,
+                            PhaseDuration = 40,
                             PhaseName = "Tech Fundamentals"
                         },
                         new
                         {
                             Id = 3,
+                            PhaseDuration = 30,
                             PhaseName = "Business Orientation"
                         });
                 });

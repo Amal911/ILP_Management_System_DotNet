@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240726033352_programsTable")]
-    partial class programsTable
+    [Migration("20240726112308_AddingFieldPhaseDurationInPhaseTable")]
+    partial class AddingFieldPhaseDurationInPhaseTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
