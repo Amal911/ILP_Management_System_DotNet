@@ -19,7 +19,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Workcase@1;"));
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql("Host = localhost; Database = ILP; Username = postgres; Password = Haida@123" +
+    "" +
+    ";"));
 
 builder.Services.AddCors(options =>
 {
@@ -54,6 +56,8 @@ builder.Services.AddScoped<AssessmentRepository>();
 builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
 builder.Services.AddScoped<BatchTypeRepository>();
 builder.Services.AddScoped<IBatchTypeRepository, BatchTypeRepository>();
+builder.Services.AddScoped<CompletedAssessmentRepository>();
+builder.Services.AddScoped<ICompletedAssessmentRepository, CompletedAssessmentRepository>();
 
 builder.Services.AddScoped<AssessmentTypeService>();
 builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
@@ -68,6 +72,7 @@ builder.Services.AddScoped<PhaseAssessmentTypeMappingRepository>();
 
 builder.Services.AddScoped<CreateBatchService>();
 builder.Services.AddScoped<ICreateBatchService,CreateBatchService>();
+builder.Services.AddScoped<AssessmentService>();
 
 
 var app = builder.Build();
