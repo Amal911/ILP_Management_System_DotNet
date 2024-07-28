@@ -5,7 +5,8 @@ namespace ILPManagementSystem.Repository.IRepository
 {
     public interface ICompletedAssessmentRepository
     {
-        Task<IEnumerable<CompletedAssessmentDTO>> GetCompletedAssessment();
-        Task<CompletedAssessmentDTO> GetCompletedAssessmentById(int Id);
+        Task<CompletedAssessment> GetByIdAsync(int id);
+        Task<IEnumerable<CompletedAssessment>> GetAllAsync();
+        Task<CompletedAssessment> AddAsync(CompletedAssessment completedAssessment);
     }
 }
