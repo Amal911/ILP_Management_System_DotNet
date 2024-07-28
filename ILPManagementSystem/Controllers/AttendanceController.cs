@@ -10,7 +10,7 @@ namespace ILPManagementSystem.Controllers
 {
 
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/[Controller]/[Action]")]
     public class AttendanceController:ControllerBase
     {
         private readonly AttendanceRepository _repository;

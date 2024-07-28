@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/api/[controller]/[Action]")]
     public class PhaseController:ControllerBase
     {
         private readonly PhaseService _phaseService;
@@ -39,10 +39,6 @@ namespace ILPManagementSystem.Controllers
 
 
         }
-        
-
-
-
         [HttpPost]
 
         public async Task<ActionResult> AddNewPhase([FromBody] PhaseDTO newPhase)

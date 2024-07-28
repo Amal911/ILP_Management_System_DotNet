@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]/")]
+    [Route("/api/[controller]/[Action]")]
 
     public class AssessmentTypeController : ControllerBase
     {
