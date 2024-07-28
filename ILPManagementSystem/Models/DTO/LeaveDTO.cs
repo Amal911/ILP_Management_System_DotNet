@@ -17,6 +17,7 @@ namespace ILPManagementSystem.Models.DTO
 /*        public Trainee Trainee { get; set; }*/
         public List<int> PocIds { get; set; } // List of POC User IDs
         public bool IsPending { get; set; }
-        
+   /*     public string BatchName { get; set; }*/
+
     }
 }

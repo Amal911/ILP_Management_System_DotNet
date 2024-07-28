@@ -2,12 +2,16 @@
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
+    /*[Authorize(Policy = "AdminPolicy")]*/
+    /*  [Authorize(Policy = "TrainerPolicy")]
+        [Authorize(Policy = "TraineePolicy")]*/
     [Route("api/[controller]")]
     public class LeaveController : ControllerBase
     {
@@ -44,13 +48,20 @@ namespace ILPManagementSystem.Controllers
             foreach (var leave in leaves)
             {
                 var approvals = await _leaveApprovalRepository.GetApprovalsByLeaveIdAsync(leave.Id);
+                var pocIds = approvals.Select(a => a.userId).ToList(); // Get the list of POC IDs
+
+                // Fetch the trainee with batch information
+                var trainee = await _leaveRepository.GetTraineeWithBatchByIdAsync(leave.TraineeId);
+                var user = await _leaveRepository.GetUserByIdAsync(trainee.UserId);
+                
+                bool isPending = approvals.Any(a => a.IsApproved == null);
+
                 if (approvals.Any(a => a.IsApproved == null))
                 {
                     leaveRequests.Add(new LeaveDTO
                     {
-                        // Populate properties
                         Id = leave.Id,
-                        /*TraineeId = Trainee.Id,*/
+                        Name = $"{user.FirstName} {user.LastName}", // Get the full name
                         NumofDays = leave.NumofDays,
                         LeaveDate = leave.LeaveDate,
                         LeaveDateFrom = leave.LeaveDateFrom,
@@ -58,17 +69,18 @@ namespace ILPManagementSystem.Controllers
                         CreatedDate = leave.CreatedDate,
                         Reason = leave.Reason,
                         Description = leave.Description,
-                        /*Trainee = leave.Trainee,*/
-                        IsPending = true // Add a new property to track if the leave is pending
+                        PocIds = pocIds,
+                        IsPending = true, // Check if any approval is pending
+                        /*BatchName = trainee.Batch?.BatchName*/ // Include batch information
+
                     });
                 }
                 else
                 {
                     leaveRequests.Add(new LeaveDTO
                     {
-                        // Populate properties
                         Id = leave.Id,
-                        /*TraineeId = leave.TraineeId,*/
+                        Name = $"{user.FirstName} {user.LastName}", // Get the full name
                         NumofDays = leave.NumofDays,
                         LeaveDate = leave.LeaveDate,
                         LeaveDateFrom = leave.LeaveDateFrom,
@@ -76,8 +88,9 @@ namespace ILPManagementSystem.Controllers
                         CreatedDate = leave.CreatedDate,
                         Reason = leave.Reason,
                         Description = leave.Description,
-                        /*Trainee = leave.Trainee,*/
-                        IsPending = false // Add a new property to track if the leave is not pending
+                        PocIds = pocIds,
+                        IsPending = false, // Check if any approval is pending
+                        /*BatchName = trainee.Batch?.BatchName*/ // Include batch information
                     });
                 }
             }
@@ -88,7 +101,7 @@ namespace ILPManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> PostLeaveRequest([FromBody] LeaveDTO leaveDto)
         {
-            var trainee = await _leaveRepository.GetTraineeByFirstNameAsync(leaveDto.Name);
+            var trainee = await _leaveRepository.GetTraineeByFullNameAsync(leaveDto.Name);
 
             if (trainee == null)
             {
@@ -103,6 +116,7 @@ namespace ILPManagementSystem.Controllers
                 Reason = leaveDto.Reason,
                 Description = leaveDto.Description,
                 CreatedDate = DateTime.UtcNow,
+
             };
 
             if (leaveDto.NumofDays == 1)
@@ -158,24 +172,87 @@ namespace ILPManagementSystem.Controllers
             }
         }
 
+        /* [HttpPut("updateApprovalStatus/{id}")]
+         public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApproval leaveApproval)
+         {
+             var leave = await _leaveRepository.GetLeaveByIdAsync(id);
+             if (leave == null)
+             {
+                 return NotFound();
+             }
+
+             var existingApproval = await _leaveApprovalRepository.GetLeaveApprovalAsync(id, leaveApproval.userId);
+
+             if (existingApproval == null)
+             {
+                 await _leaveApprovalRepository.AddApprovalAsync(leaveApproval);
+             }
+             else
+             {
+                 existingApproval.IsApproved = leaveApproval.IsApproved;
+                 await _leaveApprovalRepository.UpdateApprovalAsync(existingApproval);
+             }
+
+             return NoContent();
+         }*/
+
+        /* [HttpPut("updateApprovalStatus/{id}")]
+         public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApproval leaveApproval)
+         {
+             if (!ModelState.IsValid)
+             {
+                 return BadRequest(ModelState);
+             }
+
+             var leave = await _leaveRepository.GetLeaveByIdAsync(id);
+             if (leave == null)
+             {
+                 return NotFound();
+             }
+
+             var existingApproval = await _leaveApprovalRepository.GetLeaveApprovalAsync(id, leaveApproval.userId);
+             if (existingApproval == null)
+             {
+                 leaveApproval.LeavesId = id; // Ensure the LeavesId is set correctly
+                 await _leaveApprovalRepository.AddApprovalAsync(leaveApproval);
+             }
+             else
+             {
+                 existingApproval.IsApproved = leaveApproval.IsApproved;
+                 await _leaveApprovalRepository.UpdateApprovalAsync(existingApproval);
+             }
+
+             return NoContent();
+         }*/
+
         [HttpPut("updateApprovalStatus/{id}")]
-        public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApproval leaveApproval)
+        public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApprovalUpdateDTO leaveApprovalUpdateDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var leave = await _leaveRepository.GetLeaveByIdAsync(id);
             if (leave == null)
             {
                 return NotFound();
             }
 
-            var existingApproval = await _leaveApprovalRepository.GetLeaveApprovalAsync(id, leaveApproval.userId);
-
+            var existingApproval = await _leaveApprovalRepository.GetLeaveApprovalAsync(id, leaveApprovalUpdateDto.UserId);
             if (existingApproval == null)
             {
-                await _leaveApprovalRepository.AddApprovalAsync(leaveApproval);
+                var newApproval = new LeaveApproval
+                {
+                    LeavesId = id,
+                    userId = leaveApprovalUpdateDto.UserId,
+                    IsApproved = leaveApprovalUpdateDto.IsApproved
+                };
+                await _leaveApprovalRepository.AddApprovalAsync(newApproval);
             }
             else
             {
-                existingApproval.IsApproved = leaveApproval.IsApproved;
+                existingApproval.IsApproved = leaveApprovalUpdateDto.IsApproved;
                 await _leaveApprovalRepository.UpdateApprovalAsync(existingApproval);
             }
 

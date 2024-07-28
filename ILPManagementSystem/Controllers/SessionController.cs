@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace ILPManagementSystem.Controllers
@@ -36,6 +34,36 @@ namespace ILPManagementSystem.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpGet("{batchId}")]
+        public async Task<IActionResult> GetTodaysSessions(int batchId)
+        {
+            var today = DateTime.Today;
+            try
+            {
+                var sessions = await _sessionRepo.GetAllAsync();
+                var todaysSessions = sessions.Where(u => u.startTime.Date == today && u.BatchId == batchId).ToList();
+                var mappedSessions = _mapper.Map<IEnumerable<Session>>(todaysSessions);
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    Result = mappedSessions,
+                    StatusCode = HttpStatusCode.OK
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new APIResponse
+                {
+                    IsSuccess = false,
+                    Result = null,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                });
+            }
+        
         }
 
         [HttpGet("{id:int}")]

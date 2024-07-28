@@ -16,9 +16,13 @@ public class LeaveRepository : ILeaveRepository
     }
 
 
-    public async Task<Trainee> GetTraineeByFirstNameAsync(string firstName)
+    public async Task<Trainee> GetTraineeByFullNameAsync(string fullName)
     {
-        return await _context.Trainees.Include(t => t.User).FirstOrDefaultAsync(t => t.User.FirstName == firstName);
+        /*return await _context.Trainees.Include(t => t.User).FirstOrDefaultAsync(t => t.User.FirstName == firstName);*/
+        return await _context.Trainees
+                         .Include(t => t.User)
+                         .FirstOrDefaultAsync(t => (t.User.FirstName + " " + t.User.LastName) == fullName);
+
     }
 
     public async Task<Leave> AddLeaveAsync(Leave leave)
@@ -37,12 +41,12 @@ public class LeaveRepository : ILeaveRepository
 
     public async Task<IEnumerable<Leave>> GetAllLeavesAsync()
     {
-        return await _context.Leaves
+        /*return await _context.Leaves
         .Include(l => l.Trainee)
         .Include(l => l.LeaveApprovals)
             .ThenInclude(la => la.User)
-        .ToListAsync();
-        /*return await _context.Leaves.ToListAsync();*/
+        .ToListAsync();*/
+        return await _context.Leaves.ToListAsync();
     }
 
     public async Task<Leave> GetLeaveByIdAsync(int id)
@@ -53,6 +57,11 @@ public class LeaveRepository : ILeaveRepository
             .ThenInclude(la => la.User)
         .FirstOrDefaultAsync(l => l.Id == id);
         /*return await _context.Leaves.FindAsync(id);*/
+    }
+
+    public async Task<Leave> GetLeaveForApprovalByIdAsync(int id)
+    {
+        return await _context.Leaves.FindAsync(id);
     }
 
     public async Task<Leave> UpdateLeaveAsync(Leave leave)
@@ -81,4 +90,19 @@ public class LeaveRepository : ILeaveRepository
     {
         return await _context.Trainees.FirstOrDefaultAsync(t => t.UserId == userId);
     }
+
+    public async Task<User> GetUserByIdAsync(int userId)
+    {
+        return await _context.Users.FindAsync(userId);
+    }
+
+    public async Task<Trainee> GetTraineeWithBatchByIdAsync(int traineeId)
+    {
+        return await _context.Trainees
+            .Include(t => t.Batch)
+            .FirstOrDefaultAsync(t => t.Id == traineeId);
+    }
+
+
+
 }

@@ -1,9 +1,7 @@
 ﻿using FluentValidation;
-using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
-using ILPManagementSystem.Models.Validators;
 
-namespace ILPManagementSystem.Services
+namespace ILPManagementSystem.Services.ValidationServices
 {
     public class AssessmentTypeService
     {
@@ -12,7 +10,8 @@ namespace ILPManagementSystem.Services
         {
             _assessmentTypeDTOValidator = assessmentTypeDTOValidator;
         }
-        public void AddNewAssessmentType(AssessmentTypeDTO assessmentTypeDTO) {
+        public void ValidationAddNewAssessmentType(AssessmentTypeDTO assessmentTypeDTO)
+        {
 
 
             FluentValidation.Results.ValidationResult result = _assessmentTypeDTOValidator.Validate(assessmentTypeDTO);
@@ -24,14 +23,6 @@ namespace ILPManagementSystem.Services
                 {
                     Console.WriteLine($"Property {failure.PropertyName} failed validation. Error was: {failure.ErrorMessage}");
                 }
-            }
-            else
-            {
-                var assessmentType = new AssessmentType
-                {
-                    AssessmentTypeName = assessmentTypeDTO.AssessmentTypeName
-                };
-
             }
 
         }

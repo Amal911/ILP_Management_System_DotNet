@@ -22,14 +22,31 @@ namespace ILPManagementSystem.Repository
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.Include(u=>u.Role).FirstOrDefaultAsync(u=>u.Id==id);
         }
 
         public async Task<User> AddUserAsync(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
+
+            if (user.RoleId == 1)
+            {
+                _context.Admin.Add(new Admin { UserId = user.Id });
+                _context.SaveChanges();
+            }
+            else if (user.RoleId == 2)
+            {
+                _context.Trainers.Add(new Trainer { userId = user.Id });
+            }
+          /*  else if (user.RoleId == 3)
+            {
+                _context.Trainees.Add(new Trainee { UserId = user.Id });
+            }*/
+
             return user;
+            
         }
 
         public async Task<User> UpdateUserAsync(User user)
@@ -50,6 +67,11 @@ namespace ILPManagementSystem.Repository
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<object> GetTrainers()
+        {
+            return await this._context.Users.Include(u => u.Role).ToListAsync();
         }
     }
 }
