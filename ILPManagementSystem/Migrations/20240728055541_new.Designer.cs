@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240726102331_new")]
+    [Migration("20240728055541_new")]
     partial class @new
     {
         /// <inheritdoc />
@@ -43,26 +43,22 @@ namespace ILPManagementSystem.Migrations
                     b.Property<int>("BatchId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DocumentContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DocumentName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DocumentPath")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DueDateTime")
+                    b.Property<DateTime?>("DueDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsSubmitable")
@@ -71,7 +67,7 @@ namespace ILPManagementSystem.Migrations
                     b.Property<int>("PhaseId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalScore")
+                    b.Property<int?>("TotalScore")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")
@@ -246,22 +242,21 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime?>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("Score")
+                    b.Property<double?>("Score")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("SubmissionTime")
+                    b.Property<DateTime?>("SubmissionTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TraineeId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("Updated")
+                    b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");

@@ -11,6 +11,5 @@ namespace ILPManagementSystem.Repository.IRepository
         Task SubmitMarks(CompletedAssessment completedAssessment);
 
 
-
     }
 }

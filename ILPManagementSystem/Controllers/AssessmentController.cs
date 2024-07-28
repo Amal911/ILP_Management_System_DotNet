@@ -39,14 +39,16 @@ namespace ILPManagementSystem.Controllers
 
             var assessment = await _assessmentService.CreateAssessment(newAssessment);
 
-            var marks = ParseMarks(Request.Form["marks"].FirstOrDefault());
-            if (marks == null)
+            if (!newAssessment.IsSubmitable)
             {
-                return BadRequest("Marks data is missing or invalid");
+                var marks = ParseMarks(Request.Form["marks"].FirstOrDefault());
+                if (marks == null)
+                {
+                    return BadRequest("Marks data is missing or invalid");
+                }
+
+                await _assessmentService.SubmitMarks(assessment.Id, marks);
             }
-
-            await _assessmentService.SubmitMarks(assessment.Id, marks);
-
             return Ok(assessment);
         }
 

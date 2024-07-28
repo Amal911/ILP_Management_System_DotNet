@@ -10,11 +10,11 @@ namespace ILPManagementSystem.Models
         [ForeignKey("AssessmentId")]
         public Assessment Assessment { get; set; }
         public int TraineeId { get; set; }
-        public double Score { get; set; }
-        public string Comments { get; set; }
-        public DateTime SubmissionTime { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; } 
+        public double? Score { get; set; }
+        public string? Comments { get; set; }
+        public DateTime? SubmissionTime { get; set; }
+        public DateTime? Created { get; set; }
+        public DateTime? Updated { get; set; } 
 
     }
 }

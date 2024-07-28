@@ -280,16 +280,16 @@ namespace ILPManagementSystem.Migrations
                     BatchId = table.Column<int>(type: "integer", nullable: false),
                     PhaseId = table.Column<int>(type: "integer", nullable: false),
                     AssessmentTitle = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    TotalScore = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    TotalScore = table.Column<int>(type: "integer", nullable: true),
                     IsSubmitable = table.Column<bool>(type: "boolean", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     AssessmentTypeID = table.Column<int>(type: "integer", nullable: false),
-                    DueDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DocumentPath = table.Column<string>(type: "text", nullable: false),
-                    DocumentName = table.Column<string>(type: "text", nullable: false),
-                    DocumentContentType = table.Column<string>(type: "text", nullable: false)
+                    DueDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DocumentPath = table.Column<string>(type: "text", nullable: true),
+                    DocumentName = table.Column<string>(type: "text", nullable: true),
+                    DocumentContentType = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -355,11 +355,11 @@ namespace ILPManagementSystem.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     AssessmentId = table.Column<int>(type: "integer", nullable: false),
                     TraineeId = table.Column<int>(type: "integer", nullable: false),
-                    Score = table.Column<double>(type: "double precision", nullable: false),
-                    Comments = table.Column<string>(type: "text", nullable: false),
-                    SubmissionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Score = table.Column<double>(type: "double precision", nullable: true),
+                    Comments = table.Column<string>(type: "text", nullable: true),
+                    SubmissionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
