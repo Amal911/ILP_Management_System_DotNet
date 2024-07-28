@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using ILPManagementSystem.Services;
+
+using ILPManagementSystem.Services.ValidationServices;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using ILPManagementSystem.EndPoints;
@@ -20,14 +23,17 @@ using Microsoft.IdentityModel.Protocols;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+DotNetEnv.Env.Load();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var ConnectionString = builder.Configuration.GetConnectionString("DefaultString");
-builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql(ConnectionString));
+/*var ConnectionString = builder.Configuration.GetConnectionString("DefaultString");
+*/
+var connectionString = Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION_STRING");
+builder.Services.AddDbContext<ApiContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddCors(options =>
 {
@@ -55,6 +61,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<AssessmentTypeRepository>();
 builder.Services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
+
+builder.Services.AddScoped<AttendanceRepository>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<AttendanceService>();
+
 builder.Services.AddScoped<PhaseService>();
 builder.Services.AddScoped<AssessmentRepository>();
 builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();

@@ -4,6 +4,7 @@ using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using System.Diagnostics;
+using ILPManagementSystem.Repository;
 
 namespace ILPManagementSystem.Controllers
 {
@@ -11,10 +12,10 @@ namespace ILPManagementSystem.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public UserController(IUserRepository userRepository,IMapper mapper)
+        public UserController(UserRepository userRepository,IMapper mapper)
         {
             _userRepository = userRepository;
             this._mapper = mapper;
@@ -114,5 +115,10 @@ namespace ILPManagementSystem.Controllers
 
             return NoContent();
         }
+        [HttpGet("GetTrainers")]
+        public async Task<ActionResult> GetTrainer()
+        {
+            return Ok(_userRepository.GetTrainers());
+        } 
     }
 }

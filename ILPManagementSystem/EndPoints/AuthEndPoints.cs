@@ -45,10 +45,10 @@ namespace ILPManagementSystem.EndPoints
                                     /*Console.WriteLine($"Application Name :: {appName}");
                                     results.Add("appName", appName);*/
                                     Console.WriteLine($"User Name :: {user.FirstName}");
-                                    results.Add("User Id", user.Id);
-                                    results.Add("User Name", user.FirstName);
+                                    results.Add("UserId", user.Id);
+                                    results.Add("UserName", $"{user.FirstName} {user.LastName}");
                                     Console.WriteLine($"User Email:: {user.EmailId}");
-                                    results.Add("User Email", user.EmailId);
+                                    results.Add("UserEmail", user.EmailId);
                                     Console.WriteLine($"User Role ID :: {user.RoleId}");
                                     Console.WriteLine($"User Role :: {roles?.RoleName}");
                                     results.Add("roleName", roles?.RoleName);

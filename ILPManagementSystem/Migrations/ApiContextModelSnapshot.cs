@@ -117,6 +117,38 @@ namespace ILPManagementSystem.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.Attendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SessionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TraineeId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
                 {
                     b.Property<int>("Id")
@@ -409,6 +441,9 @@ namespace ILPManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("PhaseDuration")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PhaseName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -421,16 +456,19 @@ namespace ILPManagementSystem.Migrations
                         new
                         {
                             Id = 1,
+                            PhaseDuration = 20,
                             PhaseName = "E-Learning"
                         },
                         new
                         {
                             Id = 2,
+                            PhaseDuration = 40,
                             PhaseName = "Tech Fundamentals"
                         },
                         new
                         {
                             Id = 3,
+                            PhaseDuration = 30,
                             PhaseName = "Business Orientation"
                         });
                 });

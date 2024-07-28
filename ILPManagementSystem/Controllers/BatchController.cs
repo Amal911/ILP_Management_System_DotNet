@@ -76,5 +76,12 @@ namespace ILPManagementSystem.Controllers
             IEnumerable<Batch> batchList = await _batchRepository.GetBatchByProgram(programId);
            return Ok(batchList);
         }
+
+        [HttpGet("TraineeList/{Id}")]
+        public async Task<ActionResult<object>> GetTraineeList(int Id)
+        {
+            var TraineeList = await _batchRepository.GetBatchTraineeList(Id);
+            return Ok(TraineeList);
+        }
     }
 }

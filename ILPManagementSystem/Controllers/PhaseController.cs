@@ -1,24 +1,23 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
-using ILPManagementSystem.Services;
+using ILPManagementSystem.Services.ValidationServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]")]
     public class PhaseController:ControllerBase
     {
         private readonly PhaseService _phaseService;
-        private PhaseRepository _phaseRepository;
+        private PhaseRepository _repository;
         private IMapper _mapper;
-        public PhaseController(ApiContext _context, PhaseRepository _phaseRepository, IMapper _mapper,PhaseService _phaseService)
+        public PhaseController(ApiContext _context, PhaseRepository _repository, IMapper _mapper,PhaseService _phaseService)
         {
-            this._phaseRepository = _phaseRepository;
+            this._repository = _repository;
             this._mapper = _mapper;
             this._phaseService = _phaseService;
 
@@ -30,7 +29,7 @@ namespace ILPManagementSystem.Controllers
         {
             try
             {
-            var phases = await _phaseRepository.GetAllPhasesAsync();
+            var phases = await _repository.GetAllPhasesAsync();
             return Ok(phases);
             }
             catch (Exception ex)
@@ -48,7 +47,7 @@ namespace ILPManagementSystem.Controllers
             {
                 _phaseService.AddNewPhase(newPhase);
                 Phase phase = _mapper.Map<Phase>(newPhase);
-                await _phaseRepository.AddNewPhase(phase);
+                await _repository.AddNewPhase(phase);
                 return CreatedAtAction(nameof(GetAllPhases), new { }, phase);
             }
             catch (Exception ex)
@@ -60,7 +59,7 @@ namespace ILPManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Deletephase(int id)
         {
-            return Ok(_phaseRepository.DeletePhase(id));
+            return Ok(_repository.DeletePhase(id));
         }
 
         [HttpPut ("{id}")]
@@ -74,7 +73,7 @@ namespace ILPManagementSystem.Controllers
             }
             Phase updatePhase = _mapper.Map<Phase>(phase);
             updatePhase.Id = id;
-            await _phaseRepository.UpdatePhase(updatePhase);
+            await _repository.UpdatePhase(updatePhase);
             return Ok();
         }
 

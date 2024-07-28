@@ -29,10 +29,16 @@ namespace ILPManagementSystem.Controllers
             return Ok(await repository.GetBatchProgramsWithBatchsAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<BatchProgram>> GetById(int Id)
         {
             return Ok(await repository.GetBatchProgramsAsync(Id));
+        }
+
+        [HttpGet("BatchCount/{Id}")]
+        public async Task<ActionResult<int>> GetBatchCount(int  Id)
+        {
+            return Ok(await repository.GetBatchCount(Id));
         }
         
     }

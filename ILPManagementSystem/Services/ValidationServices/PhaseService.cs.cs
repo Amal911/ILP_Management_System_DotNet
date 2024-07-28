@@ -2,7 +2,7 @@
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 
-namespace ILPManagementSystem.Services
+namespace ILPManagementSystem.Services.ValidationServices
 {
     public class PhaseService
     {
@@ -28,7 +28,7 @@ namespace ILPManagementSystem.Services
             {
                 var phase = new Phase
                 {
-                    PhaseName = phaseDTO.PhaseName 
+                    PhaseName = phaseDTO.PhaseName
                 };
 
             }

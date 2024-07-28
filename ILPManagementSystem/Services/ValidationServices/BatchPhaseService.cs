@@ -2,7 +2,7 @@
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Models;
 
-namespace ILPManagementSystem.Services
+namespace ILPManagementSystem.Services.ValidationServices
 {
     public class BatchPhaseService
     {
