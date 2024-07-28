@@ -11,7 +11,6 @@ namespace ILPManagementSystem.Models
         public DateTime endTime { get; set; }
         public int TrainerId { get; set; }
         public int BatchId { get; set; }
-        public int ProgramId { get; set; }
 
         [ForeignKey("TrainerId")]
         public Trainer Trainer { get; set; }
@@ -19,8 +18,6 @@ namespace ILPManagementSystem.Models
         [ForeignKey("BatchId")]
         public Batch Batch { get; set; }
 
-        [ForeignKey("ProgramId")]
-        public BatchProgram BatchProgram { get; set; }
 
 
     }
