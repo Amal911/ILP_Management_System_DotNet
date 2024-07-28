@@ -25,5 +25,30 @@ namespace ILPManagementSystem.Repository
             return batchPhase.Id;
         }
 
+
+        public async Task<IEnumerable<object>> GetBatchPhasesByBatchIdAsync(int batchID)
+        {
+            return this._context.BatchPhase.Where(u => u.BatchId == batchID).Include(u => u.Phase).Include(u=>u.PhaseAssessmentTypeMappings).ThenInclude(u=>u.AssessmentType)
+                .Select(u=>new
+                {
+                    u.PhaseId,
+                    phaseName = u.Phase.PhaseName,
+                    u.NumberOfDays,
+                    u.StartDate,
+                    u.EndDate,
+                    u.IsCompleted,
+                    phaseAssessmentTypes = u.PhaseAssessmentTypeMappings.Select(pa=>
+                        new
+                        {
+                            pa.AssessmentTypeId,
+                            pa.AssessmentType.AssessmentTypeName,
+                            pa.Weightage
+                        }
+                    ).ToList(),
+
+                }).ToList();
+                
+        }
+
     }
 }

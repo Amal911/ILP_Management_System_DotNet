@@ -41,6 +41,7 @@ namespace ILPManagementSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             var LocationList = new List<Location>() {
                 new Location
                 {

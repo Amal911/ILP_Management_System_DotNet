@@ -20,7 +20,7 @@ namespace ILPManagementSystem.Models
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public User Trainer { get; set; }
         public int AssessmentTypeID { get; set; }
 
         [ForeignKey("AssessmentTypeID")]

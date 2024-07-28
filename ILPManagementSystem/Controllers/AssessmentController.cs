@@ -42,6 +42,7 @@ namespace ILPManagementSystem.Controllers
             if (!newAssessment.IsSubmitable)
             {
                 var marks = ParseMarks(Request.Form["marks"].FirstOrDefault());
+                Console.WriteLine(marks);
                 if (marks == null)
                 {
                     return BadRequest("Marks data is missing or invalid");

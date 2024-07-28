@@ -12,13 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728055541_new.Designer.cs
-    [Migration("20240728055541_new")]
-    partial class @new
-========
-    [Migration("20240727125429_table")]
-    partial class table
->>>>>>>> a776c2e1eda9a7d06bd91c448010b6f436e727ed:ILPManagementSystem/Migrations/20240727125429_table.Designer.cs
+    [Migration("20240728134737_seeding")]
+    partial class seeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,15 +95,11 @@ namespace ILPManagementSystem.Migrations
 
                     b.HasIndex("AssessmentTypeID");
 
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728055541_new.Designer.cs
                     b.HasIndex("BatchId");
 
                     b.HasIndex("PhaseId");
 
                     b.HasIndex("UserId");
-========
-                    b.HasIndex("TrainerId");
->>>>>>>> a776c2e1eda9a7d06bd91c448010b6f436e727ed:ILPManagementSystem/Migrations/20240727125429_table.Designer.cs
 
                     b.ToTable("Assessments");
                 });
@@ -225,6 +216,34 @@ namespace ILPManagementSystem.Migrations
                     b.HasIndex("ProgramId");
 
                     b.ToTable("Batchs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BatchCode = "BA001",
+                            BatchDuration = 6,
+                            BatchName = "Batch A",
+                            BatchTypeId = 1,
+                            EndDate = new DateTime(2025, 1, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsActive = true,
+                            LocationId = 1,
+                            ProgramId = 1,
+                            StartDate = new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BatchCode = "BB002",
+                            BatchDuration = 3,
+                            BatchName = "Batch B",
+                            BatchTypeId = 2,
+                            EndDate = new DateTime(2025, 1, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsActive = true,
+                            LocationId = 2,
+                            ProgramId = 2,
+                            StartDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.BatchPhase", b =>
@@ -664,8 +683,6 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("SessionAttendances");
                 });
 
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728055541_new.Designer.cs
-========
             modelBuilder.Entity("ILPManagementSystem.Models.Trainee", b =>
                 {
                     b.Property<int>("Id")
@@ -709,7 +726,6 @@ namespace ILPManagementSystem.Migrations
                     b.ToTable("Trainers");
                 });
 
->>>>>>>> a776c2e1eda9a7d06bd91c448010b6f436e727ed:ILPManagementSystem/Migrations/20240727125429_table.Designer.cs
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -858,25 +874,6 @@ namespace ILPManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ILPManagementSystem.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssessmentType");
-
-                    b.Navigation("Trainer");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Assessment", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.AssessmentType", "AssessmentType")
-                        .WithMany()
-                        .HasForeignKey("AssessmentTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ILPManagementSystem.Models.Batch", "Batch")
                         .WithMany()
                         .HasForeignKey("BatchId")
@@ -889,7 +886,7 @@ namespace ILPManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ILPManagementSystem.Models.User", "User")
+                    b.HasOne("ILPManagementSystem.Models.User", "Trainer")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -901,7 +898,7 @@ namespace ILPManagementSystem.Migrations
 
                     b.Navigation("Phase");
 
-                    b.Navigation("User");
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Batch", b =>
