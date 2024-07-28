@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DotNetEnv;
 using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
@@ -77,7 +78,7 @@ public class BatchRepository:IBatchRepository
                     numberOfDays = bp.NumberOfDays,
                     startDate = bp.StartDate,
                     endDate = bp.EndDate,
-                    isCompleted = bp.IsCompleted,
+                    status = (Status)bp.Status,
                     batchId = bp.BatchId,
                     phaseId = bp.PhaseId,
                     phaseAssessmentTypeMappings = bp.PhaseAssessmentTypeMappings.Select(patm => new
@@ -230,7 +231,7 @@ public class BatchRepository:IBatchRepository
                     numberOfDays = bp.NumberOfDays,
                     startDate = bp.StartDate,
                     endDate = bp.EndDate,
-                    isCompleted = bp.IsCompleted,
+                    status = bp.Status,
                     batchId = bp.BatchId,
                     phaseId = bp.PhaseId,
                     phaseAssessmentTypeMappings = bp.PhaseAssessmentTypeMappings.Select(patm => new

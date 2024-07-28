@@ -8,7 +8,7 @@ using ILPManagementSystem.Repository;
 
 namespace ILPManagementSystem.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -116,9 +116,9 @@ namespace ILPManagementSystem.Controllers
             return NoContent();
         }
         [HttpGet("GetTrainers")]
-        public async Task<ActionResult> GetTrainer()
+        public async Task<ActionResult<IEnumerable<TrainerDetailsDTO>>> GetTrainer()
         {
-            return Ok(_userRepository.GetTrainers());
+            return Ok(await _userRepository.GetTrainers());
         } 
     }
 }

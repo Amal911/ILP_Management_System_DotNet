@@ -11,10 +11,10 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class SessionController : ControllerBase
     {
-        private readonly ISessionRepository _sessionRepo;
+        private readonly SessionRepository _sessionRepo;
         private readonly IMapper _mapper;
 
-        public SessionController(ISessionRepository sessionRepo, IMapper mapper)
+        public SessionController(SessionRepository sessionRepo, IMapper mapper)
         {
             this._sessionRepo = sessionRepo;
             this._mapper = mapper;

@@ -40,7 +40,7 @@ public class CreateBatchService:ICreateBatchService
                 NumberOfDays = phase.NumberOfDays,
                 StartDate = phase.StartDate,
                 EndDate = phase.EndDate,
-                IsCompleted = phase.IsCompleted,
+                Status= Status.NotStarted,
                 BatchId = batchId,
                 PhaseId = phase.PhaseId,
             };
