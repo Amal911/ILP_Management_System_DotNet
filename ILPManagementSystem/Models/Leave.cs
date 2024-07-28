@@ -13,8 +13,10 @@ namespace ILPManagementSystem.Models
 
         [AllowNull]
         public DateTime LeaveDate { get; set; }
+
         [AllowNull]
         public DateTime LeaveDateFrom { get; set; }
+
         [AllowNull]
         public DateTime LeaveDateTo { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -26,5 +28,7 @@ namespace ILPManagementSystem.Models
         {
             CreatedDate = DateTime.UtcNow;
         }
+
+        public ICollection<LeaveApproval> LeaveApprovals { get; set; } = new List<LeaveApproval>();
     }
 }

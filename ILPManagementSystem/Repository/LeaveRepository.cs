@@ -37,12 +37,22 @@ public class LeaveRepository : ILeaveRepository
 
     public async Task<IEnumerable<Leave>> GetAllLeavesAsync()
     {
-        return await _context.Leaves.ToListAsync();
+        return await _context.Leaves
+        .Include(l => l.Trainee)
+        .Include(l => l.LeaveApprovals)
+            .ThenInclude(la => la.User)
+        .ToListAsync();
+        /*return await _context.Leaves.ToListAsync();*/
     }
 
     public async Task<Leave> GetLeaveByIdAsync(int id)
     {
-        return await _context.Leaves.FindAsync(id);
+        return await _context.Leaves
+        .Include(l => l.Trainee)
+        .Include(l => l.LeaveApprovals)
+            .ThenInclude(la => la.User)
+        .FirstOrDefaultAsync(l => l.Id == id);
+        /*return await _context.Leaves.FindAsync(id);*/
     }
 
     public async Task<Leave> UpdateLeaveAsync(Leave leave)

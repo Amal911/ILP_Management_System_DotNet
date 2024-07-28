@@ -35,6 +35,56 @@ namespace ILPManagementSystem.Controllers
             return Ok(leave);
         }
 
+        [HttpGet("leaveRequests")]
+        public async Task<ActionResult<IEnumerable<Leave>>> GetLeaveRequests()
+        {
+            var leaves = await _leaveRepository.GetAllLeavesAsync();
+            var leaveRequests = new List<LeaveDTO>();
+
+            foreach (var leave in leaves)
+            {
+                var approvals = await _leaveApprovalRepository.GetApprovalsByLeaveIdAsync(leave.Id);
+                if (approvals.Any(a => a.IsApproved == null))
+                {
+                    leaveRequests.Add(new LeaveDTO
+                    {
+                        // Populate properties
+                        Id = leave.Id,
+                        /*TraineeId = Trainee.Id,*/
+                        NumofDays = leave.NumofDays,
+                        LeaveDate = leave.LeaveDate,
+                        LeaveDateFrom = leave.LeaveDateFrom,
+                        LeaveDateTo = leave.LeaveDateTo,
+                        CreatedDate = leave.CreatedDate,
+                        Reason = leave.Reason,
+                        Description = leave.Description,
+                        /*Trainee = leave.Trainee,*/
+                        IsPending = true // Add a new property to track if the leave is pending
+                    });
+                }
+                else
+                {
+                    leaveRequests.Add(new LeaveDTO
+                    {
+                        // Populate properties
+                        Id = leave.Id,
+                        /*TraineeId = leave.TraineeId,*/
+                        NumofDays = leave.NumofDays,
+                        LeaveDate = leave.LeaveDate,
+                        LeaveDateFrom = leave.LeaveDateFrom,
+                        LeaveDateTo = leave.LeaveDateTo,
+                        CreatedDate = leave.CreatedDate,
+                        Reason = leave.Reason,
+                        Description = leave.Description,
+                        /*Trainee = leave.Trainee,*/
+                        IsPending = false // Add a new property to track if the leave is not pending
+                    });
+                }
+            }
+
+            return Ok(leaveRequests);
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostLeaveRequest([FromBody] LeaveDTO leaveDto)
         {
@@ -108,57 +158,6 @@ namespace ILPManagementSystem.Controllers
             }
         }
 
-
-        [HttpGet("leaveRequests")]
-        public async Task<ActionResult<IEnumerable<Leave>>> GetLeaveRequests()
-        {
-            var leaves = await _leaveRepository.GetAllLeavesAsync();
-            var leaveRequests = new List<LeaveDTO>();
-
-            foreach (var leave in leaves)
-            {
-                var approvals = await _leaveApprovalRepository.GetApprovalsByLeaveIdAsync(leave.Id);
-                if (approvals.Any(a => a.IsApproved == null))
-                {
-                    leaveRequests.Add(new LeaveDTO
-                    {
-                        // Populate properties
-                        Id = leave.Id,
-                        /*TraineeId = Trainee.Id,*/
-                        NumofDays = leave.NumofDays,
-                        LeaveDate = leave.LeaveDate,
-                        LeaveDateFrom = leave.LeaveDateFrom,
-                        LeaveDateTo = leave.LeaveDateTo,
-                        CreatedDate = leave.CreatedDate,
-                        Reason = leave.Reason,
-                        Description = leave.Description,
-                        /*Trainee = leave.Trainee,*/
-                        IsPending = true // Add a new property to track if the leave is pending
-                    });
-                }
-                else
-                {
-                    leaveRequests.Add(new LeaveDTO
-                    {
-                        // Populate properties
-                        Id = leave.Id,
-                        /*TraineeId = leave.TraineeId,*/
-                        NumofDays = leave.NumofDays,
-                        LeaveDate = leave.LeaveDate,
-                        LeaveDateFrom = leave.LeaveDateFrom,
-                        LeaveDateTo = leave.LeaveDateTo,
-                        CreatedDate = leave.CreatedDate,
-                        Reason = leave.Reason,
-                        Description = leave.Description,
-                        /*Trainee = leave.Trainee,*/
-                        IsPending = false // Add a new property to track if the leave is not pending
-                    });
-                }
-            }
-
-            return Ok(leaveRequests);
-        }
-
         [HttpPut("updateApprovalStatus/{id}")]
         public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApproval leaveApproval)
         {
@@ -192,6 +191,7 @@ namespace ILPManagementSystem.Controllers
             return NoContent();
         }
 
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLeave(int id)
         {
@@ -199,5 +199,6 @@ namespace ILPManagementSystem.Controllers
             if (!result) return NotFound();
             return NoContent();
         }
+
     }
 }

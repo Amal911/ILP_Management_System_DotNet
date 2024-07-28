@@ -360,7 +360,7 @@ namespace ILPManagementSystem.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     LeavesId = table.Column<int>(type: "integer", nullable: false),
                     userId = table.Column<int>(type: "integer", nullable: false),
-                    IsApproved = table.Column<bool>(type: "boolean", nullable: false)
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: true)
                 },
                 constraints: table =>
                 {

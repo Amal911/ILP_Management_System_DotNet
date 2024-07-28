@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ILPManagementSystem.Models
 {
@@ -12,6 +13,8 @@ namespace ILPManagementSystem.Models
 
         [ForeignKey("User")]
         public int userId { get; set; }
+
+        [AllowNull]
         public bool? IsApproved { get; set; }
 
         public Leave Leaves { get; set; }

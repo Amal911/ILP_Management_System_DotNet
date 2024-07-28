@@ -136,6 +136,16 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<BatchPhase>().HasOne(u => u.Phase).WithMany(b => b.BatchPhases).HasForeignKey(u => u.PhaseId);
             modelBuilder.Entity<BatchPhase>().HasMany(u => u.PhaseAssessmentTypeMappings).WithOne(b => b.BatchPhase);
 
+            modelBuilder.Entity<Leave>()
+            .HasMany(l => l.LeaveApprovals)
+            .WithOne(la => la.Leaves)
+            .HasForeignKey(la => la.LeavesId);
+
+            modelBuilder.Entity<LeaveApproval>()
+                .HasOne(la => la.User)
+                .WithMany()
+                .HasForeignKey(la => la.userId);
+
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.AssessmentType).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.AssessmentTypeId);
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u=>u.BatchPhase).WithMany(b=>b.PhaseAssessmentTypeMappings).HasForeignKey(u=>u.BatchPhaseId);
             modelBuilder.Entity<User>().HasData(

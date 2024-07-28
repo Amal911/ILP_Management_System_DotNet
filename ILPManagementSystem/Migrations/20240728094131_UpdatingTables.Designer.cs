@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240725080006_UpdatingTables")]
+    [Migration("20240728094131_UpdatingTables")]
     partial class UpdatingTables
     {
         /// <inheritdoc />
@@ -310,7 +310,7 @@ namespace ILPManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsApproved")
+                    b.Property<bool?>("IsApproved")
                         .HasColumnType("boolean");
 
                     b.Property<int>("LeavesId")
@@ -750,7 +750,7 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.LeaveApproval", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.Leave", "Leaves")
-                        .WithMany()
+                        .WithMany("LeaveApprovals")
                         .HasForeignKey("LeavesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -833,6 +833,11 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>
                 {
                     b.Navigation("Batches");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
+                {
+                    b.Navigation("LeaveApprovals");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Location", b =>
