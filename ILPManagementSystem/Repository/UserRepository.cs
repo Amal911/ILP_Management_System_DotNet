@@ -80,6 +80,7 @@ namespace ILPManagementSystem.Repository
                 new TrainerDetailsDTO
                 {
                     Id = u.Id,
+                    TrainerId = u.TrainerId,
                     Name = $"{u.FirstName} {u.LastName}",
                     FirstName = u.FirstName,
                     LastName = u.LastName,

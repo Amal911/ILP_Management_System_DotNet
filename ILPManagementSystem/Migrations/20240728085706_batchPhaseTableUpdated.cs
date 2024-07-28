@@ -9,11 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240727134609_initialMigration.cs
-    public partial class initialMigration : Migration
-========
-    public partial class table : Migration
->>>>>>>> a776c2e1eda9a7d06bd91c448010b6f436e727ed:ILPManagementSystem/Migrations/20240727125429_table.cs
+    public partial class batchPhaseTableUpdated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -217,6 +213,24 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sessions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SessionName = table.Column<string>(type: "text", nullable: false),
+                    SessionDescription = table.Column<string>(type: "text", nullable: false),
+                    startTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    endTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TrainerId = table.Column<int>(type: "integer", nullable: false),
+                    BatchId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Batchs",
                 columns: table => new
                 {
@@ -290,7 +304,7 @@ namespace ILPManagementSystem.Migrations
                     NumberOfDays = table.Column<int>(type: "integer", nullable: false),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     BatchId = table.Column<int>(type: "integer", nullable: false),
                     PhaseId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -434,43 +448,6 @@ namespace ILPManagementSystem.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Sessions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    SessionName = table.Column<string>(type: "text", nullable: false),
-                    SessionDescription = table.Column<string>(type: "text", nullable: false),
-                    startTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    endTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TrainerId = table.Column<int>(type: "integer", nullable: false),
-                    BatchId = table.Column<int>(type: "integer", nullable: false),
-                    ProgramId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sessions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sessions_Batchs_BatchId",
-                        column: x => x.BatchId,
-                        principalTable: "Batchs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Sessions_Programs_ProgramId",
-                        column: x => x.ProgramId,
-                        principalTable: "Programs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Sessions_Trainers_TrainerId",
-                        column: x => x.TrainerId,
-                        principalTable: "Trainers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "AssessmentTypes",
                 columns: new[] { "Id", "AssessmentTypeName" },
@@ -507,15 +484,6 @@ namespace ILPManagementSystem.Migrations
                     { 1, 20, "E-Learning" },
                     { 2, 40, "Tech Fundamentals" },
                     { 3, 30, "Business Orientation" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Programs",
-                columns: new[] { "Id", "ProgramName" },
-                values: new object[,]
-                {
-                    { 1, "2023-2024" },
-                    { 2, "2024-2025" }
                 });
 
             migrationBuilder.InsertData(
@@ -602,21 +570,6 @@ namespace ILPManagementSystem.Migrations
                 column: "BatchPhaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sessions_BatchId",
-                table: "Sessions",
-                column: "BatchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sessions_ProgramId",
-                table: "Sessions",
-                column: "ProgramId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sessions_TrainerId",
-                table: "Sessions",
-                column: "TrainerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Trainees_BatchId",
                 table: "Trainees",
                 column: "BatchId");
@@ -679,13 +632,16 @@ namespace ILPManagementSystem.Migrations
                 name: "Trainees");
 
             migrationBuilder.DropTable(
+                name: "Trainers");
+
+            migrationBuilder.DropTable(
                 name: "AssessmentTypes");
 
             migrationBuilder.DropTable(
                 name: "BatchPhase");
 
             migrationBuilder.DropTable(
-                name: "Trainers");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Batchs");
@@ -694,7 +650,7 @@ namespace ILPManagementSystem.Migrations
                 name: "Phases");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "BatchTypes");
@@ -704,12 +660,6 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Programs");
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240727134609_initialMigration.cs
-
-            migrationBuilder.DropTable(
-                name: "Roles");
-========
->>>>>>>> a776c2e1eda9a7d06bd91c448010b6f436e727ed:ILPManagementSystem/Migrations/20240727125429_table.cs
         }
     }
 }

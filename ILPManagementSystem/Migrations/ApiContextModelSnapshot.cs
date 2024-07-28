@@ -576,9 +576,6 @@ namespace ILPManagementSystem.Migrations
                     b.Property<int>("BatchId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProgramId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("SessionDescription")
                         .IsRequired()
                         .HasColumnType("text");
@@ -597,12 +594,6 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BatchId");
-
-                    b.HasIndex("ProgramId");
-
-                    b.HasIndex("TrainerId");
 
                     b.ToTable("Sessions");
                 });
@@ -674,6 +665,18 @@ namespace ILPManagementSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Trainers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            userId = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            userId = 4
+                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
@@ -898,33 +901,6 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("AssessmentType");
 
                     b.Navigation("BatchPhase");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Session", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.Batch", "Batch")
-                        .WithMany()
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.BatchProgram", "BatchProgram")
-                        .WithMany()
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Batch");
-
-                    b.Navigation("BatchProgram");
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Trainee", b =>

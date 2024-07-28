@@ -225,6 +225,7 @@ namespace ILPManagementSystem.Data
            IsActive = true
        }
    );
+            
             modelBuilder.Entity<DocumentLinks>()
                 .Property(u => u.documentType)
                 .HasConversion<string>();
@@ -247,11 +248,24 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<Assessment>().HasOne(u => u.AssessmentType);
             modelBuilder.Entity<Batch>().HasOne(u => u.Program).WithMany(b => b.BatchList);
 
+
             modelBuilder.Entity<BatchProgram>().HasData(
                 new BatchProgram { Id = 1, ProgramName = "2023-2024" },
                 new BatchProgram { Id = 2, ProgramName = "2024-2025" }
                 );
-            
+            modelBuilder.Entity<Trainer>().HasData(
+                new Trainer
+                {
+                    Id = 1,
+                    userId = 3,
+                },
+                new Trainer
+                {
+                    Id = 2,
+                    userId = 4,
+                }
+                );
+
         }           
 
     }

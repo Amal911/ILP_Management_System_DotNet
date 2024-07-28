@@ -258,9 +258,21 @@ public class BatchRepository:IBatchRepository
         _context.SaveChanges();
         return batch.Id;
     }
-    public async Task<IEnumerable<Batch>> GetBatchByProgram(int programId)
+    public async Task<IEnumerable<object>> GetBatchByProgram(int programId)
     {
-        List<Batch> batchList =await  _context.Batchs.Where(u=>u.ProgramId== programId).ToListAsync();
+        var batchList = _context.Batchs.Where(u => u.ProgramId == programId).Include(b => b.TraineeList).ThenInclude(t => t.User)
+            .Select(b => new
+            {
+                b.Id,
+                b.BatchName,
+                b.BatchCode,
+                b.BatchDuration,
+                b.StartDate,
+                b.EndDate,
+                b.IsActive,
+                traineeCount = b.TraineeList.Count
+            })
+            .ToList();
         return batchList;
     }
 

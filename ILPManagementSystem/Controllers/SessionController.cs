@@ -29,7 +29,7 @@ namespace ILPManagementSystem.Controllers
             var response = new APIResponse
             {
                 IsSuccess = true,
-                Result = mappedSessions,
+                Result = sessions,
                 StatusCode = HttpStatusCode.OK
             };
 
@@ -82,6 +82,25 @@ namespace ILPManagementSystem.Controllers
             {
                 IsSuccess= true,
                 Result = mappedSession,
+                StatusCode = HttpStatusCode.OK
+            };
+            return Ok(response);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<APIResponse>> GetSessionDetails(int id)
+        {
+            SessionDTO session = await _sessionRepo.GetSessionDetails(id);
+            if (session == null)
+            {
+                return NotFound(new APIResponse { StatusCode = HttpStatusCode.NotFound });
+            }
+
+
+            var response = new APIResponse
+            {
+                IsSuccess = true,
+                Result = session,
                 StatusCode = HttpStatusCode.OK
             };
             return Ok(response);
