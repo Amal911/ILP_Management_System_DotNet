@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ILPManagementSystem.Models
 {
@@ -11,10 +12,12 @@ namespace ILPManagementSystem.Models
         public DateTime endTime { get; set; }
         public int TrainerId { get; set; }
         public int BatchId { get; set; }
-
+        [NotMapped]
+        [JsonIgnore]
         [ForeignKey("TrainerId")]
         public Trainer Trainer { get; set; }
-
+        [NotMapped]
+        [JsonIgnore]
         [ForeignKey("BatchId")]
         public Batch Batch { get; set; }
 
