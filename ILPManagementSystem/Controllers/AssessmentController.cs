@@ -23,7 +23,7 @@ namespace ILPManagementSystem.Controllers
             _assessmentRepository = assessmentRepository;
         }
 
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<ActionResult<IEnumerable<Assessment>>> GetAllAssessment()
         {
             return Ok(await _assessmentRepository.GetAssessments());

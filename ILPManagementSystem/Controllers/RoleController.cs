@@ -1,12 +1,8 @@
-﻿using ILPManagementSystem.Models.DTO;
+﻿using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
-using Microsoft.AspNetCore.Mvc;
-using ILPManagementSystem.Data;
-using Microsoft.EntityFrameworkCore;
+using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository.IRepository;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ILPManagementSystem.Controllers
 {

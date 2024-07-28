@@ -1,9 +1,14 @@
-﻿namespace ILPManagementSystem.Models
+﻿using System.ComponentModel;
+
+namespace ILPManagementSystem.Models
 {
     public enum Gender
     {
-        Male,
-        Female,
-        Other
+        [Description("Male")]
+        Male = 1,
+        [Description("Female")]
+        Female = 2,
+        [Description("Other")]
+        Other = 3
     }
 }

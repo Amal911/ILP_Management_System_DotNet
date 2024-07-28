@@ -31,6 +31,12 @@ namespace ILPManagementSystem.Data
         public DbSet<PhaseAssessmentTypeMapping> PhaseAssessmentTypeMappings { get; set; }
 
         public DbSet<SessionAttendance> SessionAttendances { get; set; }
+        public DbSet<Trainee> Trainees { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<Admin> Admin { get; set; }
+        public DbSet<BatchProgram> Programs { get; set; }
+
+        public DbSet<Attendance>Attendances { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,7 +45,7 @@ namespace ILPManagementSystem.Data
                 new Location
                 {
                     Id = 1,
-                    LocationName="Trivandrum" 
+                    LocationName="Trivandrum"
                 },
                 new Location
                 {
@@ -69,17 +75,20 @@ namespace ILPManagementSystem.Data
                 new Phase
                 {
                     Id = 1,
-                    PhaseName = "E-Learning"
+                    PhaseName = "E-Learning",
+                    PhaseDuration= 20
                 },
                 new Phase
                 {
                     Id = 2,
-                    PhaseName = "Tech Fundamentals"
+                    PhaseName = "Tech Fundamentals",
+                    PhaseDuration= 40
                 },
                 new Phase
                 {
                     Id = 3,
-                    PhaseName = "Business Orientation"
+                    PhaseName = "Business Orientation",
+                    PhaseDuration= 30
                 },
             };
             modelBuilder.Entity<Phase>().HasData(PhaseList);
@@ -115,17 +124,107 @@ namespace ILPManagementSystem.Data
              new Role { Id = 3, RoleName = "Trainee" }
           );
 
+
             modelBuilder.Entity<User>()
            .HasOne(u => u.Role)
            .WithMany(r => r.Users)
            .HasForeignKey(u => u.RoleId);
+
+            modelBuilder.Entity<User>().Property(u => u.Gender).HasConversion<int>();
             /*
                         modelBuilder.Entity<Batch>()
                             .HasOne(r => r.batchType)
                             .WithMany(b=>b.batchList)
                             .HasForeignKey(r => r.batchId);*/
 
-            //Storing Document type enum as string in the DB
+            //Storing Document type enum as string in the DB        
+
+            modelBuilder.Entity<User>().HasData(
+       new User
+       {
+           Id = 1,
+           EmailId = "amal_admin@sreegcloudgmail.onmicrosoft.com",
+           Password = "Gowo690819",
+           RoleId = 1,
+           MobileNumber = "1234567890",
+           FirstName = "Amal",
+           LastName = "Admin",
+           Gender = Gender.Male,
+           IsActive = true
+       },
+       new User
+       {
+           Id = 2,
+           EmailId = "devipriya_admin@sreegcloudgmail.onmicrosoft.com",
+           Password = "Vajo021247",
+           RoleId = 1,
+           MobileNumber = "1234567891",
+           FirstName = "Devipriya",
+           LastName = "Admin",
+           Gender = Gender.Female,
+           IsActive = true
+       },
+       new User
+       {
+           Id = 3,
+           EmailId = "suneesh.thampi@sreegcloudgmail.onmicrosoft.com",
+           Password = "Huna544047",
+           RoleId = 2,
+           MobileNumber = "1234567892",
+           FirstName = "Suneesh",
+           LastName = "Thampi",
+           Gender = Gender.Male,
+           IsActive = true
+       },
+       new User
+       {
+           Id = 4,
+           EmailId = "lekshmi.a@sreegcloudgmail.onmicrosoft.com",
+           Password = "Quwu856933",
+           RoleId = 2,
+           MobileNumber = "1234567893",
+           FirstName = "Lekshmi",
+           LastName = "A",
+           Gender = Gender.Female,
+           IsActive = true
+       },
+       new User
+       {
+           Id = 5,
+           EmailId = "jisna.george@sreegcloudgmail.onmicrosoft.com",
+           Password = "Koso191442",
+           RoleId = 3,
+           MobileNumber = "1234567894",
+           FirstName = "Jisna",
+           LastName = "George",
+           Gender = Gender.Female,
+           IsActive = true
+       },
+       new User
+       {
+           Id = 6,
+           EmailId = "thulasi.k@sreegcloudgmail.onmicrosoft.com",
+           Password = "Toqo391712",
+           RoleId = 3,
+           MobileNumber = "1234567895",
+           FirstName = "Thulasi",
+           LastName = "K",
+           Gender = Gender.Female,
+           IsActive = true
+       },
+       new User
+       {
+           Id = 7,
+           EmailId = "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com",
+           Password = "Zuja977409",
+           RoleId = 3,
+           MobileNumber = "1234567896",
+           FirstName = "Dharsan",
+           LastName = "Sajeev",
+           Gender = Gender.Male,
+           IsActive = true
+       }
+   );
             modelBuilder.Entity<DocumentLinks>()
                 .Property(u => u.documentType)
                 .HasConversion<string>();
@@ -136,8 +235,24 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<BatchPhase>().HasMany(u => u.PhaseAssessmentTypeMappings).WithOne(b => b.BatchPhase);
 
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.AssessmentType).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.AssessmentTypeId);
-            modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u=>u.BatchPhase).WithMany(b=>b.PhaseAssessmentTypeMappings).HasForeignKey(u=>u.BatchPhaseId);
-        }
+            modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.BatchPhase).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.BatchPhaseId);
+
+            modelBuilder.Entity<Trainee>().HasOne(u => u.User).WithOne(b => b.Trainee);
+            modelBuilder.Entity<Trainee>().HasOne(u => u.Batch).WithMany(b => b.TraineeList).HasForeignKey(u => u.BatchId);
+
+            modelBuilder.Entity<Trainer>().HasOne(u => u.User).WithOne(b => b.Trainer);
+            modelBuilder.Entity<Admin>().HasOne(u => u.User);
+
+            modelBuilder.Entity<Assessment>().HasOne(u => u.Trainer);
+            modelBuilder.Entity<Assessment>().HasOne(u => u.AssessmentType);
+            modelBuilder.Entity<Batch>().HasOne(u => u.Program).WithMany(b => b.BatchList);
+
+            modelBuilder.Entity<BatchProgram>().HasData(
+                new BatchProgram { Id = 1, ProgramName = "2023-2024" },
+                new BatchProgram { Id = 2, ProgramName = "2024-2025" }
+                );
+            
+        }           
 
     }
 }

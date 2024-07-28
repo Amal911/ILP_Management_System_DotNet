@@ -1,11 +1,15 @@
 ﻿using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
+    /*[Authorize(Policy = "AdminPolicy")]*/
+    /*  [Authorize(Policy = "TrainerPolicy")]
+        [Authorize(Policy = "TraineePolicy")]*/
     [Route("api/[controller]")]
     public class LeaveController : ControllerBase
     {

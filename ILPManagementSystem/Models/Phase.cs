@@ -7,6 +7,7 @@ namespace ILPManagementSystem.Models
     {
         public int Id { get; set; }
         public string PhaseName { get; set; }
+        public int PhaseDuration { get; set; }
         [NotMapped]
         [JsonIgnore]
         public List<BatchPhase> BatchPhases { get; set; }
