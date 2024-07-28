@@ -83,6 +83,8 @@ builder.Services.AddScoped<CreateBatchService>();
 builder.Services.AddScoped<ICreateBatchService,CreateBatchService>();
 builder.Services.AddScoped<BatchProgramRepository>();
 builder.Services.AddScoped<IBatchProgramRepository, BatchProgramRepository>();
+builder.Services.AddScoped<ExposedBatchRepository>();
+builder.Services.AddScoped<IExposedBatchRepository, ExposedBatchRepository>();
 
 /* builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
