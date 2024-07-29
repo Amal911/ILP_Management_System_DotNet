@@ -1,9 +1,10 @@
 ﻿using ILPManagementSystem.Models;
+using ILPManagementSystem.Models.DTO;
 namespace ILPManagementSystem.Repository.IRepository;
 
 public interface ISessionRepository
 {
-    Task<ICollection<Session>> GetAllAsync();
+    Task<ICollection<SessionDTO>> GetAllAsync();
     Task<Session> GetAsync(int id);
 
     Task CreateAsync(Session session);

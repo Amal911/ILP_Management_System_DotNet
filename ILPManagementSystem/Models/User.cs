@@ -32,7 +32,7 @@ namespace ILPManagementSystem.Models
         [NotMapped]
         [JsonIgnore]
 
-        public int TrainerId;
+        public int TrainerId { get; set; }
         [NotMapped]
         [JsonIgnore]
         public Trainer Trainer { get; set; }

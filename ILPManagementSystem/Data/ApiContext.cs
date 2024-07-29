@@ -2,16 +2,17 @@
 using ILPManagementSystem.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Xml;
 
 namespace ILPManagementSystem.Data
 {
-    public class ApiContext:DbContext
+    public class ApiContext : DbContext
     {
-        public ApiContext(DbContextOptions<ApiContext> dbContextOptions): base (dbContextOptions)
+        public ApiContext(DbContextOptions<ApiContext> dbContextOptions) : base(dbContextOptions)
         {
-            
+
         }
-        public DbSet<User>  Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Scorecard> Scorecards { get; set; }
         public DbSet<Batch> Batchs { get; set; }
@@ -36,7 +37,7 @@ namespace ILPManagementSystem.Data
         public DbSet<Admin> Admin { get; set; }
         public DbSet<BatchProgram> Programs { get; set; }
 
-        public DbSet<Attendance>Attendances { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -226,6 +227,7 @@ namespace ILPManagementSystem.Data
            IsActive = true
        }
    );
+            
             modelBuilder.Entity<DocumentLinks>()
                 .Property(u => u.documentType)
                 .HasConversion<string>();
@@ -248,11 +250,24 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<Assessment>().HasOne(u => u.AssessmentType);
             modelBuilder.Entity<Batch>().HasOne(u => u.Program).WithMany(b => b.BatchList);
 
+
             modelBuilder.Entity<BatchProgram>().HasData(
                 new BatchProgram { Id = 1, ProgramName = "2023-2024" },
                 new BatchProgram { Id = 2, ProgramName = "2024-2025" }
                 );
-            
+            modelBuilder.Entity<Trainer>().HasData(
+                new Trainer
+                {
+                    Id = 1,
+                    userId = 3,
+                },
+                new Trainer
+                {
+                    Id = 2,
+                    userId = 4,
+                }
+                );
+
         }           
 
     }
