@@ -28,17 +28,20 @@ namespace ILPManagementSystem.Controllers
             
             var userDtos = users.Select(user => new 
             {
-/*                Id = user.Id,
-*/              EmailId = user.EmailId,
+                Id = user.Id,
+                EmailId = user.EmailId,
                 RoleId = user.RoleId,
+                RoleName = user.Role.RoleName,
                 MobileNumber = user.MobileNumber,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Gender = (Gender)user.Gender,
-                RoleName = user.Role.RoleName,
             }).ToList();
+            var admins = userDtos.Where(u => u.RoleName == "Admin").ToList();
+            var trainers = userDtos.Where(u => u.RoleName == "Trainer").ToList();
+            /*return Ok(userDtos);*/
 
-            return userDtos;
+            return Ok(new { userDtos, admins, trainers });
         }
 
         [HttpGet("{id}")]
