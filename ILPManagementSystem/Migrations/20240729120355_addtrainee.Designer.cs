@@ -12,13 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.Designer.cs
-    [Migration("20240728104516_UpdatingTables")]
-    partial class UpdatingTables
-========
-    [Migration("20240729055352_tablecreated")]
-    partial class tablecreated
->>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.Designer.cs
+    [Migration("20240729120355_addtrainee")]
+    partial class addtrainee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -685,6 +680,26 @@ namespace ILPManagementSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Trainees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BatchId = 1,
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BatchId = 1,
+                            UserId = 6
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BatchId = 1,
+                            UserId = 7
+                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Trainer", b =>
@@ -939,7 +954,17 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("Phase");
                 });
 
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.Designer.cs
+            modelBuilder.Entity("ILPManagementSystem.Models.CompletedAssessment", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.Assessment", "Assessment")
+                        .WithMany()
+                        .HasForeignKey("AssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assessment");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.Trainee", "Trainee")
@@ -968,17 +993,6 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("Leaves");
 
                     b.Navigation("User");
-========
-            modelBuilder.Entity("ILPManagementSystem.Models.CompletedAssessment", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.Assessment", "Assessment")
-                        .WithMany()
-                        .HasForeignKey("AssessmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Assessment");
->>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.Designer.cs
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.PhaseAssessmentTypeMapping", b =>

@@ -282,6 +282,28 @@ namespace ILPManagementSystem.Data
                 }
                 );
 
+            modelBuilder.Entity<Trainee>().HasData(
+               new Trainee
+               {
+                   Id = 1,
+                   UserId = 5,
+                   BatchId = 1,
+               },
+               new Trainee
+               {
+                   Id = 2,
+                   UserId = 6,
+                   BatchId = 1,
+               },
+                new Trainee
+                {
+                    Id = 3,
+                    UserId = 7,
+                    BatchId = 1,
+                }
+
+               );
+
         }           
 
     }

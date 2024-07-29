@@ -5,7 +5,7 @@ namespace ILPManagementSystem.Repository.IRepository
     public interface ILeaveRepository
     {
         Task<IEnumerable<Leave>> GetLeavesByUserIdAsync(int userId);
-        Task<Trainee> GetTraineeByFullNameAsync(string fullName);
+        Task<Trainee> GetTraineeByFullNameAsync(int userId);
         Task<Leave> AddLeaveAsync(Leave leave);
         Task<LeaveApproval> AddLeaveApprovalAsync(LeaveApproval leaveApproval);
         Task<IEnumerable<Leave>> GetAllLeavesAsync(); //Task<IEnumerable<Leave>> GetLeaveRequests();

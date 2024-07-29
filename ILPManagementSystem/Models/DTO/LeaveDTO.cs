@@ -5,6 +5,7 @@ namespace ILPManagementSystem.Models.DTO
     public class LeaveDTO
     {
         public int Id { get; set; }
+        public int UserID { get; set; }
 /*        public int TraineeId { get; set; }*/
         public string Name { get; set; }
         public int NumofDays { get; set; }

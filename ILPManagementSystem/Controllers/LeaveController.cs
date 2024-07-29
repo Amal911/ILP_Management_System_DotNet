@@ -114,7 +114,7 @@ namespace ILPManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> PostLeaveRequest([FromBody] LeaveDTO leaveDto)
         {
-            var trainee = await _leaveRepository.GetTraineeByFullNameAsync(leaveDto.Name);
+            var trainee = await _leaveRepository.GetTraineeByFullNameAsync(leaveDto.UserID);
 
             if (trainee == null)
             {

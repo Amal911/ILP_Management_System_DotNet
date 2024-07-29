@@ -24,12 +24,10 @@ public class LeaveRepository : ILeaveRepository
                              .ToListAsync();
     }
 
-    public async Task<Trainee> GetTraineeByFullNameAsync(string fullName)
+    public async Task<Trainee> GetTraineeByFullNameAsync(int userID)
     {
-        /*return await _context.Trainees.Include(t => t.User).FirstOrDefaultAsync(t => t.User.FirstName == firstName);*/
-        return await _context.Trainees
-                         .Include(t => t.User)
-                         .FirstOrDefaultAsync(t => (t.User.FirstName + " " + t.User.LastName) == fullName);
+        return await _context.Trainees.Include(t => t.User).FirstOrDefaultAsync(t => t.UserId==userID);
+
 
     }
 

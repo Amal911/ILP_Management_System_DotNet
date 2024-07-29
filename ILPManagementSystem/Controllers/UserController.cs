@@ -121,6 +121,12 @@ namespace ILPManagementSystem.Controllers
         public async Task<ActionResult<IEnumerable<TrainerDetailsDTO>>> GetTrainer()
         {
             return Ok(await _userRepository.GetTrainers());
-        } 
+        }
+
+        [HttpGet("GetAllUserData")]
+        public async Task<IEnumerable<object>> GetAllUserData()
+        {
+            return await _userRepository.GetAllUserData();
+        }
     }
 }
