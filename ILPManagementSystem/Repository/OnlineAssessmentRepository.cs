@@ -23,11 +23,13 @@ namespace ILPManagementSystem.Repository
             return await _context.OnlineAssessments.ToListAsync();
         }
 
-        public async Task<OnlineAssessment> GetAsync(int batchId)
+        public async Task<List<OnlineAssessment>> GetAsync(int batchId)
         {
-            return await _context.OnlineAssessments.FirstOrDefaultAsync(c => c.batchId == batchId);
+            return await _context.OnlineAssessments
+                                 .Where(c => c.BatchId == batchId)
+                                 .ToListAsync();
         }
-        
+
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() > 0;

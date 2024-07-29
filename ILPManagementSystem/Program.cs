@@ -85,6 +85,8 @@ builder.Services.AddScoped<BatchProgramRepository>();
 builder.Services.AddScoped<IBatchProgramRepository, BatchProgramRepository>();
 builder.Services.AddScoped<ExposedBatchRepository>();
 builder.Services.AddScoped<IExposedBatchRepository, ExposedBatchRepository>();
+builder.Services.AddScoped<OnlineAssessmentRepository>();
+builder.Services.AddScoped<IOnlineAssessmentRepository, OnlineAssessmentRepository>();
 
 /* builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>

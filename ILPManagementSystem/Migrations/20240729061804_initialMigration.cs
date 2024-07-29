@@ -139,6 +139,25 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OnlineAssessments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OnlineAssessmentName = table.Column<string>(type: "text", nullable: false),
+                    CreatedByName = table.Column<string>(type: "text", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    OnlineAssessmentStatus = table.Column<int>(type: "integer", nullable: false),
+                    link = table.Column<string>(type: "text", nullable: false),
+                    BatchId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OnlineAssessments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Phases",
                 columns: table => new
                 {
@@ -615,6 +634,9 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Leaves");
+
+            migrationBuilder.DropTable(
+                name: "OnlineAssessments");
 
             migrationBuilder.DropTable(
                 name: "PhaseAssessmentTypeMappings");

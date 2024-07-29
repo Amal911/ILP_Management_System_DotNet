@@ -64,15 +64,15 @@ namespace ILPManagementSystem.Controllers
             
         }
 
-        [HttpGet("{id:batchId}")]
+        [HttpGet("{batchId:int}")]
         public async Task<ActionResult<APIResponse>> GetOnlineAssessmentsByBatchId(int batchId)
         {
             try
             {
-                var onlineAssessments = await _repository.GetAllAsync();
-                var batchOnlineAssessments = onlineAssessments.Where(u => u.batchId == batchId).ToList();
+                var onlineAssessments = await _repository.GetAsync(batchId);
+                //var batchOnlineAssessments = onlineAssessments.Where(u => u.BatchId == batchId).ToList();
 
-                if (batchOnlineAssessments == null)
+                if (onlineAssessments == null)
                 {
                     var nullResponse = new APIResponse
                     {
@@ -87,7 +87,7 @@ namespace ILPManagementSystem.Controllers
                 var response = new APIResponse
                 {
                     IsSuccess = true,
-                    Result = batchOnlineAssessments,
+                    Result = onlineAssessments,
                     StatusCode = HttpStatusCode.OK
                 };
                 return Ok(response);

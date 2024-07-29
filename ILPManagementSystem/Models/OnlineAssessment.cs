@@ -14,7 +14,7 @@ namespace ILPManagementSystem.Models
         public DateTime EndDate { get; set; }
         public int OnlineAssessmentStatus { get; set; }
         public string link {  get; set; }
-        public int batchId { get; set; }
+        public int BatchId { get; set; }
         [NotMapped]
         [JsonIgnore]
         [ForeignKey("BatchId")]

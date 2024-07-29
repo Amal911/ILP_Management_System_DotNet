@@ -40,7 +40,7 @@ namespace ILPManagementSystem.Validators
                 .Matches(@"^(http|https)://")
                 .WithMessage("Link must be a valid URL.");
 
-            RuleFor(x => x.batchId)
+            RuleFor(x => x.BatchId)
                 .GreaterThan(0)
                 .WithMessage("Batch Id must be a positive integer.");
         }

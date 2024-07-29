@@ -433,6 +433,43 @@ namespace ILPManagementSystem.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.OnlineAssessment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedByName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OnlineAssessmentName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("OnlineAssessmentStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("link")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OnlineAssessments");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.Phase", b =>
                 {
                     b.Property<int>("Id")

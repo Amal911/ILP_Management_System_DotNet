@@ -5,7 +5,7 @@ namespace ILPManagementSystem.Repository.IRepository
     public interface IOnlineAssessmentRepository
     {
         Task<ICollection<OnlineAssessment>> GetAllAsync();
-        Task<OnlineAssessment> GetAsync(int batchId);
+        Task<List<OnlineAssessment>> GetAsync(int batchId);
 
         Task CreateAsync(OnlineAssessment onlineAssessment);
 
