@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Models;
+using ILPManagementSystem.Validators;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using FluentValidation;
+
 
 namespace ILPManagementSystem.Controllers
 {
@@ -106,16 +109,56 @@ namespace ILPManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<APIResponse>> CreateOnlineAssessment([FromBody] OnlineAssessment onlineAssessment)
         {
-            await _repository.CreateAsync(onlineAssessment);
-            await _repository.SaveAsync();
-            var response = new APIResponse
+            try
             {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.Created,
-                Message = { "Session created successfully" }
-            };
+                if (onlineAssessment == null)
+                {
+                    var emptyResponse = new APIResponse
+                    {
+                        IsSuccess = false,
+                        Message = ["Online assessment is null."],
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
 
-            return Ok(response);
+                    return BadRequest(emptyResponse);
+                }
+                var validator = new OnlineAssessmentValidator();
+                var validationResult = await validator.ValidateAsync(onlineAssessment);
+
+                if (!validationResult.IsValid)
+                {
+                    var badResponse = new APIResponse
+                    {
+                        IsSuccess = false,
+                        Message = validationResult.Errors.Select(e => e.ErrorMessage).ToList(),
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+
+                    return BadRequest(badResponse);
+                }
+                await _repository.CreateAsync(onlineAssessment);
+                await _repository.SaveAsync();
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.Created,
+                    Message = { "Session created successfully" }
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex) 
+            {
+                var response = new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ["An internal error occurred while fetching online assessment."]
+                };
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
+            }
+            
         }
     }
 }
