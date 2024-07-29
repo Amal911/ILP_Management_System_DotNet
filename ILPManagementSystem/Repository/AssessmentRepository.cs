@@ -3,6 +3,7 @@ using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository.IRepository;
 using ILPManagementSystem.Data;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace ILPManagementSystem.Repository
 {
@@ -36,5 +37,11 @@ namespace ILPManagementSystem.Repository
             await _context.CompletedAssessment.AddAsync(completedAssessment);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Assessment>> GetAssessmentsByBatchId(int batchId)
+        {
+            return await _context.Assessments.Where(a => a.BatchId == batchId).ToListAsync();
+        }
+
     }
 }
