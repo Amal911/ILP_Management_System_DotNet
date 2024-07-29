@@ -22,7 +22,7 @@ namespace ILPManagementSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<object>>> GetUsers()
         {
             var users = await _userRepository.GetAllUsersAsync();
             
@@ -38,7 +38,7 @@ namespace ILPManagementSystem.Controllers
                 RoleName = user.Role.RoleName,
             }).ToList();
 
-
+            return userDtos;
         }
 
         [HttpGet("{id}")]
