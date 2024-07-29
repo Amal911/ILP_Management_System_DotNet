@@ -14,6 +14,18 @@ namespace ILPManagementSystem.Repository
             _context = context;
         }
 
+        public async Task<LeaveApproval> GetLeaveApprovalAsync(int leaveId, int userId)
+        {
+            return _context.LeaveApprovals.FirstOrDefault(l => l.LeavesId == leaveId && l.userId == userId);
+        }
+
+        public async Task<IEnumerable<LeaveApproval>> GetApprovalsByLeaveIdAsync(int leaveId)
+        {
+            return await _context.LeaveApprovals
+                .Where(l => l.LeavesId == leaveId)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<LeaveApproval>> GetAllApprovalsAsync()
         {
             return await _context.LeaveApprovals.ToListAsync();
@@ -47,5 +59,6 @@ namespace ILPManagementSystem.Repository
             await _context.SaveChangesAsync();
             return true;
         }
+
     }
 }

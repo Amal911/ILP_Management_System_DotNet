@@ -30,6 +30,8 @@ namespace ILPManagementSystem
 
             CreateMap<BatchProgram,BatchProgramDTO>().ReverseMap();
 
+            CreateMap<Batch, ExposedBatchDTO>().ReverseMap();
+            CreateMap<Session,SessionDTO>().ReverseMap();
         }
     }
 }

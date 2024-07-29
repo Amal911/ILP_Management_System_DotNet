@@ -9,7 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class table : Migration
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
+    public partial class UpdatingTables : Migration
+========
+    public partial class tablecreated : Migration
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,23 +63,6 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompletedAssessment",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AssessmentId = table.Column<int>(type: "integer", nullable: false),
-                    TraineeId = table.Column<int>(type: "integer", nullable: false),
-                    Score = table.Column<double>(type: "double precision", nullable: false),
-                    Comments = table.Column<string>(type: "text", nullable: false),
-                    SubmissionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompletedAssessment", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DocumentLinks",
                 columns: table => new
                 {
@@ -88,41 +75,6 @@ namespace ILPManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DocumentLinks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeaveApprovals",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    LeavesId = table.Column<int>(type: "integer", nullable: false),
-                    userId = table.Column<int>(type: "integer", nullable: false),
-                    IsApproved = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeaveApprovals", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Leaves",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TraineeId = table.Column<int>(type: "integer", nullable: false),
-                    NumofDays = table.Column<int>(type: "integer", nullable: false),
-                    LeaveDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LeaveDateFrom = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LeaveDateTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Reason = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Leaves", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,9 +174,13 @@ namespace ILPManagementSystem.Migrations
                     SessionDescription = table.Column<string>(type: "text", nullable: false),
                     startTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     endTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    trainerId = table.Column<int>(type: "integer", nullable: false),
-                    batchId = table.Column<int>(type: "integer", nullable: false),
-                    programId = table.Column<int>(type: "integer", nullable: false)
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
+                    TrainerId = table.Column<int>(type: "integer", nullable: false),
+                    BatchId = table.Column<int>(type: "integer", nullable: false)
+========
+                    BatchId = table.Column<int>(type: "integer", nullable: false),
+                    TrainerId = table.Column<int>(type: "integer", nullable: false)
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
                 },
                 constraints: table =>
                 {
@@ -305,7 +261,7 @@ namespace ILPManagementSystem.Migrations
                     NumberOfDays = table.Column<int>(type: "integer", nullable: false),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     BatchId = table.Column<int>(type: "integer", nullable: false),
                     PhaseId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -339,6 +295,55 @@ namespace ILPManagementSystem.Migrations
                     table.PrimaryKey("PK_Admin", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Admin_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Assessments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BatchId = table.Column<int>(type: "integer", nullable: false),
+                    PhaseId = table.Column<int>(type: "integer", nullable: false),
+                    AssessmentTitle = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    TotalScore = table.Column<int>(type: "integer", nullable: true),
+                    IsSubmitable = table.Column<bool>(type: "boolean", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    AssessmentTypeID = table.Column<int>(type: "integer", nullable: false),
+                    DueDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DocumentPath = table.Column<string>(type: "text", nullable: true),
+                    DocumentName = table.Column<string>(type: "text", nullable: true),
+                    DocumentContentType = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assessments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Assessments_AssessmentTypes_AssessmentTypeID",
+                        column: x => x.AssessmentTypeID,
+                        principalTable: "AssessmentTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Assessments_Batchs_BatchId",
+                        column: x => x.BatchId,
+                        principalTable: "Batchs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Assessments_Phases_PhaseId",
+                        column: x => x.PhaseId,
+                        principalTable: "Phases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Assessments_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -418,24 +423,54 @@ namespace ILPManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Assessments",
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
+                name: "Leaves",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AssessmentTitle = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    TotalScore = table.Column<int>(type: "integer", nullable: false),
-                    IsSubmitable = table.Column<bool>(type: "boolean", nullable: false),
-                    DueDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TraineeId = table.Column<int>(type: "integer", nullable: false),
+                    NumofDays = table.Column<int>(type: "integer", nullable: false),
+                    LeaveDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateFrom = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    AssessmentTypeID = table.Column<int>(type: "integer", nullable: false),
-                    TrainerId = table.Column<int>(type: "integer", nullable: false)
+                    Reason = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Assessments", x => x.Id);
+                    table.PrimaryKey("PK_Leaves", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Leaves_Trainees_TraineeId",
+                        column: x => x.TraineeId,
+                        principalTable: "Trainees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Assessments",
+========
+                name: "CompletedAssessment",
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AssessmentId = table.Column<int>(type: "integer", nullable: false),
+                    TraineeId = table.Column<int>(type: "integer", nullable: false),
+                    Score = table.Column<double>(type: "double precision", nullable: true),
+                    Comments = table.Column<string>(type: "text", nullable: true),
+                    SubmissionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompletedAssessment", x => x.Id);
+                    table.ForeignKey(
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
                         name: "FK_Assessments_AssessmentTypes_AssessmentTypeID",
                         column: x => x.AssessmentTypeID,
                         principalTable: "AssessmentTypes",
@@ -445,6 +480,38 @@ namespace ILPManagementSystem.Migrations
                         name: "FK_Assessments_Trainers_TrainerId",
                         column: x => x.TrainerId,
                         principalTable: "Trainers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaveApprovals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LeavesId = table.Column<int>(type: "integer", nullable: false),
+                    userId = table.Column<int>(type: "integer", nullable: false),
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaveApprovals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeaveApprovals_Leaves_LeavesId",
+                        column: x => x.LeavesId,
+                        principalTable: "Leaves",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LeaveApprovals_Users_userId",
+                        column: x => x.userId,
+                        principalTable: "Users",
+========
+                        name: "FK_CompletedAssessment_Assessments_AssessmentId",
+                        column: x => x.AssessmentId,
+                        principalTable: "Assessments",
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -520,6 +587,15 @@ namespace ILPManagementSystem.Migrations
                     { 7, "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com", "Dharsan", 1, true, "Sajeev", "1234567896", "Zuja977409", 3 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Trainers",
+                columns: new[] { "Id", "userId" },
+                values: new object[,]
+                {
+                    { 1, 3 },
+                    { 2, 4 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Admin_UserId",
                 table: "Admin",
@@ -531,9 +607,19 @@ namespace ILPManagementSystem.Migrations
                 column: "AssessmentTypeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assessments_TrainerId",
+                name: "IX_Assessments_BatchId",
                 table: "Assessments",
-                column: "TrainerId");
+                column: "BatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assessments_PhaseId",
+                table: "Assessments",
+                column: "PhaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assessments_UserId",
+                table: "Assessments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BatchPhase_BatchId",
@@ -559,6 +645,27 @@ namespace ILPManagementSystem.Migrations
                 name: "IX_Batchs_ProgramId",
                 table: "Batchs",
                 column: "ProgramId");
+
+            migrationBuilder.CreateIndex(
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
+                name: "IX_LeaveApprovals_LeavesId",
+                table: "LeaveApprovals",
+                column: "LeavesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaveApprovals_userId",
+                table: "LeaveApprovals",
+                column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Leaves_TraineeId",
+                table: "Leaves",
+                column: "TraineeId");
+========
+                name: "IX_CompletedAssessment_AssessmentId",
+                table: "CompletedAssessment",
+                column: "AssessmentId");
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhaseAssessmentTypeMappings_AssessmentTypeId",
@@ -600,9 +707,6 @@ namespace ILPManagementSystem.Migrations
                 name: "Admin");
 
             migrationBuilder.DropTable(
-                name: "Assessments");
-
-            migrationBuilder.DropTable(
                 name: "Attendances");
 
             migrationBuilder.DropTable(
@@ -613,9 +717,6 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "LeaveApprovals");
-
-            migrationBuilder.DropTable(
-                name: "Leaves");
 
             migrationBuilder.DropTable(
                 name: "PhaseAssessmentTypeMappings");
@@ -630,28 +731,45 @@ namespace ILPManagementSystem.Migrations
                 name: "Sessions");
 
             migrationBuilder.DropTable(
-                name: "Trainees");
+                name: "Trainers");
+
+            migrationBuilder.DropTable(
+                name: "Leaves");
 
             migrationBuilder.DropTable(
                 name: "Trainers");
 
             migrationBuilder.DropTable(
-                name: "AssessmentTypes");
+                name: "Assessments");
 
             migrationBuilder.DropTable(
                 name: "BatchPhase");
+
+            migrationBuilder.DropTable(
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
+                name: "Trainees");
+========
+                name: "AssessmentTypes");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Batchs");
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
 
             migrationBuilder.DropTable(
                 name: "Phases");
 
             migrationBuilder.DropTable(
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
+                name: "Batchs");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+========
                 name: "Roles");
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
 
             migrationBuilder.DropTable(
                 name: "BatchTypes");
@@ -661,6 +779,12 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Programs");
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240728104516_UpdatingTables.cs
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+========
+>>>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899:ILPManagementSystem/Migrations/20240729055352_tablecreated.cs
         }
     }
 }

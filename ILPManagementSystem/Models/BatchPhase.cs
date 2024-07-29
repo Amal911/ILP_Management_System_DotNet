@@ -9,7 +9,7 @@ namespace ILPManagementSystem.Models
         public int NumberOfDays {  get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Boolean IsCompleted { get; set; }=false;
+        public Status Status { get; set; }
 
         [ForeignKey("Batch")]
         public int BatchId {  get; set; }
@@ -20,10 +20,16 @@ namespace ILPManagementSystem.Models
         [ForeignKey("Phase")]
         public int PhaseId { get; set; }
         [NotMapped]
-        [JsonIgnore]
+
         public Phase Phase { get; set; }
 
         [NotMapped]
         public List<PhaseAssessmentTypeMapping> PhaseAssessmentTypeMappings { get; set; }
+    }
+    public enum Status 
+    {
+        NotStarted = 0,
+        InProgress = 1,
+        Completed = 2
     }
 }

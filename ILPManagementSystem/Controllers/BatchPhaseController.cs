@@ -75,7 +75,12 @@ namespace ILPManagementSystem.Controllers
         }
 
         }
+        [HttpGet("{batchId}")]
 
+        public async Task<ActionResult<IEnumerable<BatchPhase>>> GetBatchPhasesByBatchIdAsync(int batchId)
+        {
+            return Ok(await _batchphaseRepository.GetBatchPhasesByBatchIdAsync(batchId));
+        }
 
     }
 
