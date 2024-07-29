@@ -13,25 +13,10 @@ namespace ILPManagementSystem.Services.ValidationServices
             _phaseDTOValidator = phaseDTOValidator;
         }
 
-        public void AddNewPhase(PhaseDTO phaseDTO)
+        public FluentValidation.Results.ValidationResult ValidateAddNewPhase(PhaseDTO phaseDTO)
         {
-            FluentValidation.Results.ValidationResult result = _phaseDTOValidator.Validate(phaseDTO);
-
-            if (!result.IsValid)
-            {
-                foreach (var failure in result.Errors)
-                {
-                    Console.WriteLine($"Property {failure.PropertyName} failed validation. Error was: {failure.ErrorMessage}");
-                }
-            }
-            else
-            {
-                var phase = new Phase
-                {
-                    PhaseName = phaseDTO.PhaseName
-                };
-
-            }
+            return _phaseDTOValidator.Validate(phaseDTO);
         }
+       
     }
 }
