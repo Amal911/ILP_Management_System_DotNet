@@ -66,5 +66,11 @@ namespace ILPManagementSystem.Services
                 await _assessmentRepository.SubmitMarks(completedAssessment);
             }
         }
+
+        public async Task<IEnumerable<Assessment>> GetAssessmentsByBatchId(int batchId)
+        {
+            return await _assessmentRepository.GetAssessmentsByBatchId(batchId);
+        }
+
     }
 }

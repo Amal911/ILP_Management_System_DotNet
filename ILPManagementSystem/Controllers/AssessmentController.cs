@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Text.Json;
 using ILPManagementSystem.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ILPManagementSystem.Controllers
 {
@@ -16,11 +17,14 @@ namespace ILPManagementSystem.Controllers
     {
         private readonly AssessmentService _assessmentService;
         private readonly AssessmentRepository _assessmentRepository;
+        private readonly ApiContext _context;
 
-        public AssessmentController(AssessmentService assessmentService, AssessmentRepository assessmentRepository)
+
+        public AssessmentController(AssessmentService assessmentService, AssessmentRepository assessmentRepository, ApiContext context)
         {
             _assessmentService = assessmentService;
             _assessmentRepository = assessmentRepository;
+            _context = context;
         }
 
         [HttpGet("get")]
@@ -70,6 +74,43 @@ namespace ILPManagementSystem.Controllers
                 return null;
             }
         }
+
+        [HttpGet("GetAssessmentsByBatchId/getByBatchId/{batchId}")]
+        public async Task<ActionResult<IEnumerable<AssessmentViewModel>>> GetAssessmentsByBatchId(int batchId)
+        {
+            if (_context == null)
+            {
+                return Problem("Entity set 'YourDbContext.Assessments' is null.");
+            }
+
+            var assessments = await _context.Assessments
+                .Where(a => a.BatchId == batchId)
+                .Select(a => new AssessmentViewModel
+                {
+                    Id = a.Id,
+                    BatchId = a.BatchId,
+                    AssessmentTitle = a.AssessmentTitle,
+                    Description = a.Description,
+                    TotalScore = a.TotalScore,
+                    IsSubmitable = a.IsSubmitable,
+                    DueDateTime = a.DueDateTime,
+                    CreatedDate = a.CreatedDate,
+                    DocumentPath = a.DocumentPath,
+                    DocumentName = a.DocumentName,
+                    DocumentContentType = a.DocumentContentType,
+                    TotalCountOfTrainees = _context.Trainees.Count(t => t.BatchId == batchId),
+                    TotalSubmits = _context.CompletedAssessment.Count(ca => ca.AssessmentId == a.Id)
+                })
+                .ToListAsync();
+
+            if (assessments == null || !assessments.Any())
+            {
+                return NotFound($"No assessments found for batch id {batchId}");
+            }
+
+            return assessments;
+        }
+
     }
 
 }
