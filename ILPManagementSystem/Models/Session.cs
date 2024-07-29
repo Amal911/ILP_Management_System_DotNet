@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using ILPManagementSystem.Models.DTO;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ILPManagementSystem.Models
@@ -10,17 +11,16 @@ namespace ILPManagementSystem.Models
         public string SessionDescription { get; set; }
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
-        public int TrainerId { get; set; }
         public int BatchId { get; set; }
+
+        public int TrainerId { get; set; }
         [NotMapped]
-        [JsonIgnore]
-        [ForeignKey("TrainerId")]
+        [ForeignKey("Trainer")]
         public Trainer Trainer { get; set; }
         [NotMapped]
         [JsonIgnore]
         [ForeignKey("BatchId")]
         public Batch Batch { get; set; }
-
 
 
     }

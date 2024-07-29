@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ILPManagementSystem.Models
 {
@@ -15,6 +16,7 @@ namespace ILPManagementSystem.Models
         [ForeignKey("Phase")]
         public int BatchPhaseId { get; set; }
         [NotMapped]
+        [JsonIgnore]
         public BatchPhase BatchPhase { get; set; }
     }
 }
