@@ -24,7 +24,7 @@ namespace ILPManagementSystem.Data
 
         public DbSet<Phase> Phases { get; set; }
         public DbSet<BatchPhase> BatchPhase {  get; set; }
-        public DbSet<CompletedAssessmentDTO> CompletedAssessment { get; set; }
+        public DbSet<CompletedAssessment> CompletedAssessment { get; set; }
 
         public DbSet<AssessmentType> AssessmentTypes { get; set; }
         public DbSet<DocumentLinks> DocumentLinks { get; set; }
@@ -41,6 +41,7 @@ namespace ILPManagementSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             var LocationList = new List<Location>() {
                 new Location
                 {

@@ -71,6 +71,9 @@ builder.Services.AddScoped<AssessmentRepository>();
 builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
 builder.Services.AddScoped<BatchTypeRepository>();
 builder.Services.AddScoped<IBatchTypeRepository, BatchTypeRepository>();
+builder.Services.AddScoped<CompletedAssessmentRepository>();
+builder.Services.AddScoped<ICompletedAssessmentRepository, CompletedAssessmentRepository>();
+
 builder.Services.AddScoped<AssessmentTypeService>();
 builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
 builder.Services.AddFluentValidationAutoValidation();
@@ -129,6 +132,7 @@ builder.Services.AddAuthentication(options =>
 
     builder.Services.AddControllers();
 
+builder.Services.AddScoped<AssessmentService>();
 
 
 var app = builder.Build();

@@ -20,7 +20,7 @@ namespace ILPManagementSystem.Models
         [ForeignKey("Phase")]
         public int PhaseId { get; set; }
         [NotMapped]
-        [JsonIgnore]
+
         public Phase Phase { get; set; }
 
         [NotMapped]

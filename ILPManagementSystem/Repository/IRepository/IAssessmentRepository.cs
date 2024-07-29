@@ -8,6 +8,7 @@ namespace ILPManagementSystem.Repository.IRepository
         Task<IEnumerable<Assessment>> GetAssessments();
         Task<Assessment> GetAssessmentById(int id);
         Task CreateAssessment(Assessment assessment);
+        Task SubmitMarks(CompletedAssessment completedAssessment);
 
 
     }
