@@ -71,6 +71,9 @@ builder.Services.AddScoped<AssessmentRepository>();
 builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
 builder.Services.AddScoped<BatchTypeRepository>();
 builder.Services.AddScoped<IBatchTypeRepository, BatchTypeRepository>();
+builder.Services.AddScoped<CompletedAssessmentRepository>();
+builder.Services.AddScoped<ICompletedAssessmentRepository, CompletedAssessmentRepository>();
+
 builder.Services.AddScoped<AssessmentTypeService>();
 builder.Services.AddValidatorsFromAssemblyContaining<AssessmentTypeDTOValidator>();
 builder.Services.AddFluentValidationAutoValidation();
@@ -83,6 +86,8 @@ builder.Services.AddScoped<CreateBatchService>();
 builder.Services.AddScoped<ICreateBatchService,CreateBatchService>();
 builder.Services.AddScoped<BatchProgramRepository>();
 builder.Services.AddScoped<IBatchProgramRepository, BatchProgramRepository>();
+builder.Services.AddScoped<ExposedBatchRepository>();
+builder.Services.AddScoped<IExposedBatchRepository, ExposedBatchRepository>();
 
 /* builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
@@ -127,6 +132,7 @@ builder.Services.AddAuthentication(options =>
 
     builder.Services.AddControllers();
 
+builder.Services.AddScoped<AssessmentService>();
 
 
 var app = builder.Build();
