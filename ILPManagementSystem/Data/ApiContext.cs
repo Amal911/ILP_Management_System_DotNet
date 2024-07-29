@@ -2,16 +2,17 @@
 using ILPManagementSystem.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Xml;
 
 namespace ILPManagementSystem.Data
 {
-    public class ApiContext:DbContext
+    public class ApiContext : DbContext
     {
-        public ApiContext(DbContextOptions<ApiContext> dbContextOptions): base (dbContextOptions)
+        public ApiContext(DbContextOptions<ApiContext> dbContextOptions) : base(dbContextOptions)
         {
-            
+
         }
-        public DbSet<User>  Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Scorecard> Scorecards { get; set; }
         public DbSet<Batch> Batchs { get; set; }
@@ -36,7 +37,7 @@ namespace ILPManagementSystem.Data
         public DbSet<Admin> Admin { get; set; }
         public DbSet<BatchProgram> Programs { get; set; }
 
-        public DbSet<Attendance>Attendances { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

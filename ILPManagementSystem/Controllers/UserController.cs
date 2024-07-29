@@ -39,7 +39,6 @@ namespace ILPManagementSystem.Controllers
             }).ToList();
 
 
-            return Ok(userDtos);
         }
 
         [HttpGet("{id}")]
