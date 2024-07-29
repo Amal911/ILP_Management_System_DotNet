@@ -5,7 +5,7 @@ namespace ILPManagementSystem.Models
     public class Trainer
     {
         public int Id { get; set; }
-        [ForeignKey("Trainer")]
+        [ForeignKey("User")]
         public int userId {  get; set; }
         [NotMapped]
         public User User {  get; set; }

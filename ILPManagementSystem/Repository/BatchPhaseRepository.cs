@@ -36,7 +36,7 @@ namespace ILPManagementSystem.Repository
                     u.NumberOfDays,
                     u.StartDate,
                     u.EndDate,
-                    u.IsCompleted,
+                    u.Status,
                     phaseAssessmentTypes = u.PhaseAssessmentTypeMappings.Select(pa=>
                         new
                         {

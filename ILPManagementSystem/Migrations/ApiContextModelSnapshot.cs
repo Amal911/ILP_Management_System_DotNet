@@ -55,30 +55,48 @@ namespace ILPManagementSystem.Migrations
                     b.Property<int>("AssessmentTypeID")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<int>("BatchId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DueDateTime")
+                    b.Property<string>("DocumentContentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DocumentName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DocumentPath")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DueDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsSubmitable")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("TotalScore")
+                    b.Property<int>("PhaseId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TrainerId")
+                    b.Property<int?>("TotalScore")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AssessmentTypeID");
 
-                    b.HasIndex("TrainerId");
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("PhaseId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Assessments");
                 });
@@ -211,9 +229,6 @@ namespace ILPManagementSystem.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("NumberOfDays")
                         .HasColumnType("integer");
 
@@ -222,6 +237,9 @@ namespace ILPManagementSystem.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -290,7 +308,7 @@ namespace ILPManagementSystem.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ILPManagementSystem.Models.DTO.CompletedAssessmentDTO", b =>
+            modelBuilder.Entity("ILPManagementSystem.Models.CompletedAssessment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -302,19 +320,26 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("Score")
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double?>("Score")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("SubmissionTime")
+                    b.Property<DateTime?>("SubmissionTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TraineeId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AssessmentId");
 
                     b.ToTable("CompletedAssessment");
                 });
@@ -576,9 +601,6 @@ namespace ILPManagementSystem.Migrations
                     b.Property<int>("BatchId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProgramId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("SessionDescription")
                         .IsRequired()
                         .HasColumnType("text");
@@ -597,12 +619,6 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BatchId");
-
-                    b.HasIndex("ProgramId");
-
-                    b.HasIndex("TrainerId");
 
                     b.ToTable("Sessions");
                 });
@@ -674,6 +690,18 @@ namespace ILPManagementSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Trainers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            userId = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            userId = 4
+                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.User", b =>
@@ -824,13 +852,29 @@ namespace ILPManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ILPManagementSystem.Models.Trainer", "Trainer")
+                    b.HasOne("ILPManagementSystem.Models.Batch", "Batch")
                         .WithMany()
-                        .HasForeignKey("TrainerId")
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ILPManagementSystem.Models.Phase", "Phase")
+                        .WithMany()
+                        .HasForeignKey("PhaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ILPManagementSystem.Models.User", "Trainer")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AssessmentType");
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Phase");
 
                     b.Navigation("Trainer");
                 });
@@ -881,6 +925,17 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("Phase");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.CompletedAssessment", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.Assessment", "Assessment")
+                        .WithMany()
+                        .HasForeignKey("AssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assessment");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.PhaseAssessmentTypeMapping", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.AssessmentType", "AssessmentType")
@@ -898,33 +953,6 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("AssessmentType");
 
                     b.Navigation("BatchPhase");
-                });
-
-            modelBuilder.Entity("ILPManagementSystem.Models.Session", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.Batch", "Batch")
-                        .WithMany()
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.BatchProgram", "BatchProgram")
-                        .WithMany()
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ILPManagementSystem.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Batch");
-
-                    b.Navigation("BatchProgram");
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Trainee", b =>
