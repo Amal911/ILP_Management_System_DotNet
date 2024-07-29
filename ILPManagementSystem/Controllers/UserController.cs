@@ -28,8 +28,8 @@ namespace ILPManagementSystem.Controllers
             
             var userDtos = users.Select(user => new 
             {
-/*                Id = user.Id,
-*/              EmailId = user.EmailId,
+                Id = user.Id,
+                EmailId = user.EmailId,
                 RoleId = user.RoleId,
                 RoleName = user.Role.RoleName,
                 MobileNumber = user.MobileNumber,

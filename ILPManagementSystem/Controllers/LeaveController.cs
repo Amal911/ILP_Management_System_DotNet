@@ -24,6 +24,19 @@ namespace ILPManagementSystem.Controllers
             _leaveApprovalRepository = leaveApprovalRepository;
         }
 
+        [HttpGet("user/{userId}/leaves")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByUserId(int userId)
+        {
+            var leaves = await _leaveRepository.GetLeavesByUserIdAsync(userId);
+
+            if (leaves == null || !leaves.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(leaves);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Leave>>> GetLeaves()
         {
@@ -171,59 +184,6 @@ namespace ILPManagementSystem.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-
-        /* [HttpPut("updateApprovalStatus/{id}")]
-         public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApproval leaveApproval)
-         {
-             var leave = await _leaveRepository.GetLeaveByIdAsync(id);
-             if (leave == null)
-             {
-                 return NotFound();
-             }
-
-             var existingApproval = await _leaveApprovalRepository.GetLeaveApprovalAsync(id, leaveApproval.userId);
-
-             if (existingApproval == null)
-             {
-                 await _leaveApprovalRepository.AddApprovalAsync(leaveApproval);
-             }
-             else
-             {
-                 existingApproval.IsApproved = leaveApproval.IsApproved;
-                 await _leaveApprovalRepository.UpdateApprovalAsync(existingApproval);
-             }
-
-             return NoContent();
-         }*/
-
-        /* [HttpPut("updateApprovalStatus/{id}")]
-         public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApproval leaveApproval)
-         {
-             if (!ModelState.IsValid)
-             {
-                 return BadRequest(ModelState);
-             }
-
-             var leave = await _leaveRepository.GetLeaveByIdAsync(id);
-             if (leave == null)
-             {
-                 return NotFound();
-             }
-
-             var existingApproval = await _leaveApprovalRepository.GetLeaveApprovalAsync(id, leaveApproval.userId);
-             if (existingApproval == null)
-             {
-                 leaveApproval.LeavesId = id; // Ensure the LeavesId is set correctly
-                 await _leaveApprovalRepository.AddApprovalAsync(leaveApproval);
-             }
-             else
-             {
-                 existingApproval.IsApproved = leaveApproval.IsApproved;
-                 await _leaveApprovalRepository.UpdateApprovalAsync(existingApproval);
-             }
-
-             return NoContent();
-         }*/
 
         [HttpPut("updateApprovalStatus/{id}")]
         public async Task<ActionResult> UpdateApprovalStatus(int id, [FromBody] LeaveApprovalUpdateDTO leaveApprovalUpdateDto)

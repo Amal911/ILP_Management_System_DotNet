@@ -15,6 +15,14 @@ public class LeaveRepository : ILeaveRepository
         _context = context;
     }
 
+    public async Task<IEnumerable<Leave>> GetLeavesByUserIdAsync(int userId)
+    {
+        return await _context.Leaves
+                             .Include(l => l.Trainee)
+                             .ThenInclude(t => t.User)
+                             .Where(l => l.Trainee.UserId == userId)
+                             .ToListAsync();
+    }
 
     public async Task<Trainee> GetTraineeByFullNameAsync(string fullName)
     {
