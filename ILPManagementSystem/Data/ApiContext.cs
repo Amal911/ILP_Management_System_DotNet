@@ -37,6 +37,7 @@ namespace ILPManagementSystem.Data
         public DbSet<BatchProgram> Programs { get; set; }
 
         public DbSet<Attendance>Attendances { get; set; }
+        public DbSet<OnlineAssessment> OnlineAssessments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

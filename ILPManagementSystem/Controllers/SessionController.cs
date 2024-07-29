@@ -43,7 +43,7 @@ namespace ILPManagementSystem.Controllers
             try
             {
                 var sessions = await _sessionRepo.GetAllAsync();
-                var todaysSessions = sessions.Where(u => u.startTime.Date == today && u.batchId == batchId).ToList();
+                var todaysSessions = sessions.Where(u => u.startTime.Date == today && u.BatchId == batchId).ToList();
                 var mappedSessions = _mapper.Map<IEnumerable<Session>>(todaysSessions);
                 var response = new APIResponse
                 {
