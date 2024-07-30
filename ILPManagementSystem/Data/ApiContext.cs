@@ -189,8 +189,8 @@ namespace ILPManagementSystem.Data
            LastName = "A",
            Gender = Gender.Female,
            IsActive = true
-       },
-       new User
+       }
+  /*     new User
        {
            Id = 5,
            EmailId = "jisna.george@sreegcloudgmail.onmicrosoft.com",
@@ -225,7 +225,7 @@ namespace ILPManagementSystem.Data
            LastName = "Sajeev",
            Gender = Gender.Male,
            IsActive = true
-       }
+       }*/
    );
             
             modelBuilder.Entity<DocumentLinks>()
@@ -281,6 +281,28 @@ namespace ILPManagementSystem.Data
                     userId = 4,
                 }
                 );
+
+            /*modelBuilder.Entity<Trainee>().HasData(
+               new Trainee
+               {
+                   Id = 1,
+                   UserId = 5,
+                   BatchId = 1,
+               },
+               new Trainee
+               {
+                   Id = 2,
+                   UserId = 6,
+                   BatchId = 1,
+               },
+                new Trainee
+                {
+                    Id = 3,
+                    UserId = 7,
+                    BatchId = 1,
+                }
+
+               );*/
 
         }           
 
