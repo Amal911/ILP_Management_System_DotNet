@@ -12,8 +12,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
+<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240729080914_update.Designer.cs
     [Migration("20240729080914_update")]
     partial class update
+========
+    [Migration("20240729170929_table")]
+    partial class table
+>>>>>>>> d6dd3ce69c8f25d2e4adcb87d47ad39124fdacc2:ILPManagementSystem/Migrations/20240729170929_table.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
