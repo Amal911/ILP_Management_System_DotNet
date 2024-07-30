@@ -6,23 +6,33 @@ using ILPManagementSystem.Repository.IRepository;
 
 namespace ILPManagementSystem.Repository
 {
-    public class CompletedAssessmentRepository :ICompletedAssessmentRepository
+    public class CompletedAssessmentRepository : ICompletedAssessmentRepository
     {
         private readonly ApiContext _context;
-        private readonly ICompletedAssessmentRepository _completedAssessmentRepository;
-        private readonly IMapper _mapper;
-        public CompletedAssessmentRepository()
+
+        public CompletedAssessmentRepository(ApiContext context)
         {
-            this._context = _context;
-        }
-        public async Task<IEnumerable<CompletedAssessmentDTO>> GetCompletedAssessment()
-        {
-            return _context.CompletedAssessment;
+            _context = context;
         }
 
-        public async Task<CompletedAssessmentDTO> GetCompletedAssessmentById(int Id)
+        public async Task<CompletedAssessment> GetByIdAsync(int id)
         {
-            return _context.CompletedAssessment.Find(Id);
+            return await _context.CompletedAssessment.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<CompletedAssessment>> GetAllAsync()
+        {
+            return  _context.CompletedAssessment.ToList();
+        }
+
+        public async Task<CompletedAssessment> AddAsync(CompletedAssessment completedAssessment)
+        {
+            completedAssessment.Comments = null;
+            completedAssessment.Created = DateTime.UtcNow;
+            completedAssessment.SubmissionTime = DateTime.UtcNow;
+            await _context.CompletedAssessment.AddAsync(completedAssessment);
+            await _context.SaveChangesAsync();
+            return completedAssessment;
         }
     }
 }

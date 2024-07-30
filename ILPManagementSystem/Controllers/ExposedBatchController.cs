@@ -2,6 +2,7 @@
 using ILPManagementSystem.Data;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -12,14 +13,10 @@ namespace ILPManagementSystem.Controllers
     public class ExposedBatchController:ControllerBase
     {
         
-            private ApiContext _context;
-            private IMapper _mapper;
-            private ExposedBatchRepository _repository;
-            public ExposedBatchController(ApiContext context, IMapper mapper, ExposedBatchRepository repository)
+            private IExposedBatchRepository _repository;
+            public ExposedBatchController(IExposedBatchRepository repository)
             {
                 this._repository = repository;
-                this._context = context;
-                this._mapper = mapper;
             }
             [HttpGet]
             public async Task<ActionResult<IEnumerable<ExposedBatchDTO>>> GetAllBatches()
