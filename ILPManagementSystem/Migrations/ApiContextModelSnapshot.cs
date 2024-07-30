@@ -677,26 +677,6 @@ namespace ILPManagementSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Trainees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BatchId = 1,
-                            UserId = 5
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BatchId = 1,
-                            UserId = 6
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BatchId = 1,
-                            UserId = 7
-                        });
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Trainer", b =>

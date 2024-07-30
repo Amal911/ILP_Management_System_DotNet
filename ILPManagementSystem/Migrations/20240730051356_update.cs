@@ -9,11 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:ILPManagementSystem/Migrations/20240729080914_update.cs
     public partial class update : Migration
-========
-    public partial class table : Migration
->>>>>>>> d6dd3ce69c8f25d2e4adcb87d47ad39124fdacc2:ILPManagementSystem/Migrations/20240729170929_table.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
