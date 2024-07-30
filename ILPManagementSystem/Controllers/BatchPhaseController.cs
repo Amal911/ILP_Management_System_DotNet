@@ -3,6 +3,7 @@ using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -73,14 +74,15 @@ namespace ILPManagementSystem.Controllers
                 });
             }
         }
-
-        }
         [HttpGet("{batchId}")]
 
         public async Task<ActionResult<IEnumerable<BatchPhase>>> GetBatchPhasesByBatchIdAsync(int batchId)
         {
-            return Ok(await _batchphaseRepository.GetBatchPhasesByBatchIdAsync(batchId));
+            return Ok(await _repository.GetBatchPhasesByBatchIdAsync(batchId));
         }
+
+    }
+        
 
     }
 

@@ -931,7 +931,17 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("Phase");
                 });
 
-<<<<<<< HEAD
+            modelBuilder.Entity("ILPManagementSystem.Models.CompletedAssessment", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.Assessment", "Assessment")
+                        .WithMany()
+                        .HasForeignKey("AssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assessment");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.Trainee", "Trainee")
@@ -960,17 +970,6 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("Leaves");
 
                     b.Navigation("User");
-=======
-            modelBuilder.Entity("ILPManagementSystem.Models.CompletedAssessment", b =>
-                {
-                    b.HasOne("ILPManagementSystem.Models.Assessment", "Assessment")
-                        .WithMany()
-                        .HasForeignKey("AssessmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Assessment");
->>>>>>> 0d84ca8a5435b92cfe281375619c2f1f24146899
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.PhaseAssessmentTypeMapping", b =>

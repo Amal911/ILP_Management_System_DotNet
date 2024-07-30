@@ -9,7 +9,7 @@ using System.Net;
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]/[Action]")]
+    [Route("/api/[controller]/")]
 
     public class AssessmentTypeController : ControllerBase
     {
