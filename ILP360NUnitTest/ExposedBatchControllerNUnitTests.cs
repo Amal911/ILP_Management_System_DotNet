@@ -20,7 +20,7 @@ namespace ILP360NUnitTest
         }
 
         [Test]
-        public async Task GetAllBatches_ReturnsOkResultWithListOfAllBatches()
+        public async Task GetAllBatches_ReturnsOkResultWithListOfAllBatches_ChecksNotNull()
         {
             // Arrange
             var mockBatches = new List<ExposedBatchDTO>
