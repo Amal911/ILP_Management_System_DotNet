@@ -15,19 +15,21 @@ namespace ILPManagementSystem.Controllers
             _leaveApprovalRepository = leaveApprovalRepository;
         }
 
+
+        [HttpGet("{leaveId}")]
+        public async Task<ActionResult<LeaveApproval>> GetApproval(int leaveId)
+        {
+            var approval = await _leaveApprovalRepository.GetApprovalsByLeaveIdAsync(leaveId);
+            if (approval == null) return NotFound();
+            return Ok(approval);
+        }
+
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LeaveApproval>>> GetApprovals()
         {
             var approvals = await _leaveApprovalRepository.GetAllApprovalsAsync();
             return Ok(approvals);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<LeaveApproval>> GetApproval(int id)
-        {
-            var approval = await _leaveApprovalRepository.GetApprovalByIdAsync(id);
-            if (approval == null) return NotFound();
-            return Ok(approval);
         }
 
         [HttpPost]
