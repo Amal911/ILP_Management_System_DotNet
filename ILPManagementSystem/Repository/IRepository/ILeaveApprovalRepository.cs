@@ -15,3 +15,4 @@ namespace ILPManagementSystem.Repository.IRepository
         Task<bool> DeleteApprovalAsync(int id);
     }
 }
+

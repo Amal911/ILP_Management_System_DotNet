@@ -19,7 +19,7 @@ namespace ILPManagementSystem.Controllers
         private readonly ILeaveRepository _leaveRepository;
         private readonly ILeaveApprovalRepository _leaveApprovalRepository;
 
-        public LeaveController(ILeaveRepository leavesRepository , ILeaveApprovalRepository leaveApprovalRepository)
+        public LeaveController(ILeaveRepository leavesRepository, ILeaveApprovalRepository leaveApprovalRepository)
         {
             _leaveRepository = leavesRepository;
             _leaveApprovalRepository = leaveApprovalRepository;
