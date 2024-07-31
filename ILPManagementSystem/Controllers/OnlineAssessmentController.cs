@@ -35,6 +35,21 @@ namespace ILPManagementSystem.Controllers
             };
             return Ok(response);
         }
+        [HttpPost]
+        public async Task<ActionResult<APIResponse>> CreateSession([FromBody] OnlineAssessment onlineAssessment)
+        {
+            await _onlineAssessmentRepository.CreateAsync(onlineAssessment);
+            await _onlineAssessmentRepository.SaveAsync();
+            var response = new APIResponse
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.Created,
+                Result = _mapper.Map<OnlineAssessment>(onlineAssessment),
+                Message = { "Assessment created successfully" }
+            };
+
+            return Ok(response);
+        }
 
     }
 }

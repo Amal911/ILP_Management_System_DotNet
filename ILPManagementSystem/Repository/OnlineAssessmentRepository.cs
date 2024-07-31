@@ -16,9 +16,20 @@ namespace ILPManagementSystem.Repository
         {
             _context = context;
         }
+
+        public async Task CreateAsync(OnlineAssessment onlineAssessment)
+        {
+             _context.OnlineAssessments.Add(onlineAssessment);
+        }
+
         public async Task<IEnumerable<OnlineAssessment>> GetAllAsync()
         {
             return await _context.OnlineAssessments.ToListAsync();
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
