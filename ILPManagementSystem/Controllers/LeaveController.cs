@@ -5,6 +5,7 @@ using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ILPManagementSystem.Controllers
 {
@@ -37,25 +38,11 @@ namespace ILPManagementSystem.Controllers
             return Ok(leaves);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Leave>>> GetLeaves()
-        {
-            var leaves = await _leaveRepository.GetAllLeavesAsync();
-            return Ok(leaves);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Leave>> GetLeave(int id)
-        {
-            var leave = await _leaveRepository.GetLeaveByIdAsync(id);
-            if (leave == null) return NotFound();
-            return Ok(leave);
-        }
-
         [HttpGet("leaveRequests")]
         public async Task<ActionResult<IEnumerable<Leave>>> GetLeaveRequests()
         {
             var leaves = await _leaveRepository.GetAllLeavesAsync();
+            var leaveapprovals = await _leaveApprovalRepository.GetAllApprovalsAsync();
             var leaveRequests = new List<LeaveDTO>();
 
             foreach (var leave in leaves)
@@ -66,7 +53,16 @@ namespace ILPManagementSystem.Controllers
                 // Fetch the trainee with batch information
                 var trainee = await _leaveRepository.GetTraineeWithBatchByIdAsync(leave.TraineeId);
                 var user = await _leaveRepository.GetUserByIdAsync(trainee.UserId);
-                
+
+                var approvalDTOs = approvals.Select(a => new LeaveApproval
+                {
+                    Id = a.Id,
+                    LeavesId = a.LeavesId,
+                    userId = a.userId,
+                    IsApproved = a.IsApproved,
+                    /*UserName = a.User.FirstName + " " + a.User.LastName // Assuming User has FirstName and LastName properties*/
+                }).ToList();
+
                 bool isPending = approvals.Any(a => a.IsApproved == null);
 
                 if (approvals.Any(a => a.IsApproved == null))
@@ -84,6 +80,7 @@ namespace ILPManagementSystem.Controllers
                         Description = leave.Description,
                         PocIds = pocIds,
                         IsPending = true, // Check if any approval is pending
+                        Approvals = approvalDTOs
                         /*BatchName = trainee.Batch?.BatchName*/ // Include batch information
 
                     });
@@ -103,6 +100,7 @@ namespace ILPManagementSystem.Controllers
                         Description = leave.Description,
                         PocIds = pocIds,
                         IsPending = false, // Check if any approval is pending
+                        Approvals = approvalDTOs
                         /*BatchName = trainee.Batch?.BatchName*/ // Include batch information
                     });
                 }
@@ -112,9 +110,9 @@ namespace ILPManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostLeaveRequest([FromBody] LeaveDTO leaveDto)
+        public async Task<IActionResult> PostLeaveRequest([FromBody] LeavecreateDTO leaveDto)
         {
-            var trainee = await _leaveRepository.GetTraineeByFullNameAsync(leaveDto.Name);
+            var trainee = await _leaveRepository.GetTraineeByUserIDAsync(leaveDto.UserID);
 
             if (trainee == null)
             {
@@ -217,6 +215,22 @@ namespace ILPManagementSystem.Controllers
             }
 
             return NoContent();
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Leave>> GetLeave(int id)
+        {
+            var leave = await _leaveRepository.GetLeaveByIdAsync(id);
+            if (leave == null) return NotFound();
+            return Ok(leave);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Leave>>> GetLeaves()
+        {
+            var leaves = await _leaveRepository.GetAllLeavesAsync();
+            return Ok(leaves);
         }
 
         [HttpPut("{id}")]
