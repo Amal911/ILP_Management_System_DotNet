@@ -79,6 +79,18 @@ namespace ILPManagementSystem.EndPoints
 
                 return Results.Ok(results); // Return the data stored in results dictionary
             });
+
+            app.MapGet("/getTraineeData/", async (int userId) =>
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<ApiContext>();  // ManageUserContext is your context name.
+                    var user = dbContext.Trainees.FirstOrDefault(e => e.UserId == userId);
+                    return Results.Ok(user);
+
+                }
+
+            });
         }
     }
 }
