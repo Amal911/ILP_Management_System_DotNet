@@ -5,17 +5,18 @@ using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Services.ValidationServices;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/api/[controller]/")]
     public class PhaseController:ControllerBase
     {
         private readonly PhaseService _phaseService;
         private PhaseRepository _repository;
         private IMapper _mapper;
-        public PhaseController(ApiContext _context, PhaseRepository _repository, IMapper _mapper,PhaseService _phaseService)
+        public PhaseController(PhaseRepository _repository, IMapper _mapper,PhaseService _phaseService)
         {
             this._repository = _repository;
             this._mapper = _mapper;
@@ -30,11 +31,22 @@ namespace ILPManagementSystem.Controllers
             try
             {
             var phases = await _repository.GetAllPhasesAsync();
-            return Ok(phases);
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    Result = phases,
+                    StatusCode = HttpStatusCode.OK
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = new List<string> { $"Internal server error: {ex.Message}" }
+                });
             }
 
 
@@ -45,21 +57,62 @@ namespace ILPManagementSystem.Controllers
         {
             try
             {
-                _phaseService.AddNewPhase(newPhase);
+                var validationResult = _phaseService.ValidateAddNewPhase(newPhase);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(new APIResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = validationResult.Errors.Select(e => e.ErrorMessage).ToList()
+                    });
+                }
                 Phase phase = _mapper.Map<Phase>(newPhase);
                 await _repository.AddNewPhase(phase);
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.Created,
+                    Result = phase,
+                    Message = new List<string> { "Phase added successfully" }
+                };
                 return CreatedAtAction(nameof(GetAllPhases), new { }, phase);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = new List<string> { $"Internal server error: {ex.Message}" }
+                });
             }
 
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> Deletephase(int id)
         {
-            return Ok(_repository.DeletePhase(id));
+            try
+            {
+                await _repository.DeletePhase(id);
+
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.NoContent,
+                    Message = new List<string> { "Phase deleted successfully" }
+                };
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = new List<string> { $"Internal server error: {ex.Message}" }
+                });
+            }
         }
 
         [HttpPut ("{id}")]
@@ -68,13 +121,36 @@ namespace ILPManagementSystem.Controllers
         {
             if (phase == null) 
             {
-                throw new ArgumentNullException(nameof(phase));
-
+                return BadRequest(new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = new List<string> { "Invalid phase data" }
+                });
             }
+            try
+            {
             Phase updatePhase = _mapper.Map<Phase>(phase);
             updatePhase.Id = id;
             await _repository.UpdatePhase(updatePhase);
-            return Ok();
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.OK,
+                    Result = updatePhase,
+                    Message = new List<string> { "Phase updated successfully" }
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = new List<string> { $"Internal server error: {ex.Message}" }
+                });
+            }
         }
 
     }

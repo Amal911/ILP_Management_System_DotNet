@@ -14,6 +14,7 @@ namespace ILPManagementSystem.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Trainee> Trainees { get; set; }
         public DbSet<Scorecard> Scorecards { get; set; }
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Location> Locations { get; set; }
@@ -32,7 +33,6 @@ namespace ILPManagementSystem.Data
         public DbSet<PhaseAssessmentTypeMapping> PhaseAssessmentTypeMappings { get; set; }
 
         public DbSet<SessionAttendance> SessionAttendances { get; set; }
-        public DbSet<Trainee> Trainees { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Admin> Admin { get; set; }
         public DbSet<BatchProgram> Programs { get; set; }
@@ -237,7 +237,21 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<BatchPhase>().HasOne(u => u.Phase).WithMany(b => b.BatchPhases).HasForeignKey(u => u.PhaseId);
             modelBuilder.Entity<BatchPhase>().HasMany(u => u.PhaseAssessmentTypeMappings).WithOne(b => b.BatchPhase);
 
+            modelBuilder.Entity<Leave>()
+            .HasMany(l => l.LeaveApprovals)
+            .WithOne(la => la.Leaves)
+            .HasForeignKey(la => la.LeavesId);
+
+            modelBuilder.Entity<LeaveApproval>()
+                .HasOne(la => la.User)
+                .WithMany()
+                .HasForeignKey(la => la.userId);
+
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.AssessmentType).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.AssessmentTypeId);
+
+            modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u=>u.BatchPhase).WithMany(b=>b.PhaseAssessmentTypeMappings).HasForeignKey(u=>u.BatchPhaseId);
+  
+
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.BatchPhase).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.BatchPhaseId);
 
             modelBuilder.Entity<Trainee>().HasOne(u => u.User).WithOne(b => b.Trainee);

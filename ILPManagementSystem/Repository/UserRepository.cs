@@ -17,7 +17,8 @@ namespace ILPManagementSystem.Repository
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return await _context.Users.Include(u=>u.Role).ToListAsync();
+            return await _context.Users.Include(u => u.Role).ToListAsync();
+            /*return await _context.Users.ToListAsync();*/
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -90,6 +91,13 @@ namespace ILPManagementSystem.Repository
                 }
                 )
                 .ToListAsync();
+        }
+        public async Task<int?> GetBatchIdByUserIdAsync(int userId)
+        {
+            var trainee = await _context.Trainees
+                .FirstOrDefaultAsync(t => t.UserId == userId);
+
+            return trainee?.BatchId;
         }
     }
 }

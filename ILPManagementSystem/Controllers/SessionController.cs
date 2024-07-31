@@ -40,10 +40,11 @@ namespace ILPManagementSystem.Controllers
         public async Task<IActionResult> GetTodaysSessions(int batchId)
         {
             var today = DateTime.Today;
+            var now = DateTime.UtcNow;
             try
             {
                 var sessions = await _sessionRepo.GetAllAsync();
-                var todaysSessions = sessions.Where(u => u.startTime.Date == today && u.BatchId == batchId).ToList();
+                var todaysSessions = sessions.Where(u => u.startTime.Date == today && u.BatchId == batchId && u.startTime <= now && u.endTime >= now).ToList();
                 var mappedSessions = _mapper.Map<IEnumerable<Session>>(todaysSessions);
                 var response = new APIResponse
                 {

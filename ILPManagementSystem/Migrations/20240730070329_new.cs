@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class tablecreated : Migration
+    public partial class @new : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,41 +71,6 @@ namespace ILPManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DocumentLinks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeaveApprovals",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    LeavesId = table.Column<int>(type: "integer", nullable: false),
-                    userId = table.Column<int>(type: "integer", nullable: false),
-                    IsApproved = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeaveApprovals", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Leaves",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TraineeId = table.Column<int>(type: "integer", nullable: false),
-                    NumofDays = table.Column<int>(type: "integer", nullable: false),
-                    LeaveDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LeaveDateFrom = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LeaveDateTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Reason = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Leaves", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -473,6 +438,59 @@ namespace ILPManagementSystem.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Leaves",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TraineeId = table.Column<int>(type: "integer", nullable: false),
+                    NumofDays = table.Column<int>(type: "integer", nullable: false),
+                    LeaveDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateFrom = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LeaveDateTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Reason = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Leaves", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Leaves_Trainees_TraineeId",
+                        column: x => x.TraineeId,
+                        principalTable: "Trainees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaveApprovals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LeavesId = table.Column<int>(type: "integer", nullable: false),
+                    userId = table.Column<int>(type: "integer", nullable: false),
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaveApprovals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeaveApprovals_Leaves_LeavesId",
+                        column: x => x.LeavesId,
+                        principalTable: "Leaves",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LeaveApprovals_Users_userId",
+                        column: x => x.userId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AssessmentTypes",
                 columns: new[] { "Id", "AssessmentTypeName" },
@@ -609,6 +627,21 @@ namespace ILPManagementSystem.Migrations
                 column: "AssessmentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LeaveApprovals_LeavesId",
+                table: "LeaveApprovals",
+                column: "LeavesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaveApprovals_userId",
+                table: "LeaveApprovals",
+                column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Leaves_TraineeId",
+                table: "Leaves",
+                column: "TraineeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PhaseAssessmentTypeMappings_AssessmentTypeId",
                 table: "PhaseAssessmentTypeMappings",
                 column: "AssessmentTypeId");
@@ -660,9 +693,6 @@ namespace ILPManagementSystem.Migrations
                 name: "LeaveApprovals");
 
             migrationBuilder.DropTable(
-                name: "Leaves");
-
-            migrationBuilder.DropTable(
                 name: "PhaseAssessmentTypeMappings");
 
             migrationBuilder.DropTable(
@@ -675,13 +705,13 @@ namespace ILPManagementSystem.Migrations
                 name: "Sessions");
 
             migrationBuilder.DropTable(
-                name: "Trainees");
-
-            migrationBuilder.DropTable(
                 name: "Trainers");
 
             migrationBuilder.DropTable(
                 name: "Assessments");
+
+            migrationBuilder.DropTable(
+                name: "Leaves");
 
             migrationBuilder.DropTable(
                 name: "BatchPhase");
@@ -690,16 +720,16 @@ namespace ILPManagementSystem.Migrations
                 name: "AssessmentTypes");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Batchs");
+                name: "Trainees");
 
             migrationBuilder.DropTable(
                 name: "Phases");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Batchs");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "BatchTypes");
@@ -709,6 +739,9 @@ namespace ILPManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Programs");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

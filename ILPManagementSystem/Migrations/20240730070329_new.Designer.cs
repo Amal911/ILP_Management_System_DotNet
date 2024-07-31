@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240729084731_new")]
+    [Migration("20240730070329_new")]
     partial class @new
     {
         /// <inheritdoc />
@@ -407,6 +407,8 @@ namespace ILPManagementSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TraineeId");
+
                     b.ToTable("Leaves");
                 });
 
@@ -418,7 +420,7 @@ namespace ILPManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsApproved")
+                    b.Property<bool?>("IsApproved")
                         .HasColumnType("boolean");
 
                     b.Property<int>("LeavesId")
@@ -428,6 +430,10 @@ namespace ILPManagementSystem.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LeavesId");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("LeaveApprovals");
                 });
@@ -939,6 +945,36 @@ namespace ILPManagementSystem.Migrations
                     b.Navigation("Assessment");
                 });
 
+            modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.Trainee", "Trainee")
+                        .WithMany()
+                        .HasForeignKey("TraineeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trainee");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.LeaveApproval", b =>
+                {
+                    b.HasOne("ILPManagementSystem.Models.Leave", "Leaves")
+                        .WithMany("LeaveApprovals")
+                        .HasForeignKey("LeavesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ILPManagementSystem.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Leaves");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ILPManagementSystem.Models.PhaseAssessmentTypeMapping", b =>
                 {
                     b.HasOne("ILPManagementSystem.Models.AssessmentType", "AssessmentType")
@@ -1024,6 +1060,11 @@ namespace ILPManagementSystem.Migrations
             modelBuilder.Entity("ILPManagementSystem.Models.BatchType", b =>
                 {
                     b.Navigation("Batches");
+                });
+
+            modelBuilder.Entity("ILPManagementSystem.Models.Leave", b =>
+                {
+                    b.Navigation("LeaveApprovals");
                 });
 
             modelBuilder.Entity("ILPManagementSystem.Models.Location", b =>
