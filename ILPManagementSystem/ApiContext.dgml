@@ -239,6 +239,10 @@ RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutab
 <Link Source = "BatchProgram" Target="BatchProgram.Id" Category="Contains" />
 <Link Source = "BatchProgram" Target="BatchProgram.ProgramName" Category="Contains" />
 <Link Source = "IModel" Target="CompletedAssessment" Category="Contains" />
+<<<<<<< HEAD
+=======
+<Link Source = "BatchType" Target="BatchType.Batches" Category="Contains" />
+>>>>>>> a496a6be9d77edf637fc745a43a61bd3ac5096fc
 <Link Source = "BatchType" Target="BatchType.Id" Category="Contains" />
 <Link Source = "BatchType" Target="BatchType.BatchTypeName" Category="Contains" />
 <Link Source = "IModel" Target="DocumentLinks" Category="Contains" />

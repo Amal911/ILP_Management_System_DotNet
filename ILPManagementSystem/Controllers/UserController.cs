@@ -6,134 +6,141 @@ using AutoMapper;
 using System.Diagnostics;
 using ILPManagementSystem.Repository;
 
-namespace ILPManagementSystem.Controllers
+namespace ILPManagementSystem.Controllers;
+
+[Route("api/[controller]/")]
+[ApiController]
+public class UserController : ControllerBase
 {
-    [Route("api/[controller]/")]
-    [ApiController]
-    public class UserController : ControllerBase
+    private readonly UserRepository _userRepository;
+    private readonly IMapper _mapper;
+
+    public UserController(UserRepository userRepository,IMapper mapper)
     {
-        private readonly UserRepository _userRepository;
-        private readonly IMapper _mapper;
+        _userRepository = userRepository;
+        this._mapper = mapper;
+    }
 
-        public UserController(UserRepository userRepository,IMapper mapper)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<object>>> GetUsers()
+    {
+        var users = await _userRepository.GetAllUsersAsync();
+        
+        var userDtos = users.Select(user => new 
         {
-            _userRepository = userRepository;
-            this._mapper = mapper;
+            Id = user.Id,
+            EmailId = user.EmailId,
+            RoleId = user.RoleId,
+            RoleName = user.Role.RoleName,
+            MobileNumber = user.MobileNumber,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Gender = (Gender)user.Gender,
+        }).ToList();
+        var admins = userDtos.Where(u => u.RoleName == "Admin").ToList();
+        var trainers = userDtos.Where(u => u.RoleName == "Trainer").ToList();
+        /*return Ok(userDtos);*/
+
+        return Ok(new { userDtos, admins, trainers });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserDTO>> GetUser(int id)
+    {
+        var user = await _userRepository.GetUserByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetUsers()
+        var userDTO = new 
         {
-            var users = await _userRepository.GetAllUsersAsync();
-            
-            var userDtos = users.Select(user => new 
-            {
-                Id = user.Id,
-                EmailId = user.EmailId,
-                RoleId = user.RoleId,
-                RoleName = user.Role.RoleName,
-                MobileNumber = user.MobileNumber,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Gender = (Gender)user.Gender,
-            }).ToList();
-            var admins = userDtos.Where(u => u.RoleName == "Admin").ToList();
-            var trainers = userDtos.Where(u => u.RoleName == "Trainer").ToList();
-            /*return Ok(userDtos);*/
+            /* Id = user.Id,*/
+            EmailId = user.EmailId,
+            RoleId = user.RoleId,
+            MobileNumber = user.MobileNumber,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Gender = user.Gender,
+            RoleName = user.Role.RoleName
+        };
+        return Ok(userDTO);
+    }
 
-            return Ok(new { userDtos, admins, trainers });
+    [HttpPost]
+    public async Task<ActionResult<UserDTO>> CreateUser([FromBody]UserDTO userDTO)
+    {
+        Console.WriteLine(userDTO);
+        User user = this._mapper.Map<User>(userDTO);
+        user.Gender= (Gender)userDTO.Gender;
+        user.IsActive = true;
+        await _userRepository.AddUserAsync(user);
+
+        return Ok();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
+    {
+        /*if (id != userDTO.Id)
+        {
+            return BadRequest();
+        }*/
+
+        var user = await _userRepository.GetUserByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUser(int id)
-        {
-            var user = await _userRepository.GetUserByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+        user.EmailId = userDTO.EmailId;
+        user.RoleId = userDTO.RoleId;
+        user.MobileNumber = userDTO.MobileNumber;
+        user.FirstName = userDTO.FirstName;
+        user.LastName = userDTO.LastName;
+        user.Gender = userDTO.Gender;
+        
 
-            var userDTO = new 
-            {
-                /* Id = user.Id,*/
-                EmailId = user.EmailId,
-                RoleId = user.RoleId,
-                MobileNumber = user.MobileNumber,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Gender = user.Gender,
-                RoleName = user.Role.RoleName
-            };
-            return Ok(userDTO);
+        await _userRepository.UpdateUserAsync(user);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        var result = await _userRepository.DeleteUserAsync(id);
+        if (!result)
+        {
+            return NotFound();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserDTO>> CreateUser([FromBody]UserDTO userDTO)
-        {
-            Console.WriteLine(userDTO);
-            User user = this._mapper.Map<User>(userDTO);
-            user.Gender= (Gender)userDTO.Gender;
-            user.IsActive = true;
-            await _userRepository.AddUserAsync(user);
+        return NoContent();
+    }
+    [HttpGet("GetTrainers")]
+    public async Task<ActionResult<IEnumerable<TrainerDetailsDTO>>> GetTrainer()
+    {
+        return Ok(await _userRepository.GetTrainers());
+    }
 
-            return Ok();
+    [HttpGet("batch/{userId}")]
+    public async Task<ActionResult<int>> GetBatchIdByUserId(int userId)
+    {
+        var batchId = await _userRepository.GetBatchIdByUserIdAsync(userId);
+
+        if (!batchId.HasValue)
+        {
+            return NotFound();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
-        {
-            /*if (id != userDTO.Id)
-            {
-                return BadRequest();
-            }*/
+        return batchId.Value;
+    }
 
-            var user = await _userRepository.GetUserByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.EmailId = userDTO.EmailId;
-            user.RoleId = userDTO.RoleId;
-            user.MobileNumber = userDTO.MobileNumber;
-            user.FirstName = userDTO.FirstName;
-            user.LastName = userDTO.LastName;
-            user.Gender = userDTO.Gender;
-            
-
-            await _userRepository.UpdateUserAsync(user);
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var result = await _userRepository.DeleteUserAsync(id);
-            if (!result)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
-        [HttpGet("GetTrainers")]
-        public async Task<ActionResult<IEnumerable<TrainerDetailsDTO>>> GetTrainer()
-        {
-            return Ok(await _userRepository.GetTrainers());
-        }
-
-        [HttpGet("batch/{userId}")]
-        public async Task<ActionResult<int>> GetBatchIdByUserId(int userId)
-        {
-            var batchId = await _userRepository.GetBatchIdByUserIdAsync(userId);
-
-            if (!batchId.HasValue)
-            {
-                return NotFound();
-            }
-
-            return batchId.Value;
-        }
+    [HttpGet("GetAllUserData")]
+    public async Task<IEnumerable<object>> GetAllUserData()
+    {
+        return await _userRepository.GetAllUserData();
     }
 }
+
+

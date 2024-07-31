@@ -20,6 +20,10 @@ namespace ILPManagementSystem.Repository
             return await _context.Users.Include(u => u.Role).ToListAsync();
             /*return await _context.Users.ToListAsync();*/
         }
+        public async Task<IEnumerable<User>> GetAllUserData()
+        {
+            return await _context.Users.ToListAsync();
+        }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
