@@ -96,5 +96,12 @@ namespace ILPManagementSystem.Repository
                 )
                 .ToListAsync();
         }
+        public async Task<int?> GetBatchIdByUserIdAsync(int userId)
+        {
+            var trainee = await _context.Trainees
+                .FirstOrDefaultAsync(t => t.UserId == userId);
+
+            return trainee?.BatchId;
+        }
     }
 }
