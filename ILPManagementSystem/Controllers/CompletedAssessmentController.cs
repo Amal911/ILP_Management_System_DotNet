@@ -2,35 +2,51 @@
 using Microsoft.AspNetCore.Mvc;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
+using ILPManagementSystem.Models;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class CompletedAssessmentController : ControllerBase
+    public class CompletedAssessmentsController : ControllerBase
     {
-        public CompletedAssessmentRepository _completedAssessmentRepository;
-        public CompletedAssessmentController(CompletedAssessmentRepository _completedAssessmentRepository)
-        {
-            this._completedAssessmentRepository = _completedAssessmentRepository;
-            
-        }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CompletedAssessmentDTO>>> GetAllCompletedAssessments()
-        {
-            return Ok(await _completedAssessmentRepository.GetCompletedAssessment());
-        }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CompletedAssessmentDTO>> GetCompletedAssessmentById(int id)
-        {
-            var completedAssessments = await _completedAssessmentRepository.GetCompletedAssessmentById(id);
-            if(completedAssessments == null) 
+            private readonly ICompletedAssessmentRepository _repository;
+            private readonly IMapper _mapper;
+
+            public CompletedAssessmentsController(ICompletedAssessmentRepository repository, IMapper mapper)
             {
-                return BadRequest("Id Not Found");
+                _repository = repository;
+                _mapper = mapper;
             }
-            return Ok(completedAssessments);
+
+            [HttpGet("{id}")]
+            public async Task<ActionResult<CompletedAssessmentDTO>> GetById(int id)
+            {
+                var completedAssessment = await _repository.GetByIdAsync(id);
+                if (completedAssessment == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(_mapper.Map<CompletedAssessmentDTO>(completedAssessment));
+            }
+
+            [HttpGet]
+            public async Task<ActionResult<IEnumerable<CompletedAssessmentDTO>>> GetAll()
+            {
+                var completedAssessments = await _repository.GetAllAsync();
+                return Ok(_mapper.Map<IEnumerable<CompletedAssessmentDTO>>(completedAssessments));
+            }
+
+            [HttpPost]
+            public async Task<ActionResult<CompletedAssessmentDTO>> Create(CompletedAssessmentDTO completedAssessmentDTO)
+            {
+                var completedAssessment = _mapper.Map<CompletedAssessment>(completedAssessmentDTO);
+                var createdAssessment = await _repository.AddAsync(completedAssessment);
+                return CreatedAtAction(nameof(GetById), new { id = createdAssessment.Id }, _mapper.Map<CompletedAssessmentDTO>(createdAssessment));
+            }
         }
 
     }
-}
 

@@ -2,17 +2,19 @@
 using ILPManagementSystem.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Xml;
 
 namespace ILPManagementSystem.Data
 {
-    public class ApiContext:DbContext
+    public class ApiContext : DbContext
     {
-        public ApiContext(DbContextOptions<ApiContext> dbContextOptions): base (dbContextOptions)
+        public ApiContext(DbContextOptions<ApiContext> dbContextOptions) : base(dbContextOptions)
         {
-            
+
         }
-        public DbSet<User>  Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Trainee> Trainees { get; set; }
         public DbSet<Scorecard> Scorecards { get; set; }
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Location> Locations { get; set; }
@@ -24,23 +26,23 @@ namespace ILPManagementSystem.Data
 
         public DbSet<Phase> Phases { get; set; }
         public DbSet<BatchPhase> BatchPhase {  get; set; }
-        public DbSet<CompletedAssessmentDTO> CompletedAssessment { get; set; }
+        public DbSet<CompletedAssessment> CompletedAssessment { get; set; }
 
         public DbSet<AssessmentType> AssessmentTypes { get; set; }
         public DbSet<DocumentLinks> DocumentLinks { get; set; }
         public DbSet<PhaseAssessmentTypeMapping> PhaseAssessmentTypeMappings { get; set; }
 
         public DbSet<SessionAttendance> SessionAttendances { get; set; }
-        public DbSet<Trainee> Trainees { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Admin> Admin { get; set; }
         public DbSet<BatchProgram> Programs { get; set; }
 
-        public DbSet<Attendance>Attendances { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             var LocationList = new List<Location>() {
                 new Location
                 {
@@ -187,8 +189,8 @@ namespace ILPManagementSystem.Data
            LastName = "A",
            Gender = Gender.Female,
            IsActive = true
-       },
-       new User
+       }
+  /*     new User
        {
            Id = 5,
            EmailId = "jisna.george@sreegcloudgmail.onmicrosoft.com",
@@ -223,8 +225,9 @@ namespace ILPManagementSystem.Data
            LastName = "Sajeev",
            Gender = Gender.Male,
            IsActive = true
-       }
+       }*/
    );
+            
             modelBuilder.Entity<DocumentLinks>()
                 .Property(u => u.documentType)
                 .HasConversion<string>();
@@ -234,7 +237,21 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<BatchPhase>().HasOne(u => u.Phase).WithMany(b => b.BatchPhases).HasForeignKey(u => u.PhaseId);
             modelBuilder.Entity<BatchPhase>().HasMany(u => u.PhaseAssessmentTypeMappings).WithOne(b => b.BatchPhase);
 
+            modelBuilder.Entity<Leave>()
+            .HasMany(l => l.LeaveApprovals)
+            .WithOne(la => la.Leaves)
+            .HasForeignKey(la => la.LeavesId);
+
+            modelBuilder.Entity<LeaveApproval>()
+                .HasOne(la => la.User)
+                .WithMany()
+                .HasForeignKey(la => la.userId);
+
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.AssessmentType).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.AssessmentTypeId);
+
+            modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u=>u.BatchPhase).WithMany(b=>b.PhaseAssessmentTypeMappings).HasForeignKey(u=>u.BatchPhaseId);
+  
+
             modelBuilder.Entity<PhaseAssessmentTypeMapping>().HasOne(u => u.BatchPhase).WithMany(b => b.PhaseAssessmentTypeMappings).HasForeignKey(u => u.BatchPhaseId);
 
             modelBuilder.Entity<Trainee>().HasOne(u => u.User).WithOne(b => b.Trainee);
@@ -247,11 +264,46 @@ namespace ILPManagementSystem.Data
             modelBuilder.Entity<Assessment>().HasOne(u => u.AssessmentType);
             modelBuilder.Entity<Batch>().HasOne(u => u.Program).WithMany(b => b.BatchList);
 
+
             modelBuilder.Entity<BatchProgram>().HasData(
                 new BatchProgram { Id = 1, ProgramName = "2023-2024" },
                 new BatchProgram { Id = 2, ProgramName = "2024-2025" }
                 );
-            
+            modelBuilder.Entity<Trainer>().HasData(
+                new Trainer
+                {
+                    Id = 1,
+                    userId = 3,
+                },
+                new Trainer
+                {
+                    Id = 2,
+                    userId = 4,
+                }
+                );
+
+            /*modelBuilder.Entity<Trainee>().HasData(
+               new Trainee
+               {
+                   Id = 1,
+                   UserId = 5,
+                   BatchId = 1,
+               },
+               new Trainee
+               {
+                   Id = 2,
+                   UserId = 6,
+                   BatchId = 1,
+               },
+                new Trainee
+                {
+                    Id = 3,
+                    UserId = 7,
+                    BatchId = 1,
+                }
+
+               );*/
+
         }           
 
     }

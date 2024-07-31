@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
-using ILPManagementSystem.Repository.IRepository;
+using ILPManagementSystem.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,10 +11,10 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class SessionController : ControllerBase
     {
-        private readonly ISessionRepository _sessionRepo;
+        private readonly SessionRepository _sessionRepo;
         private readonly IMapper _mapper;
 
-        public SessionController(ISessionRepository sessionRepo, IMapper mapper)
+        public SessionController(SessionRepository sessionRepo, IMapper mapper)
         {
             this._sessionRepo = sessionRepo;
             this._mapper = mapper;
@@ -29,7 +29,7 @@ namespace ILPManagementSystem.Controllers
             var response = new APIResponse
             {
                 IsSuccess = true,
-                Result = mappedSessions,
+                Result = sessions,
                 StatusCode = HttpStatusCode.OK
             };
 
@@ -40,10 +40,11 @@ namespace ILPManagementSystem.Controllers
         public async Task<IActionResult> GetTodaysSessions(int batchId)
         {
             var today = DateTime.Today;
+            var now = DateTime.UtcNow;
             try
             {
                 var sessions = await _sessionRepo.GetAllAsync();
-                var todaysSessions = sessions.Where(u => u.startTime.Date == today && u.batchId == batchId).ToList();
+                var todaysSessions = sessions.Where(u => u.startTime.Date == today && u.BatchId == batchId && u.startTime <= now && u.endTime >= now).ToList();
                 var mappedSessions = _mapper.Map<IEnumerable<Session>>(todaysSessions);
                 var response = new APIResponse
                 {
@@ -82,6 +83,25 @@ namespace ILPManagementSystem.Controllers
             {
                 IsSuccess= true,
                 Result = mappedSession,
+                StatusCode = HttpStatusCode.OK
+            };
+            return Ok(response);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<APIResponse>> GetSessionDetails(int id)
+        {
+            SessionDTO session = await _sessionRepo.GetSessionDetails(id);
+            if (session == null)
+            {
+                return NotFound(new APIResponse { StatusCode = HttpStatusCode.NotFound });
+            }
+
+
+            var response = new APIResponse
+            {
+                IsSuccess = true,
+                Result = session,
                 StatusCode = HttpStatusCode.OK
             };
             return Ok(response);

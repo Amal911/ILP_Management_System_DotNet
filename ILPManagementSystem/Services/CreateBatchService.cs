@@ -40,7 +40,7 @@ public class CreateBatchService:ICreateBatchService
                 NumberOfDays = phase.NumberOfDays,
                 StartDate = phase.StartDate,
                 EndDate = phase.EndDate,
-                IsCompleted = phase.IsCompleted,
+                Status= Status.NotStarted,
                 BatchId = batchId,
                 PhaseId = phase.PhaseId,
             };
@@ -66,7 +66,7 @@ public class CreateBatchService:ICreateBatchService
             newTrainee.IsActive = true;
             newTrainee.RoleId = 3;
 
-           var user =  await _userRepository.AddUserAsync(newTrainee);
+            var user = await _userRepository.AddUserAsync(newTrainee);
             _context.Trainees.Add(new Trainee
             {
                 UserId = user.Id,

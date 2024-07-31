@@ -1,5 +1,6 @@
 ﻿using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
+using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,12 @@ namespace ILPManagementSystem.Repository
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return await _context.Users.Include(u=>u.Role).ToListAsync();
+            return await _context.Users.Include(u => u.Role).ToListAsync();
+            /*return await _context.Users.ToListAsync();*/
+        }
+        public async Task<IEnumerable<User>> GetAllUserData()
+        {
+            return await _context.Users.ToListAsync();
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -68,9 +74,27 @@ namespace ILPManagementSystem.Repository
             return true;
         }
 
-        public async Task<object> GetTrainers()
+        /*public async Task<object> GetTrainers()
         {
             return await this._context.Users.Include(u => u.Role).ToListAsync();
+        }*/
+        public async Task<IEnumerable<TrainerDetailsDTO>> GetTrainers()
+        {
+            return await _context.Users.Where(u=>u.RoleId==2).Include(u => u.Role)
+                .Select(u=>
+                new TrainerDetailsDTO
+                {
+                    Id = u.Id,
+                    TrainerId = u.TrainerId,
+                    Name = $"{u.FirstName} {u.LastName}",
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    MobileNumber = u.MobileNumber,
+                    Email = u.EmailId,
+
+                }
+                )
+                .ToListAsync();
         }
     }
 }

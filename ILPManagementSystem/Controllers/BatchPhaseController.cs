@@ -3,7 +3,9 @@ using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace ILPManagementSystem.Controllers
 {
@@ -11,31 +13,76 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class BatchPhaseController : ControllerBase
     {
-        private ApiContext _context;
-        private BatchPhaseRepository _batchphaseRepository;
+        private BatchPhaseRepository _repository;
         private IMapper _mapper;
 
-        public BatchPhaseController(ApiContext _context, BatchPhaseRepository _batchphaseRepository, IMapper _mapper)
+        public BatchPhaseController(BatchPhaseRepository _repository, IMapper _mapper)
         {
-            this._context = _context;
-            this._batchphaseRepository = _batchphaseRepository;
+            this._repository = _repository;
             this._mapper = _mapper;
         }
         [HttpGet]
 
         public async Task<ActionResult<IEnumerable<BatchPhase>>> GetAllBatchPhasesAsync()
         {
-            return Ok(await _batchphaseRepository.GetAllBatchPhasesAsync());
+            try
+            {
+                var batchPhases = await _repository.GetAllBatchPhasesAsync();
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    Result = batchPhases,
+                    StatusCode = HttpStatusCode.OK
+                };
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = new List<string> { $"Internal server error: {ex.Message}" }
+                });
+            }
         }
 
-        [HttpPost]
+            [HttpPost]
         public async Task<ActionResult> AddNewBatchPhase([FromBody] BatchPhaseDTO newBatchPhase)
         {
-            BatchPhase batchPhase=_mapper.Map<BatchPhase>(newBatchPhase);
-            await _batchphaseRepository.AddNewBatchPhase(batchPhase);
-            return Ok();
+            try
+            {
+                BatchPhase batchPhase = _mapper.Map<BatchPhase>(newBatchPhase);
+                await _repository.AddNewBatchPhase(batchPhase);
+                var response = new APIResponse
+                {
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.Created,
+                    Result = batchPhase,
+                    Message = new List<string> { "Batch Phase created successfully" }
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = new List<string> { $"Internal server error: {ex.Message} - Inner Exception: {ex.InnerException?.Message}" }
+                });
+            }
+        }
+        [HttpGet("{batchId}")]
+
+        public async Task<ActionResult<IEnumerable<BatchPhase>>> GetBatchPhasesByBatchIdAsync(int batchId)
+        {
+            return Ok(await _repository.GetBatchPhasesByBatchIdAsync(batchId));
         }
 
+    }
+        
 
     }
-}
+

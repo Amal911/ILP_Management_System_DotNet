@@ -74,9 +74,9 @@ namespace ILPManagementSystem.Controllers
         }
 
         [HttpGet("{programId}")]
-        public async Task<ActionResult<IEnumerable<Batch>>> GetBatchByProgram(int programId)
+        public async Task<ActionResult<IEnumerable<object>>> GetBatchByProgram(int programId)
         {
-            IEnumerable<Batch> batchList = await _batchRepository.GetBatchByProgram(programId);
+            IEnumerable<object> batchList = await _batchRepository.GetBatchByProgram(programId);
             return Ok(batchList);
         }
 
