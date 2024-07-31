@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,9 @@ namespace ILPManagementSystem.Controllers
     public class BatchProgramController: ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly BatchProgramRepository repository;
+        private readonly IBatchProgramRepository repository;
 
-        public BatchProgramController(IMapper _mapper,BatchProgramRepository _repository)
+        public BatchProgramController(IMapper _mapper,IBatchProgramRepository _repository)
         {
             this._mapper = _mapper;
             this.repository = _repository;

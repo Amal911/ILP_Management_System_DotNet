@@ -2,6 +2,7 @@
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,10 +12,10 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class SessionController : ControllerBase
     {
-        private readonly SessionRepository _sessionRepo;
+        private readonly ISessionRepository _sessionRepo;
         private readonly IMapper _mapper;
 
-        public SessionController(SessionRepository sessionRepo, IMapper mapper)
+        public SessionController(ISessionRepository sessionRepo, IMapper mapper)
         {
             this._sessionRepo = sessionRepo;
             this._mapper = mapper;

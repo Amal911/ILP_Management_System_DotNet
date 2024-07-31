@@ -3,6 +3,7 @@ using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using ILPManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +13,13 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class BatchController: ControllerBase
     {
-        private ApiContext _context;
         private IMapper _mapper;
-        private BatchRepository _batchRepository;
-        private CreateBatchService _batchService;
+        private IBatchRepository _batchRepository;
+        private ICreateBatchService _batchService;
 
-        public BatchController(ApiContext _context, IMapper mapper, BatchRepository _batchRepository, CreateBatchService _batchService)
+        public BatchController(IMapper mapper, IBatchRepository _batchRepository, ICreateBatchService _batchService)
         {
             this._batchRepository = _batchRepository;
-            this._context = _context;
             this._mapper = mapper;
             this._batchService = _batchService;
         }

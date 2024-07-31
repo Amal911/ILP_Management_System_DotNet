@@ -9,7 +9,6 @@ namespace ILPManagementSystem.Repository.IRepository
         Task<Assessment> GetAssessmentById(int id);
         Task CreateAssessment(Assessment assessment);
         Task SubmitMarks(CompletedAssessment completedAssessment);
-
-
+        Task<IEnumerable<Assessment>> GetAssessmentsByBatchId(int batchId); 
     }
 }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.Json;
 using ILPManagementSystem.Services;
 using Microsoft.EntityFrameworkCore;
+using ILPManagementSystem.Repository.IRepository;
 
 namespace ILPManagementSystem.Controllers
 {
@@ -16,7 +17,7 @@ namespace ILPManagementSystem.Controllers
     public class AssessmentController : ControllerBase
     {
         private readonly AssessmentService _assessmentService;
-        private readonly AssessmentRepository _assessmentRepository;
+        private readonly IAssessmentRepository _assessmentRepository;
         private readonly ApiContext _context;
 
 

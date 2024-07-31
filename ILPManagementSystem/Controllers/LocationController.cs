@@ -2,6 +2,7 @@
 using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
@@ -13,12 +14,10 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class LocationController : ControllerBase
     {
-        private ApiContext _context;
-        private LocationRepository _locationRepository;
+        private ILocationRepository _locationRepository;
         private IMapper _mapper;
-        public LocationController(ApiContext _context,IMapper _mapper, LocationRepository _locationRepository)
+        public LocationController(IMapper _mapper, ILocationRepository _locationRepository)
         {
-            this._context = _context;
             this._locationRepository = _locationRepository;
             this._mapper = _mapper;
         }

@@ -13,10 +13,10 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class BatchPhaseController : ControllerBase
     {
-        private BatchPhaseRepository _repository;
+        private IBatchPhaseRepository _repository;
         private IMapper _mapper;
 
-        public BatchPhaseController(BatchPhaseRepository _repository, IMapper _mapper)
+        public BatchPhaseController(IBatchPhaseRepository _repository, IMapper _mapper)
         {
             this._repository = _repository;
             this._mapper = _mapper;

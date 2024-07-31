@@ -2,15 +2,16 @@
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Models;
 using ILPManagementSystem.Repository;
+using ILPManagementSystem.Repository.IRepository;
 
 namespace ILPManagementSystem.Services
 {
     public class AssessmentService
     {
-        private readonly AssessmentRepository _assessmentRepository;
+        private readonly IAssessmentRepository _assessmentRepository;
         private readonly IMapper _mapper;
 
-        public AssessmentService(AssessmentRepository assessmentRepository, IMapper mapper)
+        public AssessmentService(IAssessmentRepository assessmentRepository, IMapper mapper)
         {
             _assessmentRepository = assessmentRepository;
             _mapper = mapper;

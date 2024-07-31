@@ -14,4 +14,5 @@ public interface ISessionRepository
     Task RemoveAsync(Session coupon);
 
     Task <bool>SaveAsync();
+    Task<SessionDTO> GetSessionDetails(int id);
 }
