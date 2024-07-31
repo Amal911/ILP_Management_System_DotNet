@@ -81,8 +81,7 @@ public class BatchRepository:IBatchRepository
                     status = (Status)bp.Status,
                     batchId = bp.BatchId,
                     phaseId = bp.PhaseId,
-
-                   
+                    phaseName = bp.Phase.PhaseName,
                     phaseAssessmentTypeMappings = bp.PhaseAssessmentTypeMappings.Select(patm => new
                     {
                         id = patm.Id,
@@ -159,12 +158,12 @@ public class BatchRepository:IBatchRepository
         }
     */
 
-    public async Task<IEnumerable<BatchDTO>> GetDetailedBatchData()
+    public async Task<IEnumerable<object>> GetDetailedBatchData()
     {
         var BatchData = await (from  batch in _context.Batchs 
                                join batchType in _context.BatchTypes on batch.BatchTypeId equals batchType.Id
                                join location in _context.Locations on batch.LocationId equals location.Id
-                               select new BatchDTO
+                               select new 
                                {
                                    Id = batch.Id,
                                    BatchName = batch.BatchName,
@@ -178,6 +177,7 @@ public class BatchRepository:IBatchRepository
                                    LocationId = batch.LocationId,
                                    LocationName = location.LocationName,
                                    IsActive = batch.IsActive,
+                                   traineeCount = batch.TraineeList.Count,
                                }
                                ).ToListAsync();
         return BatchData;
