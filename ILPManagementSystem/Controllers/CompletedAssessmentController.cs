@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using ILPManagementSystem.Data;
 using Microsoft.AspNetCore.Mvc;
-using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
 
@@ -11,13 +9,9 @@ namespace ILPManagementSystem.Controllers
     [Route("[controller]/[action]")]
     public class CompletedAssessmentController : ControllerBase
     {
-        private ApiContext _context;
-        private IMapper _mapper;
         public CompletedAssessmentRepository _completedAssessmentRepository;
-        public CompletedAssessmentController(ApiContext _context,IMapper _mapper,CompletedAssessmentRepository _completedAssessmentRepository)
+        public CompletedAssessmentController(CompletedAssessmentRepository _completedAssessmentRepository)
         {
-            this._context = _context;
-            this._mapper = _mapper;
             this._completedAssessmentRepository = _completedAssessmentRepository;
             
         }

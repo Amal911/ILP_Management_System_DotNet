@@ -6,12 +6,13 @@ using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ILPManagementSystem.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class BatchController: ControllerBase
+    public class BatchController : ControllerBase
     {
         private ApiContext _context;
         private IMapper _mapper;
@@ -25,9 +26,9 @@ namespace ILPManagementSystem.Controllers
             this._mapper = mapper;
             this._batchService = _batchService;
         }
-/*        [HttpGet]
-          public IEnumerable<Batch> GetAllBatch2() { return _context.Batchs; }
-*/
+        /*        [HttpGet]
+                  public IEnumerable<Batch> GetAllBatch2() { return _context.Batchs; }
+        */
 
         /* [HttpGet]
          public IEnumerable<Batch>  GetAllBatch() {
@@ -35,7 +36,8 @@ namespace ILPManagementSystem.Controllers
          }*/
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Batch>>> GetAllBatch() {
+        public async Task<ActionResult<IEnumerable<Batch>>> GetAllBatch()
+        {
             return Ok(await _batchRepository.GetBatches());
         }
 
@@ -49,19 +51,20 @@ namespace ILPManagementSystem.Controllers
         public async Task<ActionResult<BatchDTO>> GetBatchDetailById(int id)
         {
             var batch = await _batchRepository.GetBatchDetailById(id);
-            if (batch.Count()==0) {
+            if (batch.Count() == 0)
+            {
                 return BadRequest("Id not found");
             }
             return Ok(batch);
         }
 
-/*        [HttpPost]
-        public async Task<ActionResult> CreateBatch(CreateBatchDTO batch)
-        {
-            Batch newBatch = _mapper.Map<Batch>(batch);
-            await _batchRepository.AddNewBatch(newBatch);
-            return Ok();
-        }*/
+        /*        [HttpPost]
+                public async Task<ActionResult> CreateBatch(CreateBatchDTO batch)
+                {
+                    Batch newBatch = _mapper.Map<Batch>(batch);
+                    await _batchRepository.AddNewBatch(newBatch);
+                    return Ok();
+                }*/
 
         [HttpPost]
         public async Task<ActionResult> CreateNewBatch(CreateNewBatchDTO batch)
@@ -74,7 +77,7 @@ namespace ILPManagementSystem.Controllers
         public async Task<ActionResult<IEnumerable<Batch>>> GetBatchByProgram(int programId)
         {
             IEnumerable<Batch> batchList = await _batchRepository.GetBatchByProgram(programId);
-           return Ok(batchList);
+            return Ok(batchList);
         }
 
         [HttpGet("TraineeList/{Id}")]
@@ -83,5 +86,31 @@ namespace ILPManagementSystem.Controllers
             var TraineeList = await _batchRepository.GetBatchTraineeList(Id);
             return Ok(TraineeList);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBatch(int id, [FromBody] UpdateBatchRequestDTO updateBatchRequest)
+        {
+            if (id != updateBatchRequest.Id)
+            {
+                return BadRequest("Batch ID mismatch");
+            }
+
+            try
+            {
+                await _batchRepository.UpdateBatchAsync(updateBatchRequest);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+            return Ok(new { message = "Batch details updated successfully!" });
+        }
+
+
+
     }
 }
