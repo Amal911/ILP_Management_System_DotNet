@@ -13,13 +13,11 @@ namespace ILPManagementSystem.Controllers
 
     public class DocumentLinksController:ControllerBase
     {
-        private readonly ApiContext _context;
         private readonly IMapper _mapper; 
         private readonly DocumentLinksRepository _documentLinksRepository;
 
-        public DocumentLinksController(ApiContext _context,IMapper _mapper,DocumentLinksRepository _documentLinksRepository)
+        public DocumentLinksController(IMapper _mapper,DocumentLinksRepository _documentLinksRepository)
         {
-            this._context = _context;
             this._mapper = _mapper;
             this._documentLinksRepository = _documentLinksRepository;
         }

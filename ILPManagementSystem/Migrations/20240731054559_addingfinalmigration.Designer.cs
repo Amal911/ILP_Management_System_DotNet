@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240730051356_update")]
-    partial class update
+    [Migration("20240731054559_addingfinalmigration")]
+    partial class addingfinalmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -803,42 +803,6 @@ namespace ILPManagementSystem.Migrations
                             MobileNumber = "1234567893",
                             Password = "Quwu856933",
                             RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            EmailId = "jisna.george@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Jisna",
-                            Gender = 2,
-                            IsActive = true,
-                            LastName = "George",
-                            MobileNumber = "1234567894",
-                            Password = "Koso191442",
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            EmailId = "thulasi.k@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Thulasi",
-                            Gender = 2,
-                            IsActive = true,
-                            LastName = "K",
-                            MobileNumber = "1234567895",
-                            Password = "Toqo391712",
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            EmailId = "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com",
-                            FirstName = "Dharsan",
-                            Gender = 1,
-                            IsActive = true,
-                            LastName = "Sajeev",
-                            MobileNumber = "1234567896",
-                            Password = "Zuja977409",
-                            RoleId = 3
                         });
                 });
 

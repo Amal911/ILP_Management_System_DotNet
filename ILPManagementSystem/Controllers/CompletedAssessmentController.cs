@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using ILPManagementSystem.Data;
 using Microsoft.AspNetCore.Mvc;
-using ILPManagementSystem.Models;
 using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository;
 using ILPManagementSystem.Repository.IRepository;
+using ILPManagementSystem.Models;
 
 namespace ILPManagementSystem.Controllers
 {

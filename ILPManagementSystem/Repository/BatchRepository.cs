@@ -190,8 +190,8 @@ public class BatchRepository:IBatchRepository
             .Include(b => b.Location)
             .Include(b => b.BatchType)
             .Include(b => b.TraineeList).ThenInclude(t => t.User)
-            .Include(b => b.BatchPhases)
-                .ThenInclude(bp => bp.PhaseAssessmentTypeMappings)
+            .Include(b => b.BatchPhases).ThenInclude(bp => bp.Phase)
+                .Include(b => b.BatchPhases).ThenInclude(bp => bp.PhaseAssessmentTypeMappings)
                     .ThenInclude(patm => patm.AssessmentType)
             .Select(b => new
             {
@@ -237,6 +237,11 @@ public class BatchRepository:IBatchRepository
                     batchId = bp.BatchId,
                     phaseId = bp.PhaseId,
                     phaseName = bp.Phase.PhaseName,
+                    phase = new
+                    {
+                        id = bp.Phase.Id,
+                        phaseName = bp.Phase.PhaseName,
+                    },
                     phaseAssessmentTypeMappings = bp.PhaseAssessmentTypeMappings.Select(patm => new
                     {
                         id = patm.Id,
@@ -255,6 +260,7 @@ public class BatchRepository:IBatchRepository
         return batchData;
 
     }
+    
     public async Task<int> AddNewBatch(Batch batch)
     {
         _context.Batchs.Add( batch );
@@ -306,4 +312,84 @@ public class BatchRepository:IBatchRepository
 
         return batchData;
     }
+    public async Task UpdateBatchAsync(UpdateBatchRequestDTO updateBatchRequest)
+    {
+        var batch = await _context.Batchs
+            .Include(b => b.BatchPhases)
+                .ThenInclude(bp => bp.PhaseAssessmentTypeMappings)
+            .FirstOrDefaultAsync(b => b.Id == updateBatchRequest.Id);
+
+        if (batch == null)
+        {
+            throw new KeyNotFoundException("Batch not found");
+        }
+
+        batch.BatchName = updateBatchRequest.BatchName;
+        batch.BatchCode = updateBatchRequest.BatchCode;
+        batch.BatchDuration = updateBatchRequest.BatchDuration;
+        batch.StartDate = updateBatchRequest.StartDate;
+        batch.EndDate = updateBatchRequest.EndDate;
+        batch.IsActive = updateBatchRequest.IsActive;
+        batch.ProgramId = updateBatchRequest.ProgramId;
+        batch.LocationId = updateBatchRequest.LocationId;
+        batch.BatchTypeId = updateBatchRequest.BatchTypeId;
+
+        var existingPhaseIds = batch.BatchPhases.Select(bp => bp.Id).ToList();
+        var incomingPhaseIds = updateBatchRequest.BatchPhases.Select(p => p.PhaseId).ToList();
+
+        var phasesToRemove = batch.BatchPhases.Where(bp => !incomingPhaseIds.Contains(bp.PhaseId)).ToList();
+        foreach (var phase in phasesToRemove)
+        {
+            _context.BatchPhase.Remove(phase);
+        }
+
+        foreach (var phaseDto in updateBatchRequest.BatchPhases)
+        {
+            var phase = batch.BatchPhases.FirstOrDefault(bp => bp.PhaseId == phaseDto.PhaseId);
+            if (phase == null)
+            {
+                phase = new BatchPhase
+                {
+                    BatchId = batch.Id,
+                    PhaseId = phaseDto.PhaseId,
+                };
+                batch.BatchPhases.Add(phase);
+            }
+
+            phase.NumberOfDays = phaseDto.NumberOfDays;
+            phase.StartDate = phaseDto.StartDate;
+            phase.EndDate = phaseDto.EndDate;
+
+            var existingAssessmentTypeIds = phase.PhaseAssessmentTypeMappings.Select(patm => patm.AssessmentTypeId).ToList();
+            var incomingAssessmentTypeIds = phaseDto.PhaseAssessmentTypeMappings.Select(p => p.AssessmentTypeId).ToList();
+
+            var assessmentsToRemove = phase.PhaseAssessmentTypeMappings.Where(patm => !incomingAssessmentTypeIds.Contains(patm.AssessmentTypeId)).ToList();
+            foreach (var assessment in assessmentsToRemove)
+            {
+                _context.PhaseAssessmentTypeMappings.Remove(assessment);
+            }
+
+            foreach (var assessmentDto in phaseDto.PhaseAssessmentTypeMappings)
+            {
+                var assessment = phase.PhaseAssessmentTypeMappings.FirstOrDefault(patm => patm.AssessmentTypeId == assessmentDto.AssessmentTypeId);
+                if (assessment == null)
+                {
+                    assessment = new PhaseAssessmentTypeMapping
+                    {
+                        BatchPhaseId = phase.Id,
+                        AssessmentTypeId = assessmentDto.AssessmentTypeId,
+                        Weightage = assessmentDto.Weightage
+                    };
+                    phase.PhaseAssessmentTypeMappings.Add(assessment);
+                }
+                else
+                {
+                    assessment.Weightage = assessmentDto.Weightage;
+                }
+            }
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
 }

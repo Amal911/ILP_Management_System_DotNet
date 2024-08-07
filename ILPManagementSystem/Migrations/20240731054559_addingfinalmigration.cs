@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ILPManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class update : Migration
+    public partial class addingfinalmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -556,10 +556,7 @@ namespace ILPManagementSystem.Migrations
                     { 1, "amal_admin@sreegcloudgmail.onmicrosoft.com", "Amal", 1, true, "Admin", "1234567890", "Gowo690819", 1 },
                     { 2, "devipriya_admin@sreegcloudgmail.onmicrosoft.com", "Devipriya", 2, true, "Admin", "1234567891", "Vajo021247", 1 },
                     { 3, "suneesh.thampi@sreegcloudgmail.onmicrosoft.com", "Suneesh", 1, true, "Thampi", "1234567892", "Huna544047", 2 },
-                    { 4, "lekshmi.a@sreegcloudgmail.onmicrosoft.com", "Lekshmi", 2, true, "A", "1234567893", "Quwu856933", 2 },
-                    { 5, "jisna.george@sreegcloudgmail.onmicrosoft.com", "Jisna", 2, true, "George", "1234567894", "Koso191442", 3 },
-                    { 6, "thulasi.k@sreegcloudgmail.onmicrosoft.com", "Thulasi", 2, true, "K", "1234567895", "Toqo391712", 3 },
-                    { 7, "dharsan.sajeev@sreegcloudgmail.onmicrosoft.com", "Dharsan", 1, true, "Sajeev", "1234567896", "Zuja977409", 3 }
+                    { 4, "lekshmi.a@sreegcloudgmail.onmicrosoft.com", "Lekshmi", 2, true, "A", "1234567893", "Quwu856933", 2 }
                 });
 
             migrationBuilder.InsertData(
