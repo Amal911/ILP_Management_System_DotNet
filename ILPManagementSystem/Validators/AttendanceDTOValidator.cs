@@ -16,9 +16,6 @@ namespace ILPManagementSystem.Models.Validators
                     .NotNull()
                     .WithMessage("IsPresent is required.");
 
-                RuleFor(x => x.Remarks)
-                    .MaximumLength(500)
-                    .WithMessage("Remarks cannot exceed 500 characters.");
         }
         internal ValidationResult Validate(AttendanceDTO attendanceDTO)
         {

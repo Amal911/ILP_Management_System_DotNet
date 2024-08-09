@@ -10,7 +10,7 @@
 
         public  Boolean IsPresent {  get; set; }
 
-        public string Remarks { get; set; }
+        public string? Remarks { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }

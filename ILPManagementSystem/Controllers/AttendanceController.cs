@@ -99,6 +99,7 @@ namespace ILPManagementSystem.Controllers
             {
                 Attendance UpdateAttendance = _mapper.Map<Attendance>(newAttendance);
                 UpdateAttendance.Id = id;
+                UpdateAttendance.Remarks=newAttendance.Remarks??string.Empty;
                 await _repository.UpdateAttendance(UpdateAttendance);
                 var response = new APIResponse
                 {
