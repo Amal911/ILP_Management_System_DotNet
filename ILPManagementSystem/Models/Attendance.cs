@@ -7,6 +7,7 @@
         public int SessionId { get; set; }
 
         public int TraineeId {  get; set; }
+        public Trainee Trainee { get; set; }
 
         public  Boolean IsPresent {  get; set; }
 

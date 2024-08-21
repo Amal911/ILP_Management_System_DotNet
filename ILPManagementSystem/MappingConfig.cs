@@ -27,6 +27,9 @@ namespace ILPManagementSystem
             CreateMap<Attendance,AttendanceDTO>().ReverseMap();
             CreateMap<Attendance, AttendanceSecondaryDTO>().ReverseMap();
             CreateMap<Attendance, PostAttendanceDTO>().ReverseMap();
+            CreateMap<Attendance, GetAttendanceBySessionIDDTO>().ReverseMap();
+
+
 
             CreateMap<BatchProgram,BatchProgramDTO>().ReverseMap();
 

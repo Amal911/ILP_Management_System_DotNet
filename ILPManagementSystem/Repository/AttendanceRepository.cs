@@ -1,15 +1,20 @@
-﻿using ILPManagementSystem.Data;
+﻿using AutoMapper;
+using ILPManagementSystem.Data;
 using ILPManagementSystem.Models;
+using ILPManagementSystem.Models.DTO;
 using ILPManagementSystem.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace ILPManagementSystem.Repository
 {
     public class AttendanceRepository : IAttendanceRepository
     {
         private ApiContext _context;
-        public AttendanceRepository(ApiContext _context)
+        private IMapper _mapper;
+        public AttendanceRepository(ApiContext _context,IMapper _mapper)
         {
             this._context = _context;
+            this._mapper = _mapper;
             
         }
         public async Task AddAttendance(Attendance attendance)
@@ -18,30 +23,46 @@ namespace ILPManagementSystem.Repository
             await this._context.SaveChangesAsync();
 
         }
-
         public async Task DeleteAttendance(int id)
         {
-            _context.Remove(_context.Attendances.Find(id));
-            await this._context.SaveChangesAsync();
+            var attendance = await _context.Attendances.FindAsync(id);
+            if (attendance != null) {
+                 _context.Remove(attendance);
+                await this._context.SaveChangesAsync();
+            }
         }
         public async Task<IEnumerable<Attendance>> GetAttendanceAsync()
         {
             return this._context.Attendances;
         }
-        public async Task<Attendance> GetAttendanceByIdAsync(int id)
+        public async Task<IEnumerable<GetAttendanceBySessionIDDTO>> GetAttendanceBySessionIdAsync(int sessionId)
         {
-            return await _context.Attendances.FindAsync(id);
+            return await _context.Attendances
+                .Where(a=>a.SessionId == sessionId)
+                .Include(a=>a.Trainee)
+                .ThenInclude(t=>t.User)
+                .Select(a=>new GetAttendanceBySessionIDDTO
+                {
+                    TraineeId = a.TraineeId,
+                    TraineeName=a.Trainee.User.FirstName+" "+a.Trainee.User.LastName,
+                    IsPresent=a.IsPresent,
+                    Remarks=a.Remarks
+                })
+                .ToListAsync();
         }
 
-        public async Task<Attendance> UpdateAttendance(Attendance attendance)
+        public async Task UpdateAttendance(Attendance attendance)
         {
-            _context.Attendances.Update(attendance);
-            await this._context.SaveChangesAsync();
-            return attendance;
+            var existingAttendance = await _context.Attendances
+                .FirstOrDefaultAsync(a => a.SessionId == attendance.SessionId && a.TraineeId == attendance.TraineeId);
 
-
+            if (existingAttendance != null)
+            {
+                existingAttendance.IsPresent = attendance.IsPresent;
+                existingAttendance.Remarks = attendance.Remarks ?? string.Empty;
+                await _context.SaveChangesAsync();
+            }
         }
 
-       
     }
 }

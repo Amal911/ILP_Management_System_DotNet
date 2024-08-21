@@ -26,8 +26,9 @@ namespace ILPManagementSystem.Controllers
 
         }
 
-        [HttpGet]
 
+
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Attendance>>> GetAttendance()
         {
             try
@@ -51,6 +52,9 @@ namespace ILPManagementSystem.Controllers
                 });
             }
         }
+
+
+
         [HttpPost]
         public async Task<ActionResult> AddAttendance([FromBody] PostAttendanceDTO postAttendanceDTO)
         {
@@ -82,11 +86,12 @@ namespace ILPManagementSystem.Controllers
             }
         }
 
-        [HttpPut("{id}")]
 
-        public async Task<ActionResult> UpdateAttendance(AttendanceDTO newAttendance, int id)
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateAttendance([FromBody] List<AttendanceDTO> attendanceList, [FromQuery] int sessionId)
         {
-            if (newAttendance == null)
+            if (attendanceList == null||!attendanceList.Any())
             {
                 return BadRequest(new APIResponse
                 {
@@ -97,15 +102,33 @@ namespace ILPManagementSystem.Controllers
             }
             try
             {
-                Attendance UpdateAttendance = _mapper.Map<Attendance>(newAttendance);
-                UpdateAttendance.Id = id;
-                UpdateAttendance.Remarks=newAttendance.Remarks??string.Empty;
-                await _repository.UpdateAttendance(UpdateAttendance);
+                var existingAttendances = await _repository.GetAttendanceBySessionIdAsync(sessionId);
+                if (existingAttendances == null || !existingAttendances.Any())
+                {
+                    return BadRequest(new APIResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = new List<string> { "Invalid attendance data" }
+                    });
+                }
+                foreach (var newAttendance in attendanceList)
+                {
+                    var existingAttendance = existingAttendances.FirstOrDefault(a => a.TraineeId == newAttendance.TraineeId);
+                    if (existingAttendance != null) 
+                    {
+                        existingAttendance.IsPresent = newAttendance.IsPresent;
+                        existingAttendance.Remarks = newAttendance.Remarks ?? string.Empty;
+                        await _repository.UpdateAttendance(existingAttendance);
+
+                    }
+
+                }
                 var response = new APIResponse
                 {
                     IsSuccess = true,
                     StatusCode = HttpStatusCode.OK,
-                    Result = UpdateAttendance,
+                    Result = attendanceList,
                     Message = new List<string> { "Attendance updated successfully" }
                 };
                 return Ok(response);
@@ -121,12 +144,14 @@ namespace ILPManagementSystem.Controllers
             }
         }
 
+
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<Attendance>> GetAttendanceById(int id)
+        public async Task<ActionResult> GetAttendanceBySessionIdAsync(int id)
         {
             try
             {
-                var attendance = await _repository.GetAttendanceByIdAsync(id);
+                var attendance = await _repository.GetAttendanceBySessionIdAsync(id);
                 if (attendance == null)
                 {
                     return NotFound(new APIResponse
@@ -154,8 +179,10 @@ namespace ILPManagementSystem.Controllers
                 });
             }
         }
+        
+        
+        
         [HttpDelete]
-
         public async Task<ActionResult> DeleteAttendance(int id)
         {
             try
