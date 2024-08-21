@@ -119,6 +119,7 @@ namespace ILPManagementSystem.Controllers
                     {
                         existingAttendance.IsPresent = newAttendance.IsPresent;
                         existingAttendance.Remarks = newAttendance.Remarks ?? string.Empty;
+                        existingAttendance.SessionId = sessionId;
                         await _repository.UpdateAttendance(existingAttendance);
 
                     }

@@ -8,7 +8,7 @@ namespace ILPManagementSystem.Repository.IRepository
         Task<IEnumerable<Attendance>> GetAttendanceAsync();
         Task<IEnumerable<GetAttendanceBySessionIDDTO>> GetAttendanceBySessionIdAsync(int id);
         Task AddAttendance(Attendance attendance);
-        Task UpdateAttendance(Attendance attendance);
+        Task UpdateAttendance(GetAttendanceBySessionIDDTO attendance);
         Task DeleteAttendance(int id);
     }
 }

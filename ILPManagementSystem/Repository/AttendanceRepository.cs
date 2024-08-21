@@ -44,14 +44,13 @@ namespace ILPManagementSystem.Repository
                 .Select(a=>new GetAttendanceBySessionIDDTO
                 {
                     TraineeId = a.TraineeId,
-                    TraineeName=a.Trainee.User.FirstName+" "+a.Trainee.User.LastName,
                     IsPresent=a.IsPresent,
                     Remarks=a.Remarks
                 })
                 .ToListAsync();
         }
 
-        public async Task UpdateAttendance(Attendance attendance)
+        public async Task UpdateAttendance(GetAttendanceBySessionIDDTO attendance)
         {
             var existingAttendance = await _context.Attendances
                 .FirstOrDefaultAsync(a => a.SessionId == attendance.SessionId && a.TraineeId == attendance.TraineeId);
